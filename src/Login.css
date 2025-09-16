@@ -1,0 +1,113 @@
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f6fa;
+}
+
+.login-form {
+    background: #fff;
+    padding: 2.5rem 2.5rem 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 32px rgba(56, 142, 60, 0.10);
+    width: 100%;
+    max-width: 370px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    border-top: 6px solid #388e3c;
+    animation: popin 0.7s cubic-bezier(.68, -0.55, .27, 1.55);
+}
+
+.login-form h2 {
+    text-align: center;
+    color: #388e3c;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.form-group label {
+    font-size: 0.95rem;
+    color: #555;
+    font-weight: 500;
+}
+
+.login-form input {
+    padding: 0.6rem 0.8rem;
+    border: 1.5px solid #bdbdbd;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: #f9f9f9;
+    transition: border 0.2s, background 0.2s;
+}
+
+.login-form input:focus {
+    border: 1.5px solid #388e3c;
+    outline: none;
+    background: #fff;
+}
+
+.login-form button {
+    padding: 0.7rem;
+    background: linear-gradient(90deg, #43a047 60%, #388e3c 100%);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.08rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(56, 142, 60, 0.08);
+    margin-top: 0.5rem;
+}
+
+.login-form button:hover {
+    background: linear-gradient(90deg, #388e3c 60%, #43a047 100%);
+    box-shadow: 0 4px 16px rgba(56, 142, 60, 0.13);
+}
+
+.error {
+    color: #d32f2f;
+    background: #ffebee;
+    padding: 0.5rem;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+}
+
+.login-link a {
+    color: #1976d2;
+    text-decoration: underline;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.login-link a:hover {
+    color: #0d47a1;
+}
+
+@keyframes popin {
+    0% {
+        transform: scale(0.95) translateY(30px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
