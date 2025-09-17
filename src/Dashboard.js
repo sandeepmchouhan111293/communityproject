@@ -1,165 +1,13 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
+import { useLanguage } from './LanguageContext';
+import LanguageToggle from './LanguageToggle';
 import { supabase } from './supabaseClient';
+import { useTranslation } from './translations';
 
-function Dashboard() {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [activeView, setActiveView] = useState('home');
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        const getUser = async () => {
-            const { data: { user }, error } = await supabase.auth.getUser();
-
-            if (error || !user) {
-                navigate('/login');
-                return;
-            }
-
-            setUser(user);
-            setLoading(false);
-        };
-
-        getUser();
-    }, [navigate]);
-
-    const handleLogout = async () => {
-        const { error } = await supabase.auth.signOut();
-        if (error) {
-            console.error('Error signing out:', error);
-        } else {
-            navigate('/login');
-        }
-    };
-
-    if (loading) {
-        return (
-            <div className="dashboard-loading">
-                <div className="loading-spinner"></div>
-                <p>Loading...</p>
-            </div>
-        );
-    }
-
-    const renderContent = () => {
-        switch (activeView) {
-            case 'home':
-                return <HomeView user={user} />;
-            case 'profile':
-                return <ProfileView user={user} />;
-            case 'family':
-                return <FamilyTreeView user={user} />;
-            case 'events':
-                return <EventsView user={user} />;
-            case 'volunteer':
-                return <VolunteerView user={user} />;
-            case 'discussions':
-                return <DiscussionsView user={user} />;
-            case 'documents':
-                return <DocumentsView user={user} />;
-            case 'directory':
-                return <CommunityDirectoryView user={user} />;
-            case 'settings':
-                return <SettingsView user={user} />;
-            default:
-                return <HomeView user={user} />;
-        }
-    };
-
-    return (
-        <div className="dashboard-container">
-            <nav className="sidebar">
-                <div className="sidebar-header">
-                    <h1>Community Hub</h1>
-                    <div className="user-info">
-                        <div className="user-avatar-small">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="8" r="4" fill="#388e3c" />
-                                <rect x="4" y="16" width="16" height="6" rx="3" fill="#388e3c" />
-                            </svg>
-                        </div>
-                        <div className="user-details">
-                            <p className="user-name">{user?.user_metadata?.full_name || user?.user_metadata?.username || user?.email?.split('@')[0] || 'User'}</p>
-                            <p className="user-email">{user?.email}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <ul className="nav-menu">
-                    <li className={activeView === 'home' ? 'active' : ''}>
-                        <button onClick={() => setActiveView('home')}>
-                            <span className="nav-icon">🏠</span>
-                            Home
-                        </button>
-                    </li>
-                    <li className={activeView === 'profile' ? 'active' : ''}>
-                        <button onClick={() => setActiveView('profile')}>
-                            <span className="nav-icon">👤</span>
-                            My Profile
-                        </button>
-                    </li>
-                    <li className={activeView === 'family' ? 'active' : ''}>
-                        <button onClick={() => setActiveView('family')}>
-                            <span className="nav-icon">🌳</span>
-                            Family Tree
-                        </button>
-                    </li>
-                    <li className={activeView === 'events' ? 'active' : ''}>
-                        <button onClick={() => setActiveView('events')}>
-                            <span className="nav-icon">📅</span>
-                            Events
-                        </button>
-                    </li>
-                    <li className={activeView === 'volunteer' ? 'active' : ''}>
-                        <button onClick={() => setActiveView('volunteer')}>
-                            <span className="nav-icon">🤝</span>
-                            Volunteer
-                        </button>
-                    </li>
-                    <li className={activeView === 'discussions' ? 'active' : ''}>
-                        <button onClick={() => setActiveView('discussions')}>
-                            <span className="nav-icon">💬</span>
-                            Discussions
-                        </button>
-                    </li>
-                    <li className={activeView === 'documents' ? 'active' : ''}>
-                        <button onClick={() => setActiveView('documents')}>
-                            <span className="nav-icon">📁</span>
-                            Documents
-                        </button>
-                    </li>
-                    <li className={activeView === 'directory' ? 'active' : ''}>
-                        <button onClick={() => setActiveView('directory')}>
-                            <span className="nav-icon">📖</span>
-                            Directory
-                        </button>
-                    </li>
-                    <li className={activeView === 'settings' ? 'active' : ''}>
-                        <button onClick={() => setActiveView('settings')}>
-                            <span className="nav-icon">⚙️</span>
-                            Settings
-                        </button>
-                    </li>
-                </ul>
-
-                <div className="sidebar-footer">
-                    <button className="logout-btn" onClick={handleLogout}>
-                        <span className="nav-icon">🚪</span>
-                        Logout
-                    </button>
-                </div>
-            </nav>
-
-            <main className="main-content">
-                {renderContent()}
-            </main>
-        </div>
-    );
-}
-
-const HomeView = ({ user }) => {
+// --- View Components ---
+const HomeView = ({ user, t }) => {
     const [memberHighlight] = useState({
         name: 'Sarah Johnson',
         title: 'Community Volunteer Champion',
@@ -173,25 +21,25 @@ const HomeView = ({ user }) => {
         {
             id: 1,
             type: 'urgent',
-            title: 'System Maintenance Tonight',
-            content: 'The platform will be unavailable from 11 PM to 1 AM for scheduled maintenance.',
-            timestamp: '2 hours ago',
-            author: 'System Admin'
+            titleKey: 'systemMaintenance',
+            contentKey: 'maintenanceDesc',
+            timestamp: `2 ${t('hoursAgo') || 'hours ago'}`,
+            authorKey: 'systemAdmin'
         },
         {
             id: 2,
             type: 'official',
-            title: 'Monthly Community Meeting Minutes Posted',
-            content: 'Review the decisions made in our December community meeting, including new family tree features.',
-            timestamp: '1 day ago',
-            author: 'Community Board'
+            titleKey: 'monthlyMeeting',
+            contentKey: 'meetingDesc',
+            timestamp: `1 ${t('daysAgo') || 'day ago'}`,
+            authorKey: 'communityBoard'
         },
         {
             id: 3,
             type: 'milestone',
-            title: '🎉 Welcome Baby Emma Thompson!',
-            content: 'The Thompson family welcomes their newest member. Congratulations to the proud parents!',
-            timestamp: '3 days ago',
+            titleKey: 'welcomeBaby',
+            contentKey: 'babyDesc',
+            timestamp: `3 ${t('daysAgo') || 'days ago'}`,
             author: 'Lisa Thompson'
         }
     ]);
@@ -212,15 +60,21 @@ const HomeView = ({ user }) => {
     return (
         <div className="view-container">
             <div className="home-header">
-                <h1>Welcome Home, {user?.user_metadata?.full_name?.split(' ')[0] || 'Member'}</h1>
-                <p className="home-subtitle">Stay connected with your community</p>
+                <div className="welcome-banner">
+                    <img src="/images/Sen Ji Maharaj 1.png" alt="Sen Ji Maharaj" className="welcome-image" />
+                    <div className="welcome-content">
+                        <h1>{t('welcomeHome') || 'Welcome Home'}, {user?.user_metadata?.full_name?.split(' ')[0] || 'Member'}</h1>
+                        <p className="home-subtitle">{t('stayConnected') || 'Stay connected with your community'}</p>
+                        <p className="blessing-text">"{t('blessingText') || 'May wisdom guide your path'}"</p>
+                    </div>
+                </div>
             </div>
 
             {/* Member Highlight Section */}
             <div className="member-highlight-section">
                 <div className="highlight-header">
-                    <h2>🌟 Member Spotlight</h2>
-                    <button className="nominate-btn">Nominate Someone</button>
+                    <h2>🌟 {t('memberSpotlight') || 'Member Spotlight'}</h2>
+                    <button className="nominate-btn">{t('nominateSomeone') || 'Nominate Someone'}</button>
                 </div>
                 <div className="member-highlight-card">
                     <div className="highlight-avatar">
@@ -247,24 +101,24 @@ const HomeView = ({ user }) => {
                 {/* Family Profile Progress */}
                 <div className="info-block gradient-border">
                     <div className="block-header">
-                        <h3>👨‍👩‍👧‍👦 Family Profile</h3>
-                        <span className="status-badge success">Active</span>
+                        <h3>👨‍👩‍👧‍👦 {t('familyProfile') || 'Family Profile'}</h3>
+                        <span className="status-badge success">{t('active') || 'Active'}</span>
                     </div>
                     <div className="completion-status">
                         <div className="progress-bar">
                             <div className="progress-fill" style={{ width: '75%' }}></div>
                         </div>
-                        <span className="progress-text">75% Complete</span>
+                        <span className="progress-text">75% {t('complete') || 'Complete'}</span>
                     </div>
-                    <p>Add 3 more family members to complete your family tree</p>
-                    <button className="block-action-btn">Add Members</button>
+                    <p>{t('addMoreMembers') || 'Add more family members to complete your profile'}</p>
+                    <button className="block-action-btn">{t('addMembersBtn') || 'Add Members'}</button>
                 </div>
 
                 {/* Community News Feed */}
                 <div className="info-block">
                     <div className="block-header">
-                        <h3>📰 Community Updates</h3>
-                        <button className="view-all-btn">View All</button>
+                        <h3>📰 {t('communityUpdates') || 'Community Updates'}</h3>
+                        <button className="view-all-btn">{t('viewAll') || 'View All'}</button>
                     </div>
                     <div className="news-feed">
                         {newsFeed.slice(0, 3).map(item => (
@@ -272,12 +126,12 @@ const HomeView = ({ user }) => {
                                 <div className="news-header">
                                     <span className="news-icon">{getNewsFeedIcon(item.type)}</span>
                                     <div className="news-meta">
-                                        <h4>{item.title}</h4>
+                                        <h4>{item.titleKey ? (t(item.titleKey) || item.titleKey) : item.title}</h4>
                                         <span className="news-timestamp">{item.timestamp}</span>
                                     </div>
                                 </div>
-                                <p className="news-content">{item.content}</p>
-                                <small className="news-author">By {item.author}</small>
+                                <p className="news-content">{item.contentKey ? (t(item.contentKey) || item.contentKey) : item.content}</p>
+                                <small className="news-author">{t('author') || 'Author'}: {item.authorKey ? (t(item.authorKey) || item.authorKey) : item.author}</small>
                             </div>
                         ))}
                     </div>
@@ -285,46 +139,46 @@ const HomeView = ({ user }) => {
 
                 {/* Quick Actions */}
                 <div className="info-block">
-                    <h3>🚀 Quick Actions</h3>
+                    <h3>🚀 {t('quickActions') || 'Quick Actions'}</h3>
                     <div className="quick-actions-grid">
                         <button className="quick-action-btn">
                             <span className="action-icon">📅</span>
-                            <span>View Events</span>
+                            <span>{t('viewEvents') || 'View Events'}</span>
                         </button>
                         <button className="quick-action-btn">
                             <span className="action-icon">🤝</span>
-                            <span>Volunteer</span>
+                            <span>{t('volunteer') || 'Volunteer'}</span>
                         </button>
                         <button className="quick-action-btn">
                             <span className="action-icon">💬</span>
-                            <span>Discussions</span>
+                            <span>{t('discussions') || 'Discussions'}</span>
                         </button>
                         <button className="quick-action-btn">
                             <span className="action-icon">📁</span>
-                            <span>Documents</span>
+                            <span>{t('documents') || 'Documents'}</span>
                         </button>
                     </div>
                 </div>
 
                 {/* Community Stats */}
                 <div className="info-block stats-block">
-                    <h3>📊 Community Pulse</h3>
+                    <h3>📊 {t('communityPulse') || 'Community Pulse'}</h3>
                     <div className="stats-grid">
                         <div className="stat-item">
                             <span className="stat-number">248</span>
-                            <span className="stat-label">Active Members</span>
+                            <span className="stat-label">{t('activeMembers') || 'Active Members'}</span>
                         </div>
                         <div className="stat-item">
                             <span className="stat-number">12</span>
-                            <span className="stat-label">Upcoming Events</span>
+                            <span className="stat-label">{t('upcomingEvents') || 'Upcoming Events'}</span>
                         </div>
                         <div className="stat-item">
                             <span className="stat-number">89</span>
-                            <span className="stat-label">Volunteer Hours</span>
+                            <span className="stat-label">{t('volunteerHours') || 'Volunteer Hours'}</span>
                         </div>
                         <div className="stat-item">
                             <span className="stat-number">34</span>
-                            <span className="stat-label">New Families</span>
+                            <span className="stat-label">{t('newFamilies') || 'New Families'}</span>
                         </div>
                     </div>
                 </div>
@@ -333,7 +187,7 @@ const HomeView = ({ user }) => {
     );
 };
 
-const ProfileView = ({ user }) => {
+const ProfileView = ({ user, t }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [profileData, setProfileData] = useState({
         profilePhoto: null,
@@ -359,7 +213,7 @@ const ProfileView = ({ user }) => {
 
     return (
         <div className="view-container">
-            <h1>My Profile</h1>
+            <h1>{t('myProfile') || 'My Profile'}</h1>
             <div className="profile-content">
                 <div className="profile-header">
                     <div className="profile-avatar-container">
@@ -368,8 +222,8 @@ const ProfileView = ({ user }) => {
                                 <img src={URL.createObjectURL(profileData.profilePhoto)} alt="Profile" />
                             ) : (
                                 <svg width="120" height="120" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <circle cx="12" cy="8" r="4" fill="#388e3c" />
-                                    <rect x="4" y="16" width="16" height="6" rx="3" fill="#388e3c" />
+                                    <circle cx="12" cy="8" r="4" fill="#d4a574" />
+                                    <rect x="4" y="16" width="16" height="6" rx="3" fill="#d4a574" />
                                 </svg>
                             )}
                         </div>
@@ -383,7 +237,7 @@ const ProfileView = ({ user }) => {
                                     style={{ display: 'none' }}
                                 />
                                 <label htmlFor="profilePhoto" className="upload-btn">
-                                    📷 Change Photo
+                                    📷 {t('changePhoto') || 'Change Photo'}
                                 </label>
                             </div>
                         )}
@@ -391,23 +245,23 @@ const ProfileView = ({ user }) => {
                     <div className="profile-info">
                         <h2>{user?.user_metadata?.full_name || 'User'}</h2>
                         <p>{user?.email}</p>
-                        <p>Member since: {new Date(user?.created_at).toLocaleDateString()}</p>
+                        <p>{t('memberSince') || 'Member since'} {new Date(user?.created_at).toLocaleDateString()}</p>
                     </div>
                 </div>
 
                 {!isEditing ? (
                     <div className="profile-cta">
                         <button className="primary-cta-btn" onClick={() => setIsEditing(true)}>
-                            Complete Your Profile
+                            {t('completeYourProfile') || 'Complete Your Profile'}
                         </button>
-                        <p>Add your personal information, education, and professional details</p>
+                        <p>{t('addPersonalInfo') || 'Add personal information to help community members connect with you'}</p>
                     </div>
                 ) : (
                     <div className="profile-form">
-                        <h3>Personal Information</h3>
+                        <h3>{t('personalInformation') || 'Personal Information'}</h3>
                         <div className="form-grid">
                             <div className="form-group">
-                                <label htmlFor="dateOfBirth">Date of Birth</label>
+                                <label htmlFor="dateOfBirth">{t('dateOfBirth') || 'Date of Birth'}</label>
                                 <input
                                     type="date"
                                     id="dateOfBirth"
@@ -418,79 +272,79 @@ const ProfileView = ({ user }) => {
                             </div>
 
                             <div className="form-group">
-                                <label htmlFor="gender">Gender</label>
+                                <label htmlFor="gender">{t('gender') || 'Gender'}</label>
                                 <select
                                     id="gender"
                                     value={profileData.gender}
                                     onChange={(e) => handleInputChange('gender', e.target.value)}
                                     className="form-input"
                                 >
-                                    <option value="">Select Gender</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                    <option value="other">Other</option>
-                                    <option value="prefer-not-to-say">Prefer not to say</option>
+                                    <option value="">{t('selectGender') || 'Select Gender'}</option>
+                                    <option value="male">{t('male') || 'Male'}</option>
+                                    <option value="female">{t('female') || 'Female'}</option>
+                                    <option value="other">{t('other') || 'Other'}</option>
+                                    <option value="prefer-not-to-say">{t('preferNotToSay') || 'Prefer not to say'}</option>
                                 </select>
                             </div>
 
                             <div className="form-group">
-                                <label htmlFor="maritalStatus">Marital Status</label>
+                                <label htmlFor="maritalStatus">{t('maritalStatus') || 'Marital Status'}</label>
                                 <select
                                     id="maritalStatus"
                                     value={profileData.maritalStatus}
                                     onChange={(e) => handleInputChange('maritalStatus', e.target.value)}
                                     className="form-input"
                                 >
-                                    <option value="">Select Status</option>
-                                    <option value="single">Single</option>
-                                    <option value="married">Married</option>
-                                    <option value="divorced">Divorced</option>
-                                    <option value="widowed">Widowed</option>
-                                    <option value="separated">Separated</option>
+                                    <option value="">{t('selectStatus') || 'Select Status'}</option>
+                                    <option value="single">{t('single') || 'Single'}</option>
+                                    <option value="married">{t('married') || 'Married'}</option>
+                                    <option value="divorced">{t('divorced') || 'Divorced'}</option>
+                                    <option value="widowed">{t('widowed') || 'Widowed'}</option>
+                                    <option value="separated">{t('separated') || 'Separated'}</option>
                                 </select>
                             </div>
                         </div>
 
-                        <h3>Education & Work</h3>
+                        <h3>{t('educationAndWork') || 'Education & Work'}</h3>
                         <div className="form-grid">
                             <div className="form-group">
-                                <label htmlFor="highestQualification">Highest Qualification</label>
+                                <label htmlFor="highestQualification">{t('highestQualification') || 'Highest Qualification'}</label>
                                 <select
                                     id="highestQualification"
                                     value={profileData.highestQualification}
                                     onChange={(e) => handleInputChange('highestQualification', e.target.value)}
                                     className="form-input"
                                 >
-                                    <option value="">Select Qualification</option>
-                                    <option value="high-school">High School</option>
-                                    <option value="diploma">Diploma</option>
-                                    <option value="bachelors">Bachelor's Degree</option>
-                                    <option value="masters">Master's Degree</option>
-                                    <option value="phd">PhD</option>
-                                    <option value="professional">Professional Certification</option>
-                                    <option value="other">Other</option>
+                                    <option value="">{t('selectQualification') || 'Select Qualification'}</option>
+                                    <option value="high-school">{t('highSchool') || 'High School'}</option>
+                                    <option value="diploma">{t('diploma') || 'Diploma'}</option>
+                                    <option value="bachelors">{t('bachelors') || "Bachelor's Degree"}</option>
+                                    <option value="masters">{t('masters') || "Master's Degree"}</option>
+                                    <option value="phd">{t('phd') || 'PhD'}</option>
+                                    <option value="professional">{t('professional') || 'Professional Certification'}</option>
+                                    <option value="other">{t('other') || 'Other'}</option>
                                 </select>
                             </div>
 
                             <div className="form-group">
-                                <label htmlFor="profession">Profession/Occupation</label>
+                                <label htmlFor="profession">{t('profession') || 'Profession/Occupation'}</label>
                                 <input
                                     type="text"
                                     id="profession"
                                     value={profileData.profession}
                                     onChange={(e) => handleInputChange('profession', e.target.value)}
-                                    placeholder="e.g., Software Engineer, Teacher, Doctor"
+                                    placeholder={t('professionPlaceholder') || 'e.g., Software Engineer, Teacher, Doctor'}
                                     className="form-input"
                                 />
                             </div>
 
                             <div className="form-group full-width">
-                                <label htmlFor="specialSkills">Special Skills/Talents</label>
+                                <label htmlFor="specialSkills">{t('specialSkills') || 'Special Skills/Talents'}</label>
                                 <textarea
                                     id="specialSkills"
                                     value={profileData.specialSkills}
                                     onChange={(e) => handleInputChange('specialSkills', e.target.value)}
-                                    placeholder="e.g., Programming, Music, Cooking, Languages spoken, etc."
+                                    placeholder={t('skillsPlaceholder') || 'e.g., Programming, Music, Cooking, Languages spoken, etc.'}
                                     className="form-input"
                                     rows="3"
                                 />
@@ -499,10 +353,10 @@ const ProfileView = ({ user }) => {
 
                         <div className="form-actions">
                             <button className="save-btn" onClick={handleSaveProfile}>
-                                Save Profile
+                                {t('saveProfile') || 'Save Profile'}
                             </button>
                             <button className="cancel-btn" onClick={() => setIsEditing(false)}>
-                                Cancel
+                                {t('cancel') || 'Cancel'}
                             </button>
                         </div>
                     </div>
@@ -511,15 +365,15 @@ const ProfileView = ({ user }) => {
                 <div className="profile-stats">
                     <div className="stat">
                         <h3>5</h3>
-                        <p>Family Members Added</p>
+                        <p>{t('familyMembersAdded') || 'Family Members Added'}</p>
                     </div>
                     <div className="stat">
                         <h3>12</h3>
-                        <p>Community Connections</p>
+                        <p>{t('communityConnections') || 'Community Connections'}</p>
                     </div>
                     <div className="stat">
                         <h3>3</h3>
-                        <p>Events Attended</p>
+                        <p>{t('eventsAttended') || 'Events Attended'}</p>
                     </div>
                 </div>
             </div>
@@ -527,14 +381,13 @@ const ProfileView = ({ user }) => {
     );
 };
 
-const FamilyTreeView = ({ user }) => {
-    const [viewMode, setViewMode] = useState('cards'); // 'cards' or 'tree'
+const FamilyTreeView = ({ user, t }) => {
+    const [viewMode, setViewMode] = useState('cards');
     const [showAddMemberForm, setShowAddMemberForm] = useState(false);
     const [memberFormStep, setMemberFormStep] = useState(1);
     const [selectedMember, setSelectedMember] = useState(null);
     const [showMemberDetail, setShowMemberDetail] = useState(false);
     const [familyMembers, setFamilyMembers] = useState([
-        // Sample data - in real app this would come from database
         {
             id: 1,
             name: 'John Smith',
@@ -561,6 +414,7 @@ const FamilyTreeView = ({ user }) => {
             hobbies: 'Drawing, Reading'
         }
     ]);
+
     const [memberData, setMemberData] = useState({
         relationship: '',
         ageCategory: '',
@@ -569,12 +423,10 @@ const FamilyTreeView = ({ user }) => {
         age: '',
         gender: '',
         profileImage: null,
-        // Minor-specific fields
         school: '',
         class: '',
         hobbies: '',
         achievements: '',
-        // Adult-specific fields
         highestQualification: '',
         profession: '',
         employer: '',
@@ -606,27 +458,6 @@ const FamilyTreeView = ({ user }) => {
         });
     };
 
-    const handleEditMember = (member) => {
-        setSelectedMember(member);
-        setMemberData({
-            ...member,
-            ageCategory: member.age < 18 ? 'minor' : 'adult'
-        });
-        setShowAddMemberForm(true);
-        setMemberFormStep(1);
-    };
-
-    const handleDeleteMember = (memberId) => {
-        if (window.confirm('Are you sure you want to remove this family member?')) {
-            setFamilyMembers(prev => prev.filter(member => member.id !== memberId));
-        }
-    };
-
-    const handleViewMember = (member) => {
-        setSelectedMember(member);
-        setShowMemberDetail(true);
-    };
-
     const handleInputChange = (field, value) => {
         setMemberData(prev => ({
             ...prev,
@@ -648,12 +479,10 @@ const FamilyTreeView = ({ user }) => {
         };
 
         if (selectedMember) {
-            // Update existing member
             setFamilyMembers(prev => prev.map(member =>
                 member.id === selectedMember.id ? newMember : member
             ));
         } else {
-            // Add new member
             setFamilyMembers(prev => [...prev, newMember]);
         }
 
@@ -677,452 +506,357 @@ const FamilyTreeView = ({ user }) => {
         return icons[relationship] || '👤';
     };
 
-    const renderStepOne = () => (
-        <div className="form-step">
-            <h3>Add Family Member - Step 1</h3>
-            <div className="form-group">
-                <label htmlFor="relationship">What is their relationship to you?</label>
-                <select
-                    id="relationship"
-                    value={memberData.relationship}
-                    onChange={(e) => handleInputChange('relationship', e.target.value)}
-                    className="form-input"
-                >
-                    <option value="">Select Relationship</option>
-                    <option value="parent">Parent (Father/Mother)</option>
-                    <option value="spouse">Spouse (Husband/Wife)</option>
-                    <option value="child">Child (Son/Daughter)</option>
-                    <option value="sibling">Sibling (Brother/Sister)</option>
-                    <option value="grandparent">Grandparent</option>
-                    <option value="grandchild">Grandchild</option>
-                    <option value="uncle-aunt">Uncle/Aunt</option>
-                    <option value="cousin">Cousin</option>
-                    <option value="other">Other Relative</option>
-                </select>
-            </div>
-
-            <div className="form-group">
-                <label>Are they an adult or a minor?</label>
-                <div className="radio-group">
-                    <label className="radio-label">
-                        <input
-                            type="radio"
-                            name="ageCategory"
-                            value="adult"
-                            checked={memberData.ageCategory === 'adult'}
-                            onChange={(e) => handleInputChange('ageCategory', e.target.value)}
-                        />
-                        Adult (18+ years)
-                    </label>
-                    <label className="radio-label">
-                        <input
-                            type="radio"
-                            name="ageCategory"
-                            value="minor"
-                            checked={memberData.ageCategory === 'minor'}
-                            onChange={(e) => handleInputChange('ageCategory', e.target.value)}
-                        />
-                        Minor (Under 18 years)
-                    </label>
-                </div>
-            </div>
-
-            <div className="form-actions">
-                <button
-                    className="next-btn"
-                    onClick={handleNextStep}
-                    disabled={!memberData.relationship || !memberData.ageCategory}
-                >
-                    Next
-                </button>
-                <button className="cancel-btn" onClick={() => setShowAddMemberForm(false)}>
-                    Cancel
-                </button>
-            </div>
-        </div>
-    );
-
-    const renderStepTwo = () => (
-        <div className="form-step">
-            <h3>{selectedMember ? 'Edit' : 'Add'} Family Member - Step 2</h3>
-
-            {/* Core Information - Required for All */}
-            <h4>Basic Information</h4>
-            <div className="form-grid">
-                <div className="form-group">
-                    <label htmlFor="memberName">Full Name *</label>
-                    <input
-                        type="text"
-                        id="memberName"
-                        value={memberData.name}
-                        onChange={(e) => handleInputChange('name', e.target.value)}
-                        placeholder="Enter full name"
-                        className="form-input"
-                        required
-                    />
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="dateOfBirth">Date of Birth *</label>
-                    <input
-                        type="date"
-                        id="dateOfBirth"
-                        value={memberData.dateOfBirth}
-                        onChange={(e) => {
-                            handleInputChange('dateOfBirth', e.target.value);
-                            // Auto-calculate age
-                            const age = new Date().getFullYear() - new Date(e.target.value).getFullYear();
-                            handleInputChange('age', age.toString());
-                        }}
-                        className="form-input"
-                        required
-                    />
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="memberGender">Gender (Optional)</label>
-                    <select
-                        id="memberGender"
-                        value={memberData.gender}
-                        onChange={(e) => handleInputChange('gender', e.target.value)}
-                        className="form-input"
-                    >
-                        <option value="">Select Gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
-                        <option value="prefer-not-to-say">Prefer not to say</option>
-                    </select>
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="profileImage">Profile Image (Optional)</label>
-                    <input
-                        type="file"
-                        id="profileImage"
-                        accept="image/*"
-                        onChange={(e) => handleInputChange('profileImage', e.target.files[0])}
-                        className="form-input"
-                    />
-                </div>
-            </div>
-
-            {memberData.ageCategory === 'minor' ? (
-                <div>
-                    <h4>Educational Information (Required for Minors)</h4>
-                    <div className="form-grid">
-                        <div className="form-group">
-                            <label htmlFor="school">School Name *</label>
-                            <input
-                                type="text"
-                                id="school"
-                                value={memberData.school}
-                                onChange={(e) => handleInputChange('school', e.target.value)}
-                                placeholder="Enter school name"
-                                className="form-input"
-                                required
-                            />
-                            <small className="field-note">Free text field - Enter exact school name</small>
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="class">Class/Grade *</label>
-                            <input
-                                type="text"
-                                id="class"
-                                value={memberData.class}
-                                onChange={(e) => handleInputChange('class', e.target.value)}
-                                placeholder="e.g., 10th Grade, Class 5, Kindergarten"
-                                className="form-input"
-                                required
-                            />
-                        </div>
-                    </div>
-
-                    <h4>Additional Information (Optional)</h4>
-                    <div className="form-grid">
-                        <div className="form-group">
-                            <label htmlFor="hobbies">Hobbies & Interests</label>
-                            <input
-                                type="text"
-                                id="hobbies"
-                                value={memberData.hobbies}
-                                onChange={(e) => handleInputChange('hobbies', e.target.value)}
-                                placeholder="e.g., Sports, Music, Art, Reading"
-                                className="form-input"
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="achievements">Achievements</label>
-                            <textarea
-                                id="achievements"
-                                value={memberData.achievements}
-                                onChange={(e) => handleInputChange('achievements', e.target.value)}
-                                placeholder="Academic awards, sports achievements, etc."
-                                className="form-input"
-                                rows="2"
-                            />
-                        </div>
-                    </div>
-                </div>
-            ) : (
-                <div>
-                    <h4>Education & Professional Information (Required for Adults)</h4>
-                    <div className="form-grid">
-                        <div className="form-group">
-                            <label htmlFor="adultQualification">Highest Qualification *</label>
-                            <select
-                                id="adultQualification"
-                                value={memberData.highestQualification}
-                                onChange={(e) => handleInputChange('highestQualification', e.target.value)}
-                                className="form-input"
-                                required
-                            >
-                                <option value="">Select Qualification</option>
-                                <option value="no-formal">No Formal Education</option>
-                                <option value="primary">Primary School</option>
-                                <option value="high-school">High School</option>
-                                <option value="diploma">Diploma/Certificate</option>
-                                <option value="bachelors">Bachelor's Degree</option>
-                                <option value="masters">Master's Degree</option>
-                                <option value="phd">PhD/Doctorate</option>
-                                <option value="professional">Professional Certification</option>
-                                <option value="trade">Trade/Vocational Training</option>
-                                <option value="other">Other</option>
-                            </select>
-                            <small className="field-note">Multi-degree capture supported - select highest level</small>
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="adultProfession">Profession/Occupation *</label>
-                            <input
-                                type="text"
-                                id="adultProfession"
-                                value={memberData.profession}
-                                onChange={(e) => handleInputChange('profession', e.target.value)}
-                                placeholder="e.g., Software Engineer, Teacher, Business Owner"
-                                className="form-input"
-                                required
-                            />
-                        </div>
-                    </div>
-
-                    <h4>Additional Professional Information (Optional)</h4>
-                    <div className="form-grid">
-                        <div className="form-group">
-                            <label htmlFor="employer">Employer/Company</label>
-                            <input
-                                type="text"
-                                id="employer"
-                                value={memberData.employer}
-                                onChange={(e) => handleInputChange('employer', e.target.value)}
-                                placeholder="Current employer or business name"
-                                className="form-input"
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="volunteerInterests">Volunteer Interests</label>
-                            <input
-                                type="text"
-                                id="volunteerInterests"
-                                value={memberData.volunteerInterests}
-                                onChange={(e) => handleInputChange('volunteerInterests', e.target.value)}
-                                placeholder="Community service, NGO work, etc."
-                                className="form-input"
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="adultMaritalStatus">Marital Status</label>
-                            <select
-                                id="adultMaritalStatus"
-                                value={memberData.maritalStatus}
-                                onChange={(e) => handleInputChange('maritalStatus', e.target.value)}
-                                className="form-input"
-                            >
-                                <option value="">Select Status</option>
-                                <option value="single">Single</option>
-                                <option value="married">Married</option>
-                                <option value="divorced">Divorced</option>
-                                <option value="widowed">Widowed</option>
-                                <option value="separated">Separated</option>
-                                <option value="engaged">Engaged</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            <div className="form-actions">
-                <button className="save-btn" onClick={handleSaveMember}>
-                    {selectedMember ? 'Update' : 'Add'} Family Member
-                </button>
-                <button className="back-btn" onClick={() => setMemberFormStep(1)}>
-                    Back
-                </button>
-                <button className="cancel-btn" onClick={() => setShowAddMemberForm(false)}>
-                    Cancel
-                </button>
-            </div>
-        </div>
-    );
-
-    const renderMemberCards = () => (
-        <div className="family-members-grid">
-            {familyMembers.map(member => (
-                <div key={member.id} className="member-card-interactive">
-                    <div className="member-card-header">
-                        <div className="member-avatar-large">
-                            {member.profileImage ? (
-                                <img src={URL.createObjectURL(member.profileImage)} alt={member.name} />
-                            ) : (
-                                <div className="avatar-placeholder">
-                                    {getRelationshipIcon(member.relationship)}
-                                </div>
-                            )}
-                        </div>
-                        <div className="member-actions">
-                            <button className="action-menu-btn" onClick={() => handleViewMember(member)}>
-                                ⋮
-                            </button>
-                            <div className="action-menu">
-                                <button onClick={() => handleViewMember(member)}>👁️ View</button>
-                                <button onClick={() => handleEditMember(member)}>✏️ Edit</button>
-                                <button onClick={() => handleDeleteMember(member.id)} className="delete-action">🗑️ Delete</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="member-card-content" onClick={() => handleViewMember(member)}>
-                        <h3>{member.name}</h3>
-                        <div className="member-details">
-                            <p className="relationship">{member.relationship.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}</p>
-                            <p className="age">Age: {member.age}</p>
-                            {member.profession && <p className="profession">{member.profession}</p>}
-                            {member.school && <p className="school">{member.school}</p>}
-                        </div>
-                    </div>
-                </div>
-            ))}
-        </div>
-    );
-
-    const renderMemberDetail = () => (
-        <div className="member-detail-modal">
-            <div className="modal-content">
-                <div className="modal-header">
-                    <h2>{selectedMember?.name}</h2>
-                    <button className="close-btn" onClick={() => setShowMemberDetail(false)}>×</button>
-                </div>
-                <div className="modal-body">
-                    <div className="detail-avatar">
-                        {selectedMember?.profileImage ? (
-                            <img src={URL.createObjectURL(selectedMember.profileImage)} alt={selectedMember.name} />
-                        ) : (
-                            <div className="avatar-placeholder-large">
-                                {getRelationshipIcon(selectedMember?.relationship)}
-                            </div>
-                        )}
-                    </div>
-                    <div className="detail-info">
-                        <div className="info-section">
-                            <h4>Basic Information</h4>
-                            <p><strong>Relationship:</strong> {selectedMember?.relationship}</p>
-                            <p><strong>Age:</strong> {selectedMember?.age}</p>
-                            <p><strong>Date of Birth:</strong> {selectedMember?.dateOfBirth}</p>
-                            {selectedMember?.gender && <p><strong>Gender:</strong> {selectedMember.gender}</p>}
-                        </div>
-
-                        {selectedMember?.age < 18 ? (
-                            <div className="info-section">
-                                <h4>Educational Information</h4>
-                                <p><strong>School:</strong> {selectedMember?.school}</p>
-                                <p><strong>Class:</strong> {selectedMember?.class}</p>
-                                {selectedMember?.hobbies && <p><strong>Hobbies:</strong> {selectedMember.hobbies}</p>}
-                                {selectedMember?.achievements && <p><strong>Achievements:</strong> {selectedMember.achievements}</p>}
-                            </div>
-                        ) : (
-                            <div className="info-section">
-                                <h4>Professional Information</h4>
-                                <p><strong>Qualification:</strong> {selectedMember?.highestQualification}</p>
-                                <p><strong>Profession:</strong> {selectedMember?.profession}</p>
-                                {selectedMember?.employer && <p><strong>Employer:</strong> {selectedMember.employer}</p>}
-                                {selectedMember?.volunteerInterests && <p><strong>Volunteer Work:</strong> {selectedMember.volunteerInterests}</p>}
-                                {selectedMember?.maritalStatus && <p><strong>Marital Status:</strong> {selectedMember.maritalStatus}</p>}
-                            </div>
-                        )}
-                    </div>
-                </div>
-                <div className="modal-actions">
-                    <button className="edit-btn" onClick={() => {
-                        setShowMemberDetail(false);
-                        handleEditMember(selectedMember);
-                    }}>
-                        Edit Member
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
-
     return (
         <div className="view-container">
             <div className="family-hub-header">
-                <h1>Family Management Hub</h1>
+                <h1>{t('familyManagementHub') || 'Family Management Hub'}</h1>
                 <div className="family-stats">
-                    <span className="stat-badge">{familyMembers.length} Members</span>
-                    <span className="stat-badge">{familyMembers.filter(m => m.age < 18).length} Children</span>
-                    <span className="stat-badge">{familyMembers.filter(m => m.age >= 18).length} Adults</span>
+                    <span className="stat-badge">{familyMembers.length} {t('members') || 'Members'}</span>
+                    <span className="stat-badge">{familyMembers.filter(m => m.age < 18).length} {t('children') || 'Children'}</span>
+                    <span className="stat-badge">{familyMembers.filter(m => m.age >= 18).length} {t('adults') || 'Adults'}</span>
                 </div>
             </div>
 
-            {/* Prominent Add Member CTA */}
             <div className="primary-cta-section">
                 <button className="add-member-cta" onClick={handleAddMember}>
                     <span className="cta-icon">👥</span>
-                    <span className="cta-text">Add Family Member</span>
-                    <span className="cta-subtitle">Build your family tree</span>
+                    <span className="cta-text">{t('addFamilyMember') || 'Add Family Member'}</span>
+                    <span className="cta-subtitle">{t('buildFamilyTree') || 'Build your family tree'}</span>
                 </button>
             </div>
 
-            {/* View Mode Controls */}
             <div className="family-controls">
                 <div className="view-toggle">
                     <button
                         className={viewMode === 'cards' ? 'active' : ''}
                         onClick={() => setViewMode('cards')}
                     >
-                        📋 Card View
+                        📋 {t('cardView') || 'Card View'}
                     </button>
                     <button
                         className={viewMode === 'tree' ? 'active' : ''}
                         onClick={() => setViewMode('tree')}
                     >
-                        🌳 Tree View
+                        🌳 {t('treeView') || 'Tree View'}
                     </button>
                 </div>
             </div>
 
-            {/* Family Member Forms */}
             {showAddMemberForm && (
                 <div className="family-member-form">
-                    {memberFormStep === 1 ? renderStepOne() : renderStepTwo()}
+                    {memberFormStep === 1 ? (
+                        <div className="form-step">
+                            <h3>{t('addFamilyMemberStep1') || 'Add Family Member - Step 1'}</h3>
+                            <div className="form-group">
+                                <label htmlFor="relationship">{t('whatIsTheirRelationship') || 'What is their relationship to you?'}</label>
+                                <select
+                                    id="relationship"
+                                    value={memberData.relationship}
+                                    onChange={(e) => handleInputChange('relationship', e.target.value)}
+                                    className="form-input"
+                                >
+                                    <option value="">{t('selectRelationship') || 'Select Relationship'}</option>
+                                    <option value="parent">{t('parent') || 'Parent (Father/Mother)'}</option>
+                                    <option value="spouse">{t('spouse') || 'Spouse (Husband/Wife)'}</option>
+                                    <option value="child">{t('child') || 'Child (Son/Daughter)'}</option>
+                                    <option value="sibling">{t('sibling') || 'Sibling (Brother/Sister)'}</option>
+                                    <option value="grandparent">{t('grandparent') || 'Grandparent'}</option>
+                                    <option value="grandchild">{t('grandchild') || 'Grandchild'}</option>
+                                    <option value="uncle-aunt">{t('uncleAunt') || 'Uncle/Aunt'}</option>
+                                    <option value="cousin">{t('cousin') || 'Cousin'}</option>
+                                    <option value="other">{t('otherRelative') || 'Other Relative'}</option>
+                                </select>
+                            </div>
+
+                            <div className="form-group">
+                                <label>{t('areTheyAdultOrMinor') || 'Are they an adult or a minor?'}</label>
+                                <div className="radio-group">
+                                    <label className="radio-label">
+                                        <input
+                                            type="radio"
+                                            name="ageCategory"
+                                            value="adult"
+                                            checked={memberData.ageCategory === 'adult'}
+                                            onChange={(e) => handleInputChange('ageCategory', e.target.value)}
+                                        />
+                                        {t('adult18Plus') || 'Adult (18+ years)'}
+                                    </label>
+                                    <label className="radio-label">
+                                        <input
+                                            type="radio"
+                                            name="ageCategory"
+                                            value="minor"
+                                            checked={memberData.ageCategory === 'minor'}
+                                            onChange={(e) => handleInputChange('ageCategory', e.target.value)}
+                                        />
+                                        {t('minorUnder18') || 'Minor (Under 18 years)'}
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div className="form-actions">
+                                <button
+                                    className="next-btn"
+                                    onClick={handleNextStep}
+                                    disabled={!memberData.relationship || !memberData.ageCategory}
+                                >
+                                    {t('next') || 'Next'}
+                                </button>
+                                <button className="cancel-btn" onClick={() => setShowAddMemberForm(false)}>
+                                    {t('cancel') || 'Cancel'}
+                                </button>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="form-step">
+                            <h3>{selectedMember ? (t('editFamilyMember') || 'Edit Family Member') : (t('addFamilyMemberStep2') || 'Add Family Member - Step 2')}</h3>
+
+                            <h4>{t('basicInformation') || 'Basic Information'}</h4>
+                            <div className="form-grid">
+                                <div className="form-group">
+                                    <label htmlFor="memberName">{t('fullName') || 'Full Name'} *</label>
+                                    <input
+                                        type="text"
+                                        id="memberName"
+                                        value={memberData.name}
+                                        onChange={(e) => handleInputChange('name', e.target.value)}
+                                        placeholder={t('enterFullName') || 'Enter full name'}
+                                        className="form-input"
+                                        required
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="dateOfBirth">{t('dateOfBirth') || 'Date of Birth'} *</label>
+                                    <input
+                                        type="date"
+                                        id="dateOfBirth"
+                                        value={memberData.dateOfBirth}
+                                        onChange={(e) => {
+                                            handleInputChange('dateOfBirth', e.target.value);
+                                            const age = new Date().getFullYear() - new Date(e.target.value).getFullYear();
+                                            handleInputChange('age', age.toString());
+                                        }}
+                                        className="form-input"
+                                        required
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="memberGender">{t('gender') || 'Gender'} ({t('optional') || 'Optional'})</label>
+                                    <select
+                                        id="memberGender"
+                                        value={memberData.gender}
+                                        onChange={(e) => handleInputChange('gender', e.target.value)}
+                                        className="form-input"
+                                    >
+                                        <option value="">{t('selectGender') || 'Select Gender'}</option>
+                                        <option value="male">{t('male') || 'Male'}</option>
+                                        <option value="female">{t('female') || 'Female'}</option>
+                                        <option value="other">{t('other') || 'Other'}</option>
+                                        <option value="prefer-not-to-say">{t('preferNotToSay') || 'Prefer not to say'}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            {memberData.ageCategory === 'minor' ? (
+                                <div>
+                                    <h4>{t('educationalInformation') || 'Educational Information'} ({t('requiredForMinors') || 'Required for Minors'})</h4>
+                                    <div className="form-grid">
+                                        <div className="form-group">
+                                            <label htmlFor="school">{t('schoolName') || 'School Name'} *</label>
+                                            <input
+                                                type="text"
+                                                id="school"
+                                                value={memberData.school}
+                                                onChange={(e) => handleInputChange('school', e.target.value)}
+                                                placeholder={t('enterSchoolName') || 'Enter school name'}
+                                                className="form-input"
+                                                required
+                                            />
+                                        </div>
+
+                                        <div className="form-group">
+                                            <label htmlFor="class">{t('classGrade') || 'Class/Grade'} *</label>
+                                            <input
+                                                type="text"
+                                                id="class"
+                                                value={memberData.class}
+                                                onChange={(e) => handleInputChange('class', e.target.value)}
+                                                placeholder={t('classPlaceholder') || 'e.g., 10th Grade, Class 5, Kindergarten'}
+                                                className="form-input"
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <h4>{t('additionalInformation') || 'Additional Information'} ({t('optional') || 'Optional'})</h4>
+                                    <div className="form-grid">
+                                        <div className="form-group">
+                                            <label htmlFor="hobbies">{t('hobbiesAndInterests') || 'Hobbies & Interests'}</label>
+                                            <input
+                                                type="text"
+                                                id="hobbies"
+                                                value={memberData.hobbies}
+                                                onChange={(e) => handleInputChange('hobbies', e.target.value)}
+                                                placeholder={t('hobbiesPlaceholder') || 'e.g., Sports, Music, Art, Reading'}
+                                                className="form-input"
+                                            />
+                                        </div>
+
+                                        <div className="form-group">
+                                            <label htmlFor="achievements">{t('achievements') || 'Achievements'}</label>
+                                            <textarea
+                                                id="achievements"
+                                                value={memberData.achievements}
+                                                onChange={(e) => handleInputChange('achievements', e.target.value)}
+                                                placeholder={t('achievementsPlaceholder') || 'Academic awards, sports achievements, etc.'}
+                                                className="form-input"
+                                                rows="2"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div>
+                                    <h4>{t('educationAndProfessionalInfo') || 'Education & Professional Information'} ({t('requiredForAdults') || 'Required for Adults'})</h4>
+                                    <div className="form-grid">
+                                        <div className="form-group">
+                                            <label htmlFor="adultQualification">{t('highestQualification') || 'Highest Qualification'} *</label>
+                                            <select
+                                                id="adultQualification"
+                                                value={memberData.highestQualification}
+                                                onChange={(e) => handleInputChange('highestQualification', e.target.value)}
+                                                className="form-input"
+                                                required
+                                            >
+                                                <option value="">{t('selectQualification') || 'Select Qualification'}</option>
+                                                <option value="no-formal">{t('noFormalEducation') || 'No Formal Education'}</option>
+                                                <option value="primary">{t('primarySchool') || 'Primary School'}</option>
+                                                <option value="high-school">{t('highSchool') || 'High School'}</option>
+                                                <option value="diploma">{t('diplomaCertificate') || 'Diploma/Certificate'}</option>
+                                                <option value="bachelors">{t('bachelors') || "Bachelor's Degree"}</option>
+                                                <option value="masters">{t('masters') || "Master's Degree"}</option>
+                                                <option value="phd">{t('phdDoctorate') || 'PhD/Doctorate'}</option>
+                                                <option value="professional">{t('professionalCertification') || 'Professional Certification'}</option>
+                                                <option value="trade">{t('tradeVocational') || 'Trade/Vocational Training'}</option>
+                                                <option value="other">{t('other') || 'Other'}</option>
+                                            </select>
+                                        </div>
+
+                                        <div className="form-group">
+                                            <label htmlFor="adultProfession">{t('professionOccupation') || 'Profession/Occupation'} *</label>
+                                            <input
+                                                type="text"
+                                                id="adultProfession"
+                                                value={memberData.profession}
+                                                onChange={(e) => handleInputChange('profession', e.target.value)}
+                                                placeholder={t('professionPlaceholder') || 'e.g., Software Engineer, Teacher, Business Owner'}
+                                                className="form-input"
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <h4>{t('additionalProfessionalInfo') || 'Additional Professional Information'} ({t('optional') || 'Optional'})</h4>
+                                    <div className="form-grid">
+                                        <div className="form-group">
+                                            <label htmlFor="employer">{t('employerCompany') || 'Employer/Company'}</label>
+                                            <input
+                                                type="text"
+                                                id="employer"
+                                                value={memberData.employer}
+                                                onChange={(e) => handleInputChange('employer', e.target.value)}
+                                                placeholder={t('employerPlaceholder') || 'Current employer or business name'}
+                                                className="form-input"
+                                            />
+                                        </div>
+
+                                        <div className="form-group">
+                                            <label htmlFor="volunteerInterests">{t('volunteerInterests') || 'Volunteer Interests'}</label>
+                                            <input
+                                                type="text"
+                                                id="volunteerInterests"
+                                                value={memberData.volunteerInterests}
+                                                onChange={(e) => handleInputChange('volunteerInterests', e.target.value)}
+                                                placeholder={t('volunteerPlaceholder') || 'Community service, NGO work, etc.'}
+                                                className="form-input"
+                                            />
+                                        </div>
+
+                                        <div className="form-group">
+                                            <label htmlFor="adultMaritalStatus">{t('maritalStatus') || 'Marital Status'}</label>
+                                            <select
+                                                id="adultMaritalStatus"
+                                                value={memberData.maritalStatus}
+                                                onChange={(e) => handleInputChange('maritalStatus', e.target.value)}
+                                                className="form-input"
+                                            >
+                                                <option value="">{t('selectStatus') || 'Select Status'}</option>
+                                                <option value="single">{t('single') || 'Single'}</option>
+                                                <option value="married">{t('married') || 'Married'}</option>
+                                                <option value="divorced">{t('divorced') || 'Divorced'}</option>
+                                                <option value="widowed">{t('widowed') || 'Widowed'}</option>
+                                                <option value="separated">{t('separated') || 'Separated'}</option>
+                                                <option value="engaged">{t('engaged') || 'Engaged'}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            <div className="form-actions">
+                                <button className="save-btn" onClick={handleSaveMember}>
+                                    {selectedMember ? (t('updateFamilyMember') || 'Update Family Member') : (t('addFamilyMember') || 'Add Family Member')}
+                                </button>
+                                <button className="back-btn" onClick={() => setMemberFormStep(1)}>
+                                    {t('back') || 'Back'}
+                                </button>
+                                <button className="cancel-btn" onClick={() => setShowAddMemberForm(false)}>
+                                    {t('cancel') || 'Cancel'}
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
             )}
 
-            {/* Family Members Display */}
             {viewMode === 'cards' ? (
                 familyMembers.length > 0 ? (
-                    renderMemberCards()
+                    <div className="family-members-grid">
+                        {familyMembers.map(member => (
+                            <div key={member.id} className="member-card-interactive">
+                                <div className="member-card-header">
+                                    <div className="member-avatar-large">
+                                        {member.profileImage ? (
+                                            <img src={URL.createObjectURL(member.profileImage)} alt={member.name} />
+                                        ) : (
+                                            <div className="avatar-placeholder">
+                                                {getRelationshipIcon(member.relationship)}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="member-card-content">
+                                    <h3>{member.name}</h3>
+                                    <div className="member-details">
+                                        <p className="relationship">{member.relationship.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}</p>
+                                        <p className="age">{t('age') || 'Age'}: {member.age}</p>
+                                        {member.profession && <p className="profession">{member.profession}</p>}
+                                        {member.school && <p className="school">{member.school}</p>}
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 ) : (
                     <div className="empty-state">
                         <div className="empty-icon">👥</div>
-                        <h3>No Family Members Added Yet</h3>
-                        <p>Start building your family tree by adding your first family member</p>
+                        <h3>{t('noFamilyMembers') || 'No family members added yet'}</h3>
+                        <p>{t('startBuilding') || 'Start building your family tree by adding your first family member'}</p>
                         <button className="empty-cta-btn" onClick={handleAddMember}>
-                            Add Your First Member
+                            {t('addFirstMember') || 'Add First Member'}
                         </button>
                     </div>
                 )
@@ -1131,12 +865,12 @@ const FamilyTreeView = ({ user }) => {
                     <div className="tree-node root">
                         <div className="person-card">
                             <div className="person-avatar">👤</div>
-                            <p>{user?.user_metadata?.full_name || 'You'}</p>
+                            <p>{user?.user_metadata?.full_name || t('you') || 'You'}</p>
                         </div>
                         <div className="tree-children">
                             {familyMembers.slice(0, 6).map(member => (
                                 <div key={member.id} className="tree-node">
-                                    <div className="person-card" onClick={() => handleViewMember(member)}>
+                                    <div className="person-card">
                                         <div className="person-avatar">{getRelationshipIcon(member.relationship)}</div>
                                         <p>{member.name}</p>
                                         <small>{member.relationship}</small>
@@ -1146,123 +880,18 @@ const FamilyTreeView = ({ user }) => {
                             <div className="tree-node">
                                 <div className="person-card placeholder" onClick={handleAddMember}>
                                     <div className="person-avatar">+</div>
-                                    <p>Add Member</p>
+                                    <p>{t('addMember') || 'Add Member'}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             )}
-
-            {/* Member Detail Modal */}
-            {showMemberDetail && renderMemberDetail()}
         </div>
     );
 };
 
-const CommunityDirectoryView = ({ user }) => (
-    <div className="view-container">
-        <h1>Community Directory</h1>
-        <div className="directory-search">
-            <div className="search-bar">
-                <input type="text" placeholder="Search members by name, village, or family..." />
-                <button>🔍</button>
-            </div>
-
-            <div className="filters">
-                <select>
-                    <option value="">All Villages</option>
-                    <option value="village1">Village 1</option>
-                    <option value="village2">Village 2</option>
-                    <option value="village3">Village 3</option>
-                </select>
-                <select>
-                    <option value="">All Families</option>
-                    <option value="family1">Family A</option>
-                    <option value="family2">Family B</option>
-                </select>
-            </div>
-        </div>
-
-        <div className="directory-grid">
-            <div className="member-card">
-                <div className="member-avatar">👤</div>
-                <h3>John Doe</h3>
-                <p>Village Center</p>
-                <p>Doe Family</p>
-                <button>Connect</button>
-            </div>
-            <div className="member-card">
-                <div className="member-avatar">👤</div>
-                <h3>Jane Smith</h3>
-                <p>North Village</p>
-                <p>Smith Family</p>
-                <button>Connect</button>
-            </div>
-        </div>
-    </div>
-);
-
-const SettingsView = ({ user }) => (
-    <div className="view-container">
-        <h1>Settings</h1>
-        <div className="settings-sections">
-            <div className="settings-section">
-                <h3>Privacy Settings</h3>
-                <div className="setting-item">
-                    <label>
-                        <input type="checkbox" defaultChecked />
-                        Make my profile visible to community members
-                    </label>
-                </div>
-                <div className="setting-item">
-                    <label>
-                        <input type="checkbox" />
-                        Allow others to see my family tree
-                    </label>
-                </div>
-                <div className="setting-item">
-                    <label>
-                        <input type="checkbox" defaultChecked />
-                        Show me in community directory
-                    </label>
-                </div>
-            </div>
-
-            <div className="settings-section">
-                <h3>Notification Preferences</h3>
-                <div className="setting-item">
-                    <label>
-                        <input type="checkbox" defaultChecked />
-                        Email notifications for new family connections
-                    </label>
-                </div>
-                <div className="setting-item">
-                    <label>
-                        <input type="checkbox" defaultChecked />
-                        Event reminders
-                    </label>
-                </div>
-                <div className="setting-item">
-                    <label>
-                        <input type="checkbox" />
-                        Weekly community updates
-                    </label>
-                </div>
-            </div>
-
-            <div className="settings-section">
-                <h3>Account Settings</h3>
-                <button className="settings-btn">Change Password</button>
-                <button className="settings-btn">Download My Data</button>
-                <button className="settings-btn danger">Delete Account</button>
-            </div>
-        </div>
-    </div>
-);
-
-// Events View Component
-const EventsView = ({ user }) => {
+const EventsView = ({ user, t }) => {
     const [events, setEvents] = useState([
         {
             id: 1,
@@ -1273,7 +902,7 @@ const EventsView = ({ user }) => {
             organizer: 'Community Board',
             rsvpLimit: 100,
             currentRSVPs: 67,
-            rsvpStatus: null, // null, 'attending', 'declined'
+            rsvpStatus: null,
             category: 'community'
         },
         {
@@ -1340,15 +969,15 @@ const EventsView = ({ user }) => {
     return (
         <div className="view-container">
             <div className="events-header">
-                <h1>Community Events</h1>
-                <button className="create-event-btn">+ Create Event</button>
+                <h1>{t('communityEvents') || 'Community Events'}</h1>
+                <button className="create-event-btn">{t('createEvent') || '+ Create Event'}</button>
             </div>
 
             <div className="events-filters">
-                <button className="filter-btn active">All Events</button>
-                <button className="filter-btn">My Events</button>
-                <button className="filter-btn">This Month</button>
-                <button className="filter-btn">Upcoming</button>
+                <button className="filter-btn active">{t('allEvents') || 'All Events'}</button>
+                <button className="filter-btn">{t('myEvents') || 'My Events'}</button>
+                <button className="filter-btn">{t('thisMonth') || 'This Month'}</button>
+                <button className="filter-btn">{t('upcoming') || 'Upcoming'}</button>
             </div>
 
             <div className="events-grid">
@@ -1385,7 +1014,7 @@ const EventsView = ({ user }) => {
                                             ></div>
                                         </div>
                                         <span className="rsvp-count">
-                                            {event.currentRSVPs} / {event.rsvpLimit} attending
+                                            {event.currentRSVPs} / {event.rsvpLimit} {t('attending') || 'attending'}
                                         </span>
                                     </div>
                                 </div>
@@ -1394,12 +1023,12 @@ const EventsView = ({ user }) => {
                             <div className="event-actions">
                                 {event.rsvpStatus === 'attending' ? (
                                     <div className="rsvp-status">
-                                        <span className="attending-badge">✅ You're Attending</span>
+                                        <span className="attending-badge">✅ {t('youreAttending') || "You're Attending"}</span>
                                         <button
                                             className="cancel-rsvp-btn"
                                             onClick={() => handleRSVP(event.id, null)}
                                         >
-                                            Cancel RSVP
+                                            {t('cancelRSVP') || 'Cancel RSVP'}
                                         </button>
                                     </div>
                                 ) : (
@@ -1409,13 +1038,13 @@ const EventsView = ({ user }) => {
                                             onClick={() => handleRSVP(event.id, 'attending')}
                                             disabled={event.currentRSVPs >= event.rsvpLimit}
                                         >
-                                            {event.currentRSVPs >= event.rsvpLimit ? 'Event Full' : 'RSVP Yes'}
+                                            {event.currentRSVPs >= event.rsvpLimit ? (t('eventFull') || 'Event Full') : (t('rsvpYes') || 'RSVP Yes')}
                                         </button>
                                         <button
                                             className="rsvp-btn decline"
                                             onClick={() => handleRSVP(event.id, 'declined')}
                                         >
-                                            Can't Attend
+                                            {t('cantAttend') || "Can't Attend"}
                                         </button>
                                     </div>
                                 )}
@@ -1428,8 +1057,7 @@ const EventsView = ({ user }) => {
     );
 };
 
-// Volunteer View Component
-const VolunteerView = ({ user }) => {
+const VolunteerView = ({ user, t }) => {
     const [opportunities, setOpportunities] = useState([
         {
             id: 1,
@@ -1489,24 +1117,24 @@ const VolunteerView = ({ user }) => {
     return (
         <div className="view-container">
             <div className="volunteer-header">
-                <h1>Volunteer Opportunities</h1>
+                <h1>{t('volunteerOpportunities') || 'Volunteer Opportunities'}</h1>
                 <div className="volunteer-stats">
                     <div className="stat-item">
                         <span className="stat-number">24</span>
-                        <span className="stat-label">Active Volunteers</span>
+                        <span className="stat-label">{t('activeVolunteers') || 'Active Volunteers'}</span>
                     </div>
                     <div className="stat-item">
                         <span className="stat-number">89</span>
-                        <span className="stat-label">Hours This Month</span>
+                        <span className="stat-label">{t('hoursThisMonth') || 'Hours This Month'}</span>
                     </div>
                 </div>
             </div>
 
             <div className="volunteer-filters">
-                <button className="filter-btn active">All Opportunities</button>
-                <button className="filter-btn">My Interests</button>
-                <button className="filter-btn">Urgent</button>
-                <button className="filter-btn">Ongoing</button>
+                <button className="filter-btn active">{t('allOpportunities') || 'All Opportunities'}</button>
+                <button className="filter-btn">{t('myInterests') || 'My Interests'}</button>
+                <button className="filter-btn">{t('urgent') || 'Urgent'}</button>
+                <button className="filter-btn">{t('ongoing') || 'Ongoing'}</button>
             </div>
 
             <div className="opportunities-grid">
@@ -1526,7 +1154,7 @@ const VolunteerView = ({ user }) => {
 
                         <div className="opportunity-details">
                             <div className="detail-item">
-                                <strong>Required Skills:</strong>
+                                <strong>{t('requiredSkills') || 'Required Skills'}:</strong>
                                 <div className="skills-tags">
                                     {opportunity.requiredSkills.map(skill => (
                                         <span key={skill} className="skill-tag">{skill}</span>
@@ -1535,16 +1163,16 @@ const VolunteerView = ({ user }) => {
                             </div>
 
                             <div className="detail-item">
-                                <strong>Time Commitment:</strong> {opportunity.timeCommitment}
+                                <strong>{t('timeCommitment') || 'Time Commitment'}:</strong> {opportunity.timeCommitment}
                             </div>
 
                             <div className="detail-item">
-                                <strong>Contact:</strong> {opportunity.contact}
+                                <strong>{t('contact') || 'Contact'}:</strong> {opportunity.contact}
                             </div>
 
                             <div className="volunteer-progress">
                                 <span className="volunteer-count">
-                                    {opportunity.volunteers} / {opportunity.volunteers + opportunity.needed} volunteers
+                                    {opportunity.volunteers} / {opportunity.volunteers + opportunity.needed} {t('volunteers') || 'volunteers'}
                                 </span>
                                 <div className="progress-bar">
                                     <div
@@ -1562,57 +1190,56 @@ const VolunteerView = ({ user }) => {
                                 className={`interest-btn ${opportunity.interested ? 'interested' : ''}`}
                                 onClick={() => handleInterest(opportunity.id)}
                             >
-                                {opportunity.interested ? '✅ You\'re Interested' : '🤝 I\'m Interested'}
+                                {opportunity.interested ? (t('youreInterested') || "✅ You're Interested") : (t('imInterested') || "🤝 I'm Interested")}
                             </button>
-                            <button className="learn-more-btn">Learn More</button>
+                            <button className="learn-more-btn">{t('learnMore') || 'Learn More'}</button>
                         </div>
                     </div>
                 ))}
             </div>
 
             <div className="volunteer-cta-section">
-                <h2>Want to Create a Volunteer Opportunity?</h2>
-                <p>Help the community by creating new volunteer opportunities that match your expertise.</p>
-                <button className="create-opportunity-btn">+ Create Opportunity</button>
+                <h2>{t('wantToCreateOpportunity') || 'Want to Create a Volunteer Opportunity?'}</h2>
+                <p>{t('createOpportunityDesc') || 'Help the community by creating new volunteer opportunities that match your expertise.'}</p>
+                <button className="create-opportunity-btn">{t('createOpportunity') || '+ Create Opportunity'}</button>
             </div>
         </div>
     );
 };
 
-// Discussions View Component
-const DiscussionsView = ({ user }) => {
+const DiscussionsView = ({ user, t }) => {
     const [forums] = useState([
         {
             id: 1,
-            title: 'Community Events & Announcements',
-            description: 'Discuss upcoming events, share announcements, and coordinate community activities.',
+            title: t('communityEventsAnnouncements') || 'Community Events & Announcements',
+            description: t('discussUpcomingEvents') || 'Discuss upcoming events, share announcements, and coordinate community activities.',
             icon: '📅',
             topics: 47,
             posts: 234,
-            lastActivity: '2 hours ago',
-            lastPost: 'Annual Gathering Planning',
+            lastActivity: t('hoursAgo2') || '2 hours ago',
+            lastPost: t('annualGatheringPlanning') || 'Annual Gathering Planning',
             moderators: ['Sarah Johnson', 'Mike Chen']
         },
         {
             id: 2,
-            title: 'Family History & Genealogy',
-            description: 'Share family stories, research tips, and connect with relatives. Help each other build family trees.',
+            title: t('familyHistoryGenealogy') || 'Family History & Genealogy',
+            description: t('shareFamilyStories') || 'Share family stories, research tips, and connect with relatives. Help each other build family trees.',
             icon: '🌳',
             topics: 89,
             posts: 456,
-            lastActivity: '5 hours ago',
-            lastPost: 'Tips for Finding Birth Records',
+            lastActivity: t('hoursAgo5') || '5 hours ago',
+            lastPost: t('tipsForFindingRecords') || 'Tips for Finding Birth Records',
             moderators: ['Emma Davis', 'Robert Kim']
         },
         {
             id: 3,
-            title: 'Community Support & Resources',
-            description: 'Ask for help, offer assistance, share local resources, and support each other.',
+            title: t('communitySupportResources') || 'Community Support & Resources',
+            description: t('askForHelp') || 'Ask for help, offer assistance, share local resources, and support each other.',
             icon: '🤝',
             topics: 156,
             posts: 789,
-            lastActivity: '1 hour ago',
-            lastPost: 'Carpooling for School Events',
+            lastActivity: t('hourAgo1') || '1 hour ago',
+            lastPost: t('carpoolingSchoolEvents') || 'Carpooling for School Events',
             moderators: ['Lisa Wong', 'David Park']
         }
     ]);
@@ -1620,29 +1247,29 @@ const DiscussionsView = ({ user }) => {
     const [recentDiscussions] = useState([
         {
             id: 1,
-            title: 'Planning the Spring Festival',
+            title: t('planningSpringFestival') || 'Planning the Spring Festival',
             author: 'Sarah Johnson',
-            forum: 'Community Events',
+            forum: t('communityEvents') || 'Community Events',
             replies: 12,
-            lastReply: '30 minutes ago',
+            lastReply: t('minutesAgo30') || '30 minutes ago',
             isHot: true
         },
         {
             id: 2,
-            title: 'Looking for Johnson family descendants',
+            title: t('lookingForJohnsonFamily') || 'Looking for Johnson family descendants',
             author: 'Mike Johnson',
-            forum: 'Family History',
+            forum: t('familyHistory') || 'Family History',
             replies: 8,
-            lastReply: '2 hours ago',
+            lastReply: t('hoursAgo2') || '2 hours ago',
             isHot: false
         },
         {
             id: 3,
-            title: 'Volunteer drivers needed for elderly members',
-            author: 'Community Board',
-            forum: 'Community Support',
+            title: t('volunteerDriversNeeded') || 'Volunteer drivers needed for elderly members',
+            author: t('communityBoard') || 'Community Board',
+            forum: t('communitySupport') || 'Community Support',
             replies: 15,
-            lastReply: '4 hours ago',
+            lastReply: t('hoursAgo4') || '4 hours ago',
             isHot: true
         }
     ]);
@@ -1650,29 +1277,29 @@ const DiscussionsView = ({ user }) => {
     return (
         <div className="view-container">
             <div className="discussions-header">
-                <h1>Community Discussions</h1>
-                <button className="new-topic-btn">+ New Topic</button>
+                <h1>{t('communityDiscussions') || 'Community Discussions'}</h1>
+                <button className="new-topic-btn">{t('newTopic') || '+ New Topic'}</button>
             </div>
 
             <div className="discussions-overview">
                 <div className="overview-stats">
                     <div className="stat-item">
                         <span className="stat-number">292</span>
-                        <span className="stat-label">Total Topics</span>
+                        <span className="stat-label">{t('totalTopics') || 'Total Topics'}</span>
                     </div>
                     <div className="stat-item">
                         <span className="stat-number">1,479</span>
-                        <span className="stat-label">Total Posts</span>
+                        <span className="stat-label">{t('totalPosts') || 'Total Posts'}</span>
                     </div>
                     <div className="stat-item">
                         <span className="stat-number">156</span>
-                        <span className="stat-label">Active Members</span>
+                        <span className="stat-label">{t('activeMembers') || 'Active Members'}</span>
                     </div>
                 </div>
             </div>
 
             <div className="forums-section">
-                <h2>Discussion Forums</h2>
+                <h2>{t('discussionForums') || 'Discussion Forums'}</h2>
                 <div className="forums-grid">
                     {forums.map(forum => (
                         <div key={forum.id} className="forum-card">
@@ -1687,23 +1314,23 @@ const DiscussionsView = ({ user }) => {
                             <div className="forum-stats">
                                 <div className="stat">
                                     <span className="stat-value">{forum.topics}</span>
-                                    <span className="stat-label">Topics</span>
+                                    <span className="stat-label">{t('topics') || 'Topics'}</span>
                                 </div>
                                 <div className="stat">
                                     <span className="stat-value">{forum.posts}</span>
-                                    <span className="stat-label">Posts</span>
+                                    <span className="stat-label">{t('posts') || 'Posts'}</span>
                                 </div>
                             </div>
 
                             <div className="forum-activity">
                                 <p className="last-activity">
-                                    <strong>Latest:</strong> {forum.lastPost}
+                                    <strong>{t('latest') || 'Latest'}:</strong> {forum.lastPost}
                                 </p>
                                 <p className="activity-time">{forum.lastActivity}</p>
                             </div>
 
                             <div className="forum-moderators">
-                                <strong>Moderators:</strong> {forum.moderators.join(', ')}
+                                <strong>{t('moderators') || 'Moderators'}:</strong> {forum.moderators.join(', ')}
                             </div>
                         </div>
                     ))}
@@ -1711,7 +1338,7 @@ const DiscussionsView = ({ user }) => {
             </div>
 
             <div className="recent-discussions-section">
-                <h2>Recent Discussions</h2>
+                <h2>{t('recentDiscussions') || 'Recent Discussions'}</h2>
                 <div className="discussions-list">
                     {recentDiscussions.map(discussion => (
                         <div key={discussion.id} className="discussion-item">
@@ -1721,9 +1348,9 @@ const DiscussionsView = ({ user }) => {
                                     <h4>{discussion.title}</h4>
                                 </div>
                                 <div className="discussion-meta">
-                                    <span className="author">by {discussion.author}</span>
-                                    <span className="forum">in {discussion.forum}</span>
-                                    <span className="replies">{discussion.replies} replies</span>
+                                    <span className="author">{t('by') || 'by'} {discussion.author}</span>
+                                    <span className="forum">{t('in') || 'in'} {discussion.forum}</span>
+                                    <span className="replies">{discussion.replies} {t('replies') || 'replies'}</span>
                                 </div>
                             </div>
                             <div className="discussion-activity">
@@ -1737,14 +1364,13 @@ const DiscussionsView = ({ user }) => {
     );
 };
 
-// Documents View Component
-const DocumentsView = ({ user }) => {
-    const [userRole] = useState('member'); // 'member', 'committee', 'admin'
+const DocumentsView = ({ user, t }) => {
+    const [userRole] = useState('member');
     const [documents] = useState([
         {
             id: 1,
-            title: 'Community Charter & Bylaws',
-            description: 'Official community charter and governing bylaws.',
+            title: t('communityCharterBylaws') || 'Community Charter & Bylaws',
+            description: t('officialCommunityCharter') || 'Official community charter and governing bylaws.',
             category: 'governance',
             accessLevel: 'public',
             fileType: 'PDF',
@@ -1754,8 +1380,8 @@ const DocumentsView = ({ user }) => {
         },
         {
             id: 2,
-            title: 'Family Tree Template',
-            description: 'Downloadable template for documenting your family tree.',
+            title: t('familyTreeTemplate') || 'Family Tree Template',
+            description: t('downloadableTemplate') || 'Downloadable template for documenting your family tree.',
             category: 'resources',
             accessLevel: 'member',
             fileType: 'DOCX',
@@ -1765,8 +1391,8 @@ const DocumentsView = ({ user }) => {
         },
         {
             id: 3,
-            title: 'Meeting Minutes - December 2024',
-            description: 'Minutes from the December community board meeting.',
+            title: t('meetingMinutesDec') || 'Meeting Minutes - December 2024',
+            description: t('minutesFromDecember') || 'Minutes from the December community board meeting.',
             category: 'meetings',
             accessLevel: 'committee',
             fileType: 'PDF',
@@ -1776,8 +1402,8 @@ const DocumentsView = ({ user }) => {
         },
         {
             id: 4,
-            title: 'Event Planning Guidelines',
-            description: 'Comprehensive guide for organizing community events.',
+            title: t('eventPlanningGuidelines') || 'Event Planning Guidelines',
+            description: t('comprehensiveGuide') || 'Comprehensive guide for organizing community events.',
             category: 'guidelines',
             accessLevel: 'committee',
             fileType: 'PDF',
@@ -1829,9 +1455,9 @@ const DocumentsView = ({ user }) => {
     return (
         <div className="view-container">
             <div className="documents-header">
-                <h1>Community Documents</h1>
+                <h1>{t('communityDocuments') || 'Community Documents'}</h1>
                 <div className="user-access-info">
-                    <span className="access-badge">Access Level: {userRole}</span>
+                    <span className="access-badge">{t('accessLevel') || 'Access Level'}: {userRole}</span>
                 </div>
             </div>
 
@@ -1839,7 +1465,7 @@ const DocumentsView = ({ user }) => {
                 <div className="search-section">
                     <input
                         type="text"
-                        placeholder="Search documents..."
+                        placeholder={t('searchDocuments') || 'Search documents...'}
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="search-input"
@@ -1852,11 +1478,11 @@ const DocumentsView = ({ user }) => {
                         onChange={(e) => setSelectedCategory(e.target.value)}
                         className="category-filter"
                     >
-                        <option value="all">All Categories</option>
-                        <option value="governance">Governance</option>
-                        <option value="resources">Resources</option>
-                        <option value="meetings">Meeting Minutes</option>
-                        <option value="guidelines">Guidelines</option>
+                        <option value="all">{t('allCategories') || 'All Categories'}</option>
+                        <option value="governance">{t('governance') || 'Governance'}</option>
+                        <option value="resources">{t('resources') || 'Resources'}</option>
+                        <option value="meetings">{t('meetingMinutes') || 'Meeting Minutes'}</option>
+                        <option value="guidelines">{t('guidelines') || 'Guidelines'}</option>
                     </select>
                 </div>
             </div>
@@ -1879,27 +1505,27 @@ const DocumentsView = ({ user }) => {
 
                             <div className="document-meta">
                                 <div className="meta-item">
-                                    <span className="meta-label">Type:</span>
+                                    <span className="meta-label">{t('type') || 'Type'}:</span>
                                     <span className="meta-value">{doc.fileType}</span>
                                 </div>
                                 <div className="meta-item">
-                                    <span className="meta-label">Size:</span>
+                                    <span className="meta-label">{t('size') || 'Size'}:</span>
                                     <span className="meta-value">{doc.fileSize}</span>
                                 </div>
                                 <div className="meta-item">
-                                    <span className="meta-label">Updated:</span>
+                                    <span className="meta-label">{t('updated') || 'Updated'}:</span>
                                     <span className="meta-value">{new Date(doc.lastUpdated).toLocaleDateString()}</span>
                                 </div>
                                 <div className="meta-item">
-                                    <span className="meta-label">Downloads:</span>
+                                    <span className="meta-label">{t('downloads') || 'Downloads'}:</span>
                                     <span className="meta-value">{doc.downloadCount}</span>
                                 </div>
                             </div>
                         </div>
 
                         <div className="document-actions">
-                            <button className="download-btn">📥 Download</button>
-                            <button className="preview-btn">👁️ Preview</button>
+                            <button className="download-btn">📥 {t('download') || 'Download'}</button>
+                            <button className="preview-btn">👁️ {t('preview') || 'Preview'}</button>
                         </div>
                     </div>
                 ))}
@@ -1908,18 +1534,249 @@ const DocumentsView = ({ user }) => {
             {filteredDocuments.length === 0 && (
                 <div className="no-documents">
                     <div className="no-docs-icon">📄</div>
-                    <h3>No Documents Found</h3>
-                    <p>Try adjusting your search terms or category filter.</p>
+                    <h3>{t('noDocumentsFound') || 'No Documents Found'}</h3>
+                    <p>{t('tryAdjustingSearch') || 'Try adjusting your search terms or category filter.'}</p>
                 </div>
             )}
 
             <div className="documents-help">
-                <h3>Need Help?</h3>
-                <p>Documents are organized by access level. Members can access public and member documents,
-                    while committee members have additional access to committee documents.</p>
+                <h3>{t('needHelp') || 'Need Help?'}</h3>
+                <p>{t('documentsOrganizedByAccess') || 'Documents are organized by access level. Members can access public and member documents, while committee members have additional access to committee documents.'}</p>
             </div>
         </div>
     );
 };
+
+const CommunityDirectoryView = ({ user, t }) => {
+    return (
+        <div className="view-container">
+            <h1>{t('directory') || 'Community Directory'}</h1>
+            <div className="directory-search">
+                <div className="search-bar">
+                    <input type="text" placeholder={t('searchMembers') || 'Search members by name, village, or family...'} />
+                    <button>🔍</button>
+                </div>
+
+                <div className="filters">
+                    <select>
+                        <option value="">{t('allVillages') || 'All Villages'}</option>
+                        <option value="village1">{t('village') || 'Village'} 1</option>
+                        <option value="village2">{t('village') || 'Village'} 2</option>
+                        <option value="village3">{t('village') || 'Village'} 3</option>
+                    </select>
+                    <select>
+                        <option value="">{t('allFamilies') || 'All Families'}</option>
+                        <option value="family1">{t('family') || 'Family'} A</option>
+                        <option value="family2">{t('family') || 'Family'} B</option>
+                    </select>
+                </div>
+            </div>
+
+            <div className="directory-grid">
+                <div className="member-card">
+                    <div className="member-avatar">👤</div>
+                    <h3>John Doe</h3>
+                    <p>{t('villageCenter') || 'Village Center'}</p>
+                    <p>{t('doeFamily') || 'Doe Family'}</p>
+                    <button>{t('connect') || 'Connect'}</button>
+                </div>
+                <div className="member-card">
+                    <div className="member-avatar">👤</div>
+                    <h3>Jane Smith</h3>
+                    <p>{t('northVillage') || 'North Village'}</p>
+                    <p>{t('smithFamily') || 'Smith Family'}</p>
+                    <button>{t('connect') || 'Connect'}</button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// --- SettingsView Component ---
+const SettingsView = ({ user, t }) => {
+    return (
+        <div className="view-container">
+            <h1>{t('settings') || 'Settings'}</h1>
+            <div className="settings-sections">
+                <div className="settings-section">
+                    <h3>{t('privacySettings') || 'Privacy Settings'}</h3>
+                    <div className="setting-item">
+                        <label>
+                            <input type="checkbox" defaultChecked />
+                            {t('makeProfileVisible') || 'Make my profile visible to community members'}
+                        </label>
+                    </div>
+                    <div className="setting-item">
+                        <label>
+                            <input type="checkbox" />
+                            {t('allowFamilyTreeVisibility') || 'Allow others to see my family tree'}
+                        </label>
+                    </div>
+                    <div className="setting-item">
+                        <label>
+                            <input type="checkbox" defaultChecked />
+                            {t('showInDirectory') || 'Show me in community directory'}
+                        </label>
+                    </div>
+                </div>
+
+                <div className="settings-section">
+                    <h3>{t('notificationPreferences') || 'Notification Preferences'}</h3>
+                    <div className="setting-item">
+                        <label>
+                            <input type="checkbox" defaultChecked />
+                            {t('emailNewConnections') || 'Email notifications for new family connections'}
+                        </label>
+                    </div>
+                    <div className="setting-item">
+                        <label>
+                            <input type="checkbox" defaultChecked />
+                            {t('eventReminders') || 'Event reminders'}
+                        </label>
+                    </div>
+                    <div className="setting-item">
+                        <label>
+                            <input type="checkbox" />
+                            {t('weeklyUpdates') || 'Weekly community updates'}
+                        </label>
+                    </div>
+                </div>
+
+                <div className="settings-section">
+                    <h3>{t('accountSettings') || 'Account Settings'}</h3>
+                    <button className="settings-btn">{t('changePassword') || 'Change Password'}</button>
+                    <button className="settings-btn">{t('downloadData') || 'Download My Data'}</button>
+                    <button className="settings-btn danger">{t('deleteAccount') || 'Delete Account'}</button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// --- Dashboard Component ---
+function Dashboard() {
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [activeView, setActiveView] = useState('home');
+    const navigate = useNavigate();
+    const { language } = useLanguage();
+    const { t } = useTranslation(language);
+
+    // Data structure for clean navigation rendering
+    const navItems = useMemo(() => [
+        { view: 'home', icon: '🏠', translationKey: 'home' },
+        { view: 'profile', icon: '👤', translationKey: 'myProfile' },
+        { view: 'family', icon: '🌳', translationKey: 'familyTree' },
+        { view: 'events', icon: '📅', translationKey: 'events' },
+        { view: 'volunteer', icon: '🤝', translationKey: 'volunteer' },
+        { view: 'discussions', icon: '💬', translationKey: 'discussions' },
+        { view: 'documents', icon: '📁', translationKey: 'documents' },
+        { view: 'directory', icon: '📖', translationKey: 'directory' },
+        { view: 'settings', icon: '⚙️', translationKey: 'settings' },
+    ], []);
+
+    useEffect(() => {
+        const getUser = async () => {
+            const { data: { user }, error } = await supabase.auth.getUser();
+
+            if (error || !user) {
+                navigate('/login');
+                return;
+            }
+
+            setUser(user);
+            setLoading(false);
+        };
+
+        getUser();
+    }, [navigate]);
+
+    const handleLogout = async () => {
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+            console.error('Error signing out:', error);
+        } else {
+            navigate('/login');
+        }
+    };
+
+    if (loading) {
+        return (
+            <div className="dashboard-loading">
+                <div className="loading-spinner"></div>
+                <p>{t('loading') || 'Loading...'}</p>
+            </div>
+        );
+    }
+
+    const renderContent = () => {
+        const ViewComponent = {
+            'home': HomeView,
+            'profile': ProfileView,
+            'family': FamilyTreeView,
+            'events': EventsView,
+            'volunteer': VolunteerView,
+            'discussions': DiscussionsView,
+            'documents': DocumentsView,
+            'directory': CommunityDirectoryView,
+            'settings': SettingsView,
+        }[activeView] || HomeView;
+
+        return <ViewComponent user={user} t={t} />;
+    };
+
+    return (
+        <div className="dashboard-container">
+            <nav className="sidebar">
+                <div className="sidebar-header">
+                    <div className="community-branding">
+                        <img src="/images/Sen Ji Maharaj 2.png" alt="Sen Ji Maharaj" className="community-logo" />
+                        <h1>{t('communityHub') || 'Community Hub'}</h1>
+                        <p className="hub-tagline">{t('guidedByWisdom') || 'Guided by Wisdom'}</p>
+                    </div>
+                    <LanguageToggle variant="dashboard" />
+                    <div className="user-info">
+                        <div className="user-avatar-small">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="User Avatar">
+                                <title>User Avatar</title>
+                                <circle cx="12" cy="8" r="4" fill="#d4a574" />
+                                <rect x="4" y="16" width="16" height="6" rx="3" fill="#d4a574" />
+                            </svg>
+                        </div>
+                        <div className="user-details">
+                            <p className="user-name">{user?.user_metadata?.full_name ?? user?.user_metadata?.username ?? user?.email?.split('@')[0] ?? (t('user') || 'User')}</p>
+                            <p className="user-email">{user?.email}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <ul className="nav-menu">
+                    {navItems.map(item => (
+                        <li key={item.view} className={activeView === item.view ? 'active' : ''}>
+                            <button
+                                onClick={() => setActiveView(item.view)}
+                                aria-current={activeView === item.view ? 'page' : undefined}
+                            >
+                                <span className="nav-icon" aria-hidden="true">{item.icon}</span>
+                                {t(item.translationKey) || item.translationKey}
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+
+                <div className="sidebar-footer">
+                    <button className="logout-btn" onClick={handleLogout}>
+                        <span className="nav-icon" aria-hidden="true">🚪</span>
+                        {t('logout') || 'Logout'}
+                    </button>
+                </div>
+            </nav>
+
+            <main className="main-content">
+                {renderContent()}
+            </main>
+        </div>
+    );
+}
 
 export default Dashboard;

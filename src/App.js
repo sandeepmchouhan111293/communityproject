@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import Login from './Login'; // adjust the path if Login.js is inside /pages or /components
-import Signup from './Signup'; // adjust the path if Signup.js is inside /pages or /components
+import Login from './Login';
+import Signup from './Signup';
 import Dashboard from './Dashboard';
 import { supabase } from './supabaseClient';
+import { LanguageProvider } from './LanguageContext';
 
 function App() {
   useEffect(() => {
@@ -14,14 +15,16 @@ function App() {
     });
   }, []);
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-      </Routes>
-    </Router>
+    <LanguageProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
+      </Router>
+    </LanguageProvider>
   );
 }
 
