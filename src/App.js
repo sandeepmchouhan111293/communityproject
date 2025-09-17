@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import Dashboard from './Dashboard';
+import DownloadLogsButton from './DownloadLogsButton';
+import { LanguageProvider } from './LanguageContext';
 import Login from './Login';
 import Signup from './Signup';
-import Dashboard from './Dashboard';
 import { supabase } from './supabaseClient';
-import { LanguageProvider } from './LanguageContext';
 
 function App() {
   useEffect(() => {
@@ -23,6 +24,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
+        <DownloadLogsButton />
       </Router>
     </LanguageProvider>
   );

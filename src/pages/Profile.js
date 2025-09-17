@@ -1,16 +1,43 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { supabase } from '../supabaseClient';
+import logger from '../utils/logger';
 
 const ProfileView = ({ user, t }) => {
+
     const [isEditing, setIsEditing] = useState(false);
     const [profileData, setProfileData] = useState({
         profilePhoto: null,
-        dateOfBirth: '',
+        date_of_birth: '',
         gender: '',
-        maritalStatus: '',
-        highestQualification: '',
+        marital_status: '',
+        highest_qualification: '',
         profession: '',
-        specialSkills: ''
+        special_skills: ''
     });
+    // Fetch profile from Supabase on mount
+    useEffect(() => {
+        const fetchProfile = async () => {
+            if (!user?.id) return;
+            logger.log('Fetching profile for user', user.id);
+            const { data, error } = await supabase
+                .from('profiles')
+                .select('*')
+                .eq('id', user.id)
+                .single();
+            if (data) {
+                setProfileData(prev => ({
+                    ...prev,
+                    ...data,
+                    profilePhoto: null // Don't auto-load photo file
+                }));
+                logger.log('Profile data loaded', data);
+            }
+            if (error) {
+                logger.error('Error fetching profile', error);
+            }
+        };
+        fetchProfile();
+    }, [user]);
 
     const handleInputChange = (field, value) => {
         setProfileData(prev => ({
@@ -19,9 +46,44 @@ const ProfileView = ({ user, t }) => {
         }));
     };
 
-    const handleSaveProfile = () => {
-        console.log('Saving profile:', profileData);
-        setIsEditing(false);
+
+    const handleSaveProfile = async () => {
+        if (!user?.id) return;
+        logger.log('Saving profile for user', user.id, profileData);
+        // Upload photo if present
+        let profile_photo_url = undefined;
+        if (profileData.profilePhoto) {
+            const { data: uploadData, error: uploadError } = await supabase.storage
+                .from('profile-photos')
+                .upload(`${user.id}/${profileData.profilePhoto.name}`, profileData.profilePhoto, { upsert: true });
+            if (!uploadError && uploadData) {
+                const { data: publicUrl } = supabase.storage.from('profile-photos').getPublicUrl(uploadData.path);
+                profile_photo_url = publicUrl?.publicUrl;
+                logger.log('Profile photo uploaded', profile_photo_url);
+            }
+            if (uploadError) {
+                logger.error('Error uploading profile photo', uploadError);
+            }
+        }
+        const updateData = {
+            ...profileData,
+            profile_photo_url: profile_photo_url || undefined,
+            id: user.id,
+            email: user.email,
+            full_name: user.user_metadata?.full_name || '',
+        };
+        // Remove profilePhoto (file) from update
+        delete updateData.profilePhoto;
+        const { error } = await supabase
+            .from('profiles')
+            .upsert(updateData, { onConflict: ['id'] });
+        if (!error) {
+            logger.log('Profile saved successfully');
+            setIsEditing(false);
+        } else {
+            logger.error('Error saving profile', error);
+            alert('Error saving profile');
+        }
     };
 
     return (
@@ -74,11 +136,12 @@ const ProfileView = ({ user, t }) => {
                         <div className="form-grid">
                             <div className="form-group">
                                 <label htmlFor="dateOfBirth">{t('dateOfBirth') || 'Date of Birth'}</label>
+                                <label htmlFor="date_of_birth">{t('dateOfBirth') || 'Date of Birth'}</label>
                                 <input
                                     type="date"
-                                    id="dateOfBirth"
-                                    value={profileData.dateOfBirth}
-                                    onChange={(e) => handleInputChange('dateOfBirth', e.target.value)}
+                                    id="date_of_birth"
+                                    value={profileData.date_of_birth}
+                                    onChange={(e) => handleInputChange('date_of_birth', e.target.value)}
                                     className="form-input"
                                 />
                             </div>
@@ -98,11 +161,11 @@ const ProfileView = ({ user, t }) => {
                                 </select>
                             </div>
                             <div className="form-group">
-                                <label htmlFor="maritalStatus">{t('maritalStatus') || 'Marital Status'}</label>
+                                <label htmlFor="marital_status">{t('maritalStatus') || 'Marital Status'}</label>
                                 <select
-                                    id="maritalStatus"
-                                    value={profileData.maritalStatus}
-                                    onChange={(e) => handleInputChange('maritalStatus', e.target.value)}
+                                    id="marital_status"
+                                    value={profileData.marital_status}
+                                    onChange={(e) => handleInputChange('marital_status', e.target.value)}
                                     className="form-input"
                                 >
                                     <option value="">{t('selectStatus') || 'Select Status'}</option>
@@ -117,11 +180,11 @@ const ProfileView = ({ user, t }) => {
                         <h3>{t('educationAndWork') || 'Education & Work'}</h3>
                         <div className="form-grid">
                             <div className="form-group">
-                                <label htmlFor="highestQualification">{t('highestQualification') || 'Highest Qualification'}</label>
+                                <label htmlFor="highest_qualification">{t('highestQualification') || 'Highest Qualification'}</label>
                                 <select
-                                    id="highestQualification"
-                                    value={profileData.highestQualification}
-                                    onChange={(e) => handleInputChange('highestQualification', e.target.value)}
+                                    id="highest_qualification"
+                                    value={profileData.highest_qualification}
+                                    onChange={(e) => handleInputChange('highest_qualification', e.target.value)}
                                     className="form-input"
                                 >
                                     <option value="">{t('selectQualification') || 'Select Qualification'}</option>
@@ -146,11 +209,11 @@ const ProfileView = ({ user, t }) => {
                                 />
                             </div>
                             <div className="form-group full-width">
-                                <label htmlFor="specialSkills">{t('specialSkills') || 'Special Skills/Talents'}</label>
+                                <label htmlFor="special_skills">{t('specialSkills') || 'Special Skills/Talents'}</label>
                                 <textarea
-                                    id="specialSkills"
-                                    value={profileData.specialSkills}
-                                    onChange={(e) => handleInputChange('specialSkills', e.target.value)}
+                                    id="special_skills"
+                                    value={profileData.special_skills}
+                                    onChange={(e) => handleInputChange('special_skills', e.target.value)}
                                     placeholder={t('skillsPlaceholder') || 'e.g., Programming, Music, Cooking, Languages spoken, etc.'}
                                     className="form-input"
                                     rows="3"

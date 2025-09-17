@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { supabase } from '../supabaseClient';
+import logger from '../utils/logger';
 
 const FamilyTreeView = ({ user, t }) => {
     const [viewMode, setViewMode] = useState('cards');
@@ -6,33 +8,26 @@ const FamilyTreeView = ({ user, t }) => {
     const [memberFormStep, setMemberFormStep] = useState(1);
     const [selectedMember, setSelectedMember] = useState(null);
     const [showMemberDetail, setShowMemberDetail] = useState(false);
-    const [familyMembers, setFamilyMembers] = useState([
-        {
-            id: 1,
-            name: 'John Smith',
-            relationship: 'spouse',
-            age: 35,
-            dateOfBirth: '1989-03-15',
-            gender: 'male',
-            profileImage: null,
-            highestQualification: 'bachelors',
-            profession: 'Software Engineer',
-            employer: 'Tech Corp',
-            maritalStatus: 'married'
-        },
-        {
-            id: 2,
-            name: 'Emma Smith',
-            relationship: 'child',
-            age: 12,
-            dateOfBirth: '2012-07-22',
-            gender: 'female',
-            profileImage: null,
-            school: 'Central Elementary',
-            class: '7th Grade',
-            hobbies: 'Drawing, Reading'
-        }
-    ]);
+    const [familyMembers, setFamilyMembers] = useState([]);
+    // Fetch family members from Supabase on mount
+    useEffect(() => {
+        const fetchMembers = async () => {
+            if (!user?.id) return;
+            logger.log('Fetching family members for user', user.id);
+            const { data, error } = await supabase
+                .from('family_members')
+                .select('*')
+                .eq('user_id', user.id);
+            if (data) {
+                setFamilyMembers(data);
+                logger.log('Family members loaded', data);
+            }
+            if (error) {
+                logger.error('Error fetching family members', error);
+            }
+        };
+        fetchMembers();
+    }, [user]);
     const [memberData, setMemberData] = useState({
         relationship: '',
         ageCategory: '',
@@ -85,22 +80,37 @@ const FamilyTreeView = ({ user, t }) => {
             setMemberFormStep(2);
         }
     };
-    const handleSaveMember = () => {
+    const handleSaveMember = async () => {
+        if (!user?.id) return;
+        logger.log('Saving family member for user', user.id, memberData);
         const newMember = {
             ...memberData,
-            id: selectedMember ? selectedMember.id : Date.now(),
+            user_id: user.id,
+            id: selectedMember ? selectedMember.id : undefined,
             age: parseInt(memberData.age)
         };
-        if (selectedMember) {
-            setFamilyMembers(prev => prev.map(member =>
-                member.id === selectedMember.id ? newMember : member
-            ));
+        // Remove profileImage (file) from update
+        delete newMember.profileImage;
+        let upsertData = { ...newMember };
+        // Insert or update
+        const { error } = await supabase
+            .from('family_members')
+            .upsert(upsertData, { onConflict: ['id'] });
+        if (!error) {
+            logger.log('Family member saved successfully');
+            // Refresh list
+            const { data } = await supabase
+                .from('family_members')
+                .select('*')
+                .eq('user_id', user.id);
+            if (data) setFamilyMembers(data);
+            setShowAddMemberForm(false);
+            setMemberFormStep(1);
+            setSelectedMember(null);
         } else {
-            setFamilyMembers(prev => [...prev, newMember]);
+            logger.error('Error saving family member', error);
+            alert('Error saving family member');
         }
-        setShowAddMemberForm(false);
-        setMemberFormStep(1);
-        setSelectedMember(null);
     };
     const getRelationshipIcon = (relationship) => {
         const icons = {
