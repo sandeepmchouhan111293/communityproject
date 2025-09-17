@@ -219,7 +219,6 @@ export const translations = {
         rsvpYes: "RSVP Yes",
         cantAttend: "Can't Attend",
         eventFull: "Event Full",
-        attending: "attending",
         organizer: "Organizer",
         location: "Location",
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
 import { useLanguage } from './LanguageContext';
@@ -8,22 +8,33 @@ import { useTranslation } from './translations';
 
 // --- View Components ---
 const HomeView = ({ user, t }) => {
-    const [memberHighlight] = useState({
+    const [memberHighlight, setMemberHighlight] = useState(() => ({
         name: 'Sarah Johnson',
-        title: 'Community Volunteer Champion',
-        contribution: 'Organized 5 community events this year and helped 15+ families with documentation',
-        quote: '"Every family story matters. I love helping our community preserve their heritage for future generations."',
+        title: t('volunteerChampion'),
+        contribution: t('organizedEvents'),
+        quote: t('familyStoryMatters'),
         avatar: null,
         achievementBadge: '🏆'
-    });
+    }));
 
-    const [newsFeed] = useState([
+    useEffect(() => {
+        setMemberHighlight({
+            name: 'Sarah Johnson',
+            title: t('volunteerChampion'),
+            contribution: t('organizedEvents'),
+            quote: t('familyStoryMatters'),
+            avatar: null,
+            achievementBadge: '🏆'
+        });
+    }, [t]);
+
+    const [newsFeed] = useState(() => [
         {
             id: 1,
             type: 'urgent',
             titleKey: 'systemMaintenance',
             contentKey: 'maintenanceDesc',
-            timestamp: `2 ${t('hoursAgo') || 'hours ago'}`,
+            timestamp: `2 ${t('hoursAgo')}`,
             authorKey: 'systemAdmin'
         },
         {
@@ -31,7 +42,7 @@ const HomeView = ({ user, t }) => {
             type: 'official',
             titleKey: 'monthlyMeeting',
             contentKey: 'meetingDesc',
-            timestamp: `1 ${t('daysAgo') || 'day ago'}`,
+            timestamp: `1 ${t('daysAgo')}`,
             authorKey: 'communityBoard'
         },
         {
@@ -39,7 +50,7 @@ const HomeView = ({ user, t }) => {
             type: 'milestone',
             titleKey: 'welcomeBaby',
             contentKey: 'babyDesc',
-            timestamp: `3 ${t('daysAgo') || 'days ago'}`,
+            timestamp: `3 ${t('daysAgo')}`,
             author: 'Lisa Thompson'
         }
     ]);
@@ -63,9 +74,9 @@ const HomeView = ({ user, t }) => {
                 <div className="welcome-banner">
                     <img src="/images/Sen Ji Maharaj 1.png" alt="Sen Ji Maharaj" className="welcome-image" />
                     <div className="welcome-content">
-                        <h1>{t('welcomeHome') || 'Welcome Home'}, {user?.user_metadata?.full_name?.split(' ')[0] || 'Member'}</h1>
-                        <p className="home-subtitle">{t('stayConnected') || 'Stay connected with your community'}</p>
-                        <p className="blessing-text">"{t('blessingText') || 'May wisdom guide your path'}"</p>
+                        <h1>{t('welcomeHome')}, {user?.user_metadata?.full_name?.split(' ')[0] || t('member')}</h1>
+                        <p className="home-subtitle">{t('stayConnected')}</p>
+                        <p className="blessing-text">"{t('blessingText')}"</p>
                     </div>
                 </div>
             </div>
@@ -73,8 +84,8 @@ const HomeView = ({ user, t }) => {
             {/* Member Highlight Section */}
             <div className="member-highlight-section">
                 <div className="highlight-header">
-                    <h2>🌟 {t('memberSpotlight') || 'Member Spotlight'}</h2>
-                    <button className="nominate-btn">{t('nominateSomeone') || 'Nominate Someone'}</button>
+                    <h2>🌟 {t('memberSpotlight')}</h2>
+                    <button className="nominate-btn">{t('nominateSomeone')}</button>
                 </div>
                 <div className="member-highlight-card">
                     <div className="highlight-avatar">
@@ -101,24 +112,24 @@ const HomeView = ({ user, t }) => {
                 {/* Family Profile Progress */}
                 <div className="info-block gradient-border">
                     <div className="block-header">
-                        <h3>👨‍👩‍👧‍👦 {t('familyProfile') || 'Family Profile'}</h3>
-                        <span className="status-badge success">{t('active') || 'Active'}</span>
+                        <h3>👨‍👩‍👧‍👦 {t('familyProfile')}</h3>
+                        <span className="status-badge success">{t('active')}</span>
                     </div>
                     <div className="completion-status">
                         <div className="progress-bar">
                             <div className="progress-fill" style={{ width: '75%' }}></div>
                         </div>
-                        <span className="progress-text">75% {t('complete') || 'Complete'}</span>
+                        <span className="progress-text">75% {t('complete')}</span>
                     </div>
-                    <p>{t('addMoreMembers') || 'Add more family members to complete your profile'}</p>
-                    <button className="block-action-btn">{t('addMembersBtn') || 'Add Members'}</button>
+                    <p>{t('addMoreMembers')}</p>
+                    <button className="block-action-btn">{t('addMembersBtn')}</button>
                 </div>
 
                 {/* Community News Feed */}
                 <div className="info-block">
                     <div className="block-header">
-                        <h3>📰 {t('communityUpdates') || 'Community Updates'}</h3>
-                        <button className="view-all-btn">{t('viewAll') || 'View All'}</button>
+                        <h3>📰 {t('communityUpdates')}</h3>
+                        <button className="view-all-btn">{t('viewAll')}</button>
                     </div>
                     <div className="news-feed">
                         {newsFeed.slice(0, 3).map(item => (
@@ -126,12 +137,12 @@ const HomeView = ({ user, t }) => {
                                 <div className="news-header">
                                     <span className="news-icon">{getNewsFeedIcon(item.type)}</span>
                                     <div className="news-meta">
-                                        <h4>{item.titleKey ? (t(item.titleKey) || item.titleKey) : item.title}</h4>
+                                        <h4>{t(item.titleKey)}</h4>
                                         <span className="news-timestamp">{item.timestamp}</span>
                                     </div>
                                 </div>
-                                <p className="news-content">{item.contentKey ? (t(item.contentKey) || item.contentKey) : item.content}</p>
-                                <small className="news-author">{t('author') || 'Author'}: {item.authorKey ? (t(item.authorKey) || item.authorKey) : item.author}</small>
+                                <p className="news-content">{t(item.contentKey)}</p>
+                                <small className="news-author">{t('author')}: {item.authorKey ? t(item.authorKey) : item.author}</small>
                             </div>
                         ))}
                     </div>
@@ -139,46 +150,46 @@ const HomeView = ({ user, t }) => {
 
                 {/* Quick Actions */}
                 <div className="info-block">
-                    <h3>🚀 {t('quickActions') || 'Quick Actions'}</h3>
+                    <h3>🚀 {t('quickActions')}</h3>
                     <div className="quick-actions-grid">
                         <button className="quick-action-btn">
                             <span className="action-icon">📅</span>
-                            <span>{t('viewEvents') || 'View Events'}</span>
+                            <span>{t('viewEvents')}</span>
                         </button>
                         <button className="quick-action-btn">
                             <span className="action-icon">🤝</span>
-                            <span>{t('volunteer') || 'Volunteer'}</span>
+                            <span>{t('volunteer')}</span>
                         </button>
                         <button className="quick-action-btn">
                             <span className="action-icon">💬</span>
-                            <span>{t('discussions') || 'Discussions'}</span>
+                            <span>{t('discussions')}</span>
                         </button>
                         <button className="quick-action-btn">
                             <span className="action-icon">📁</span>
-                            <span>{t('documents') || 'Documents'}</span>
+                            <span>{t('documents')}</span>
                         </button>
                     </div>
                 </div>
 
                 {/* Community Stats */}
                 <div className="info-block stats-block">
-                    <h3>📊 {t('communityPulse') || 'Community Pulse'}</h3>
+                    <h3>📊 {t('communityPulse')}</h3>
                     <div className="stats-grid">
                         <div className="stat-item">
                             <span className="stat-number">248</span>
-                            <span className="stat-label">{t('activeMembers') || 'Active Members'}</span>
+                            <span className="stat-label">{t('activeMembers')}</span>
                         </div>
                         <div className="stat-item">
                             <span className="stat-number">12</span>
-                            <span className="stat-label">{t('upcomingEvents') || 'Upcoming Events'}</span>
+                            <span className="stat-label">{t('upcomingEvents')}</span>
                         </div>
                         <div className="stat-item">
                             <span className="stat-number">89</span>
-                            <span className="stat-label">{t('volunteerHours') || 'Volunteer Hours'}</span>
+                            <span className="stat-label">{t('volunteerHours')}</span>
                         </div>
                         <div className="stat-item">
                             <span className="stat-number">34</span>
-                            <span className="stat-label">{t('newFamilies') || 'New Families'}</span>
+                            <span className="stat-label">{t('newFamilies')}</span>
                         </div>
                     </div>
                 </div>
