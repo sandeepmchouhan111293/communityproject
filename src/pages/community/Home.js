@@ -73,9 +73,41 @@ const HomeView = ({ user, t }) => {
                 <div className="welcome-banner">
                     <img src="/images/Sen Ji Maharaj 1.png" alt="Sen Ji Maharaj" className="welcome-image" />
                     <div className="welcome-content">
-                        <h1>{t('welcomeHome')}, {user?.user_metadata?.full_name?.split(' ')[0] || t('member')}</h1>
+                        <div className="welcome-header">
+                            <h1>{t('welcomeHome')}, {user?.user_metadata?.full_name?.split(' ')[0] || t('member')}</h1>
+                            <div className="user-role-badge">
+                                {user?.role === 'admin' && (
+                                    <span className="role-badge admin">
+                                        👑 Administrator
+                                    </span>
+                                )}
+                                {user?.role === 'contributor' && (
+                                    <span className="role-badge contributor">
+                                        ✏️ Contributor
+                                    </span>
+                                )}
+                                {(user?.role === 'viewer' || !user?.role) && (
+                                    <span className="role-badge member">
+                                        👤 Member
+                                    </span>
+                                )}
+                            </div>
+                        </div>
                         <p className="home-subtitle">{t('stayConnected')}</p>
                         <p className="blessing-text">"{t('blessingText')}"</p>
+
+                        {/* Admin Quick Access */}
+                        {user?.role === 'admin' && (
+                            <div className="admin-quick-access">
+                                <button
+                                    className="admin-access-btn"
+                                    onClick={() => window.location.href = '#admin'}
+                                >
+                                    🛠️ Admin Panel
+                                </button>
+                                <span className="admin-access-hint">Manage users, data, and system settings</span>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

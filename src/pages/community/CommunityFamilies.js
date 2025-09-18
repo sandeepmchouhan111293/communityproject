@@ -49,7 +49,10 @@ const CommunityFamilies = ({ user, t, onNavigate }) => {
             setAvailableVillages([]);
         } else {
             const cities = districtCitiesMap[district] || [];
-            setAvailableCities(cities);
+            // Add the district name itself as a city option (for data like "Bhopal", "Indore")
+            const allCities = cities.includes(district) ? cities : [district, ...cities];
+            console.log('District selected:', district, 'Available cities:', allCities);
+            setAvailableCities(allCities);
             setAvailableVillages([]);
         }
     };
@@ -62,7 +65,11 @@ const CommunityFamilies = ({ user, t, onNavigate }) => {
         if (city === 'all') {
             setAvailableVillages([]);
         } else {
-            const villages = cityVillagesMap[city] || [];
+            // Try both formats: "Bhopal" and "Bhopal City"
+            const villages = cityVillagesMap[city] ||
+                            cityVillagesMap[city + ' City'] ||
+                            cityVillagesMap[city.replace(' City', '')] || [];
+            console.log('City selected:', city, 'Available villages:', villages);
             setAvailableVillages(villages);
         }
     };
@@ -228,17 +235,42 @@ const CommunityFamilies = ({ user, t, onNavigate }) => {
             // Filter by hierarchical location selection
             let filteredFamilies = Object.values(familyGroups);
 
-            // For now, we'll filter by the most specific location available
-            // In a real implementation, you'd need to store district, city, village in the database
+            // Apply location filters based on the current selection
             if (selectedVillage !== 'all') {
-                // Filter by village (most specific)
-                filteredFamilies = filteredFamilies.filter(family => family.village === selectedVillage);
+                // Filter by village - check if family city matches selected village
+                console.log('Filtering by village:', selectedVillage);
+                filteredFamilies = filteredFamilies.filter(family => family.city === selectedVillage);
             } else if (selectedCity !== 'all') {
-                // Filter by city
-                filteredFamilies = filteredFamilies.filter(family => family.city === selectedCity);
+                // Filter by city - check if family city matches selected city or city variant
+                console.log('Filtering by city:', selectedCity);
+                console.log('Available families before filter:', filteredFamilies.map(f => f.city));
+                filteredFamilies = filteredFamilies.filter(family => {
+                    // Handle both "Bhopal" and "Bhopal City" formats
+                    const cityVariants = [
+                        selectedCity,
+                        selectedCity.replace(' City', ''),
+                        selectedCity + ' City'
+                    ];
+                    return cityVariants.includes(family.city);
+                });
+                console.log('Families after city filter:', filteredFamilies.length);
             } else if (selectedDistrict !== 'all') {
-                // Filter by district (least specific, but still filtered)
-                filteredFamilies = filteredFamilies.filter(family => family.district === selectedDistrict);
+                // Filter by district - check if family city is in the selected district's cities
+                const districtCities = districtCitiesMap[selectedDistrict] || [];
+                console.log('Filtering by district:', selectedDistrict);
+                console.log('District cities:', districtCities);
+                console.log('Available families before filter:', filteredFamilies.map(f => f.city));
+                filteredFamilies = filteredFamilies.filter(family => {
+                    // Check direct match or if city is in district cities (handling variants)
+                    const cityVariants = [
+                        family.city,
+                        family.city + ' City',
+                        family.city.replace(' City', '')
+                    ];
+                    return districtCities.some(districtCity => cityVariants.includes(districtCity)) ||
+                           family.city === selectedDistrict;
+                });
+                console.log('Families after district filter:', filteredFamilies.length);
             }
 
             setAllFamilies(filteredFamilies);
