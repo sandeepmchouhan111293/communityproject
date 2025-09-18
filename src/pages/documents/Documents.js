@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { DB_TABLES } from '../dbConfig';
-import { supabase } from '../supabaseClient';
+import { DB_TABLES } from '../../config/dbConfig';
+import { supabase } from '../../config/supabaseClient';
 
 const DocumentsView = ({ user, t, onNavigate }) => {
     const [userRole] = useState('member');

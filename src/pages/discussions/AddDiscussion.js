@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { DB_TABLES } from '../dbConfig';
-import { useLanguage } from '../LanguageContext';
-import { supabase } from '../supabaseClient';
-import { useTranslation } from '../translations';
+import { DB_TABLES } from '../../config/dbConfig';
+import { useLanguage } from '../../i18n/LanguageContext';
+import { supabase } from '../../config/supabaseClient';
+import { useTranslation } from '../../i18n/translations';
 import './AddDiscussion.css';
 
 const AddDiscussion = ({ user, onSuccess, onNavigate }) => {

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './Signup.css';
-import { supabase } from './supabaseClient'; // ✅ import supabase client
+import { supabase } from '../config/supabaseClient'; // ✅ import supabase client
 
 function Signup() {
     const [fullName, setFullName] = useState('');

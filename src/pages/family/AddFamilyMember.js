@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { DB_TABLES } from '../dbConfig';
-import { useLanguage } from '../LanguageContext';
-import { useTranslation } from '../translations';
-import { supabase } from '../supabaseClient';
-import logger from '../utils/logger';
+import { DB_TABLES } from '../../config/dbConfig';
+import { useLanguage } from '../../i18n/LanguageContext';
+import { useTranslation } from '../../i18n/translations';
+import { supabase } from '../../config/supabaseClient';
+import logger from '../../utils/logger';
 import './AddFamilyMember.css';
 
 const AddFamilyMember = ({ user, onSuccess, onNavigate }) => {

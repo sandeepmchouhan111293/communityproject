@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { DB_TABLES, STORAGE_BUCKETS } from '../dbConfig';
-import { supabase } from '../supabaseClient';
-import logger from '../utils/logger';
+import { DB_TABLES, STORAGE_BUCKETS } from '../../config/dbConfig';
+import { supabase } from '../../config/supabaseClient';
+import logger from '../../utils/logger';
 
 const ProfileView = ({ user, t }) => {
 

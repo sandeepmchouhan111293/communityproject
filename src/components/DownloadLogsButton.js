@@ -1,4 +1,4 @@
-import logger from './utils/logger';
+import logger from '../utils/logger';
 
 // Only show this button in development mode
 const isDev = process.env.NODE_ENV !== 'production';

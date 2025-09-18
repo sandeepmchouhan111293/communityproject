@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useLanguage } from './LanguageContext';
-import LanguageToggle from './LanguageToggle';
+import { useLanguage } from '../i18n/LanguageContext';
+import LanguageToggle from '../i18n/LanguageToggle';
 import './Login.css';
-import { supabase } from './supabaseClient';
-import { useTranslation } from './translations';
+import { supabase } from '../config/supabaseClient';
+import { useTranslation } from '../i18n/translations';
 
 function Login() {
     const [email, setEmail] = useState('');

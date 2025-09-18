@@ -10,7 +10,8 @@
       "Bash(npm start)",
       "Bash(npx eslint:*)",
       "Bash(npx kill-port:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []

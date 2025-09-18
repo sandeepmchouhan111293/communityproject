@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import Dashboard from './Dashboard';
-import DownloadLogsButton from './DownloadLogsButton';
-import HighlightAdminPanel from './HighlightAdminPanel';
-import { LanguageProvider } from './LanguageContext';
-import Login from './Login';
-import Signup from './Signup';
-import { supabase } from './supabaseClient';
+import Dashboard from './core/Dashboard';
+import DownloadLogsButton from './components/DownloadLogsButton';
+import HighlightAdminPanel from './admin/HighlightAdminPanel';
+import { LanguageProvider } from './i18n/LanguageContext';
+import Login from './auth/Login';
+import Signup from './auth/Signup';
+import { supabase } from './config/supabaseClient';
 
 function App() {
   useEffect(() => {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { DB_TABLES } from '../dbConfig';
-import { supabase } from '../supabaseClient';
-import logger from '../utils/logger';
+import { DB_TABLES } from '../../config/dbConfig';
+import { supabase } from '../../config/supabaseClient';
+import logger from '../../utils/logger';
 
 const FamilyTreeView = ({ user, t, onNavigate }) => {
     const [familyMembers, setFamilyMembers] = useState([]);
