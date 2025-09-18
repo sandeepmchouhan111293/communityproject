@@ -1,53 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { DB_TABLES } from '../dbConfig';
+import { supabase } from '../supabaseClient';
 
-const DocumentsView = ({ user, t }) => {
+const DocumentsView = ({ user, t, onNavigate }) => {
     const [userRole] = useState('member');
-    const [documents] = useState([
-        {
-            id: 1,
-            title: t('communityCharterBylaws') || 'Community Charter & Bylaws',
-            description: t('officialCommunityCharter') || 'Official community charter and governing bylaws.',
-            category: 'governance',
-            accessLevel: 'public',
-            fileType: 'PDF',
-            fileSize: '2.3 MB',
-            lastUpdated: '2024-01-15',
-            downloadCount: 89
-        },
-        {
-            id: 2,
-            title: t('familyTreeTemplate') || 'Family Tree Template',
-            description: t('downloadableTemplate') || 'Downloadable template for documenting your family tree.',
-            category: 'resources',
-            accessLevel: 'member',
-            fileType: 'DOCX',
-            fileSize: '156 KB',
-            lastUpdated: '2024-01-20',
-            downloadCount: 234
-        },
-        {
-            id: 3,
-            title: t('meetingMinutesDec') || 'Meeting Minutes - December 2024',
-            description: t('minutesFromDecember') || 'Minutes from the December community board meeting.',
-            category: 'meetings',
-            accessLevel: 'committee',
-            fileType: 'PDF',
-            fileSize: '1.1 MB',
-            lastUpdated: '2024-12-15',
-            downloadCount: 45
-        },
-        {
-            id: 4,
-            title: t('eventPlanningGuidelines') || 'Event Planning Guidelines',
-            description: t('comprehensiveGuide') || 'Comprehensive guide for organizing community events.',
-            category: 'guidelines',
-            accessLevel: 'committee',
-            fileType: 'PDF',
-            fileSize: '3.2 MB',
-            lastUpdated: '2024-01-10',
-            downloadCount: 67
-        }
-    ]);
+    const [documents, setDocuments] = useState([]);
+
+    useEffect(() => {
+        const fetchDocuments = async () => {
+            const { data, error } = await supabase
+                .from(DB_TABLES.DOCUMENTS)
+                .select('*');
+            if (data) setDocuments(data);
+        };
+        fetchDocuments();
+    }, []);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('all');
     const getAccessIcon = (accessLevel) => {
@@ -85,6 +52,25 @@ const DocumentsView = ({ user, t }) => {
     return (
         <div className="view-container">
             <h1>{t ? t('communityDocuments') : 'Community Documents'}</h1>
+            <button
+                className="add-btn document-add-btn"
+                style={{
+                    background: 'linear-gradient(90deg, #d4a574 0%, #f7e7ce 100%)',
+                    color: '#6d3d14',
+                    border: 'none',
+                    borderRadius: '24px',
+                    fontWeight: 600,
+                    fontSize: '1.1rem',
+                    padding: '10px 28px',
+                    margin: '16px 0 24px 0',
+                    boxShadow: '0 2px 8px #e6c9a0',
+                    cursor: 'pointer',
+                    transition: 'background 0.2s',
+                }}
+                onClick={() => onNavigate && onNavigate('addDocument')}
+            >
+                {t ? t('addDocument') : 'Add Document'}
+            </button>
             <div className="documents-list">
                 {filteredDocuments.length === 0 ? (
                     <p>{t ? t('noDocumentsFound') : 'No documents found.'}</p>

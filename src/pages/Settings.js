@@ -31,7 +31,7 @@ const SettingsView = ({ user, t }) => {
                     <div className="setting-item">
                         <label>
                             <input type="checkbox" defaultChecked />
-                            {t ? t('emailNewConnections') : 'Email notifications for new family connections'}
+                            {t ? t('emailNewsConnection') : 'Email notifications for new family connections'}
                         </label>
                     </div>
                     <div className="setting-item">
@@ -50,7 +50,7 @@ const SettingsView = ({ user, t }) => {
                 <div className="settings-section">
                     <h3>{t ? t('accountSettings') : 'Account Settings'}</h3>
                     <button className="settings-btn">{t ? t('changePassword') : 'Change Password'}</button>
-                    <button className="settings-btn">{t ? t('downloadData') : 'Download My Data'}</button>
+                    <button className="settings-btn">{t ? t('downloadData') : 'Download my data'}</button>
                     <button className="settings-btn danger">{t ? t('deleteAccount') : 'Delete Account'}</button>
                 </div>
             </div>

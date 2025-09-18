@@ -1,21 +1,18 @@
 import { useEffect, useState } from 'react';
+import { DB_TABLES } from '../dbConfig';
 import { supabase } from '../supabaseClient';
 import logger from '../utils/logger';
 
-const FamilyTreeView = ({ user, t }) => {
-    const [viewMode, setViewMode] = useState('cards');
-    const [showAddMemberForm, setShowAddMemberForm] = useState(false);
-    const [memberFormStep, setMemberFormStep] = useState(1);
-    const [selectedMember, setSelectedMember] = useState(null);
-    const [showMemberDetail, setShowMemberDetail] = useState(false);
+const FamilyTreeView = ({ user, t, onNavigate }) => {
     const [familyMembers, setFamilyMembers] = useState([]);
+
     // Fetch family members from Supabase on mount
     useEffect(() => {
         const fetchMembers = async () => {
             if (!user?.id) return;
             logger.log('Fetching family members for user', user.id);
             const { data, error } = await supabase
-                .from('family_members')
+                .from(DB_TABLES.FAMILY_MEMBERS)
                 .select('*')
                 .eq('user_id', user.id);
             if (data) {
@@ -28,88 +25,10 @@ const FamilyTreeView = ({ user, t }) => {
         };
         fetchMembers();
     }, [user]);
-    const [memberData, setMemberData] = useState({
-        relationship: '',
-        ageCategory: '',
-        name: '',
-        dateOfBirth: '',
-        age: '',
-        gender: '',
-        profileImage: null,
-        school: '',
-        class: '',
-        hobbies: '',
-        achievements: '',
-        highestQualification: '',
-        profession: '',
-        employer: '',
-        maritalStatus: '',
-        volunteerInterests: ''
-    });
+
     const handleAddMember = () => {
-        setShowAddMemberForm(true);
-        setMemberFormStep(1);
-        setSelectedMember(null);
-        setMemberData({
-            relationship: '',
-            ageCategory: '',
-            name: '',
-            dateOfBirth: '',
-            age: '',
-            gender: '',
-            profileImage: null,
-            school: '',
-            class: '',
-            hobbies: '',
-            achievements: '',
-            highestQualification: '',
-            profession: '',
-            employer: '',
-            maritalStatus: '',
-            volunteerInterests: ''
-        });
-    };
-    const handleInputChange = (field, value) => {
-        setMemberData(prev => ({
-            ...prev,
-            [field]: value
-        }));
-    };
-    const handleNextStep = () => {
-        if (memberFormStep === 1) {
-            setMemberFormStep(2);
-        }
-    };
-    const handleSaveMember = async () => {
-        if (!user?.id) return;
-        logger.log('Saving family member for user', user.id, memberData);
-        const newMember = {
-            ...memberData,
-            user_id: user.id,
-            id: selectedMember ? selectedMember.id : undefined,
-            age: parseInt(memberData.age)
-        };
-        // Remove profileImage (file) from update
-        delete newMember.profileImage;
-        let upsertData = { ...newMember };
-        // Insert or update
-        const { error } = await supabase
-            .from('family_members')
-            .upsert(upsertData, { onConflict: ['id'] });
-        if (!error) {
-            logger.log('Family member saved successfully');
-            // Refresh list
-            const { data } = await supabase
-                .from('family_members')
-                .select('*')
-                .eq('user_id', user.id);
-            if (data) setFamilyMembers(data);
-            setShowAddMemberForm(false);
-            setMemberFormStep(1);
-            setSelectedMember(null);
-        } else {
-            logger.error('Error saving family member', error);
-            alert('Error saving family member');
+        if (onNavigate) {
+            onNavigate('addFamilyMember');
         }
     };
     const getRelationshipIcon = (relationship) => {
@@ -146,8 +65,24 @@ const FamilyTreeView = ({ user, t }) => {
                     ))
                 )}
             </div>
-            <button className="add-member-btn" onClick={handleAddMember} style={{ marginTop: 20 }}>
-                {t ? t('addFamilyMember') : '+ Add Family Member'}
+            <button
+                className="add-btn family-add-btn"
+                style={{
+                    background: 'linear-gradient(90deg, #d4a574 0%, #f7e7ce 100%)',
+                    color: '#6d3d14',
+                    border: 'none',
+                    borderRadius: '24px',
+                    fontWeight: 600,
+                    fontSize: '1.1rem',
+                    padding: '10px 28px',
+                    margin: '16px 0 24px 0',
+                    boxShadow: '0 2px 8px #e6c9a0',
+                    cursor: 'pointer',
+                    transition: 'background 0.2s',
+                }}
+                onClick={handleAddMember}
+            >
+                {t ? t('addFamilyMember') : 'Add Family Member'}
             </button>
         </div>
     );

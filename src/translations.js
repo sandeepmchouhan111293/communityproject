@@ -1,3 +1,4 @@
+
 export const translations = {
     en: {
         // Login Page
@@ -11,6 +12,11 @@ export const translations = {
         dontHaveAccount: "Don't have an account?",
         signUp: "Sign Up",
         pleaseEnterBoth: "Please enter both email and password.",
+        forgotPassword: "Forgot password?",
+        resetPassword: "Reset Password",
+        sendResetLink: "Send Reset Link",
+        resetEmailSent: "Password reset email sent! Check your inbox.",
+        pleaseEnterEmail: "Please enter your email.",
 
         // Dashboard Navigation
         communityHub: "Sen Community Hub",
@@ -23,10 +29,17 @@ export const translations = {
         discussions: "Discussions",
         documents: "Documents",
         directory: "Directory",
+        noEvents: "No events found.",
+        noOpportunities: "No volunteer opportunities found.",
+        noForums: "No forums found.",
+        noDiscussions: "No discussions found.",
+        noDocumentsFound: "No documents found.",
+        noMembersFound: "No members found.",
         settings: "Settings",
         logout: "Logout",
 
         // Home Page
+        noMemberHighlight: "No member is currently highlighted. Check back soon!",
         welcomeHome: "Welcome Home",
         stayConnected: "Stay connected with your spiritual community",
         blessingText: "In unity we find strength, in wisdom we find peace",
@@ -70,6 +83,7 @@ export const translations = {
         treeView: "Tree View",
 
         // Events
+        addEvent: "Add Event",
         communityEvents: "Community Events",
         createEvent: "Create Event",
         allEvents: "All Events",
@@ -78,6 +92,7 @@ export const translations = {
         upcoming: "Upcoming",
 
         // Volunteer
+        addOpportunity: "Add Opportunity",
         volunteerOpportunities: "Volunteer Opportunities",
         activeVolunteers: "Active Volunteers",
         hoursThisMonth: "Hours This Month",
@@ -87,6 +102,7 @@ export const translations = {
         ongoing: "Ongoing",
 
         // Discussions
+        addDiscussion: "Add Discussion",
         communityDiscussions: "Community Discussions",
         newTopic: "New Topic",
         totalTopics: "Total Topics",
@@ -95,6 +111,7 @@ export const translations = {
         recentDiscussions: "Recent Discussions",
 
         // Documents
+        addDocument: "Add Document",
         communityDocuments: "Community Documents",
         accessLevel: "Access Level",
         searchDocuments: "Search documents...",
@@ -105,12 +122,19 @@ export const translations = {
         guidelines: "Guidelines",
 
         // Settings
+        makeProfileVisible: "Make my profile visible to community members",
+        allowFamilyTreeVisibility: "Allow others to see my family tree",
+        emailNewsConnection: "Email notifications for new family connections",
+        downloadData: "Download my data",
         privacySettings: "Privacy Settings",
         notificationPreferences: "Notification Preferences",
         accountSettings: "Account Settings",
         changePassword: "Change Password",
         downloadMyData: "Download My Data",
         deleteAccount: "Delete Account",
+        showInDirectory: "Show me in community directory",
+        eventReminders: "Event reminders",
+        weeklyUpdates: "Weekly community updates",
 
         // Home View Cards & Content
         addMoreMembers: "Add 3 more family members to complete your family tree",
@@ -290,6 +314,11 @@ export const translations = {
         dontHaveAccount: "क्या आपका कोई खाता नहीं है?",
         signUp: "साइन अप करें",
         pleaseEnterBoth: "कृपया ईमेल और पासवर्ड दोनों दर्ज करें।",
+        forgotPassword: "पासवर्ड भूल गए?",
+        resetPassword: "पासवर्ड रीसेट करें",
+        sendResetLink: "रीसेट लिंक भेजें",
+        resetEmailSent: "पासवर्ड रीसेट ईमेल भेजा गया! कृपया अपना इनबॉक्स देखें।",
+        pleaseEnterEmail: "कृपया अपना ईमेल दर्ज करें।",
 
         // Dashboard Navigation
         communityHub: "सेन समुदाय केंद्र",
@@ -302,10 +331,17 @@ export const translations = {
         discussions: "चर्चा",
         documents: "दस्तावेज़",
         directory: "निर्देशिका",
+        noEvents: "कोई कार्यक्रम नहीं मिला।",
+        noOpportunities: "कोई स्वयंसेवक अवसर नहीं मिला।",
+        noForums: "कोई मंच नहीं मिला।",
+        noDiscussions: "कोई चर्चा नहीं मिली।",
+        noDocumentsFound: "कोई दस्तावेज़ नहीं मिला।",
+        noMembersFound: "कोई सदस्य नहीं मिला।",
         settings: "सेटिंग्स",
         logout: "लॉगआउट",
 
         // Home Page
+        noMemberHighlight: "इस समय कोई सदस्य हाइलाइट नहीं है। बाद में पुनः देखें!",
         welcomeHome: "घर में आपका स्वागत है",
         stayConnected: "अपने आध्यात्मिक समुदाय से जुड़े रहें",
         blessingText: "एकता में हमें शक्ति मिलती है, ज्ञान में हमें शांति मिलती है",
@@ -349,6 +385,7 @@ export const translations = {
         treeView: "वृक्ष दृश्य",
 
         // Events
+        addEvent: "कार्यक्रम जोड़ें",
         communityEvents: "सामुदायिक कार्यक्रम",
         createEvent: "कार्यक्रम बनाएं",
         allEvents: "सभी कार्यक्रम",
@@ -357,6 +394,7 @@ export const translations = {
         upcoming: "आगामी",
 
         // Volunteer
+        addOpportunity: "अवसर जोड़ें",
         volunteerOpportunities: "स्वयंसेवक अवसर",
         activeVolunteers: "सक्रिय स्वयंसेवक",
         hoursThisMonth: "इस महीने घंटे",
@@ -366,6 +404,7 @@ export const translations = {
         ongoing: "जारी",
 
         // Discussions
+        addDiscussion: "चर्चा जोड़ें",
         communityDiscussions: "सामुदायिक चर्चा",
         newTopic: "नया विषय",
         totalTopics: "कुल विषय",
@@ -374,6 +413,7 @@ export const translations = {
         recentDiscussions: "हाल की चर्चाएं",
 
         // Documents
+        addDocument: "दस्तावेज़ जोड़ें",
         communityDocuments: "सामुदायिक दस्तावेज़",
         accessLevel: "पहुंच स्तर",
         searchDocuments: "दस्तावेज़ खोजें...",
@@ -387,9 +427,16 @@ export const translations = {
         privacySettings: "गोपनीयता सेटिंग्स",
         notificationPreferences: "सूचना प्राथमिकताएं",
         accountSettings: "खाता सेटिंग्स",
+        makeProfileVisible: "अपनी प्रोफ़ाइल को समुदाय के सदस्यों के लिए दृश्यमान बनाएं",
+        allowFamilyTreeVisibility: "दूसरों को अपना पारिवारिक वृक्ष देखने की अनुमति दें",
+        emailNewsConnection: "नए पारिवारिक कनेक्शन के लिए ईमेल सूचनाएं",
+        downloadData: "मेरा डेटा डाउनलोड करें",
         changePassword: "पासवर्ड बदलें",
         downloadMyData: "मेरा डेटा डाउनलोड करें",
         deleteAccount: "खाता हटाएं",
+        showInDirectory: "मुझे समुदायिक निर्देशिका में दिखाएं",
+        eventReminders: "कार्यक्रम अनुस्मारक",
+        weeklyUpdates: "साप्ताहिक समुदायिक अपडेट",
 
         // Home View Cards & Content
         addMoreMembers: "अपना पारिवारिक वृक्ष पूरा करने के लिए 3 और पारिवारिक सदस्य जोड़ें",
@@ -560,9 +607,29 @@ export const translations = {
 };
 
 export const useTranslation = (language) => {
-    const t = (key, defaultValue = key) => {
-        return translations[language]?.[key] || defaultValue;
+    /**
+     * t(key, varsOrDefault)
+     * Usage:
+     *   t('welcomeUser', { name: 'Sandeep' })
+     *   // If not using variables: t('login')
+     */
+    const t = (key, varsOrDefault = {}) => {
+        let str = translations[language]?.[key];
+        let vars = {};
+        if (typeof varsOrDefault === 'object' && varsOrDefault !== null && !Array.isArray(varsOrDefault)) {
+            vars = varsOrDefault;
+        } else {
+            // If second arg is not an object, treat as default value
+            str = str || varsOrDefault || key;
+        }
+        if (!str) str = key;
+        // Replace {var} in string with values from vars
+        if (typeof str === 'string' && Object.keys(vars).length > 0) {
+            Object.entries(vars).forEach(([k, v]) => {
+                str = str.replace(new RegExp(`{${k}}`, 'g'), v);
+            });
+        }
+        return str;
     };
-
     return { t };
 };

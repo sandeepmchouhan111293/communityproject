@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Dashboard from './Dashboard';
 import DownloadLogsButton from './DownloadLogsButton';
+import HighlightAdminPanel from './HighlightAdminPanel';
 import { LanguageProvider } from './LanguageContext';
 import Login from './Login';
 import Signup from './Signup';
@@ -23,6 +24,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/admin/highlight" element={<HighlightAdminPanel t={(key) => key} />} />
         </Routes>
         <DownloadLogsButton />
       </Router>

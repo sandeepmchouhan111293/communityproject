@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { DB_TABLES, STORAGE_BUCKETS } from '../dbConfig';
 import { supabase } from '../supabaseClient';
 import logger from '../utils/logger';
 
@@ -20,7 +21,7 @@ const ProfileView = ({ user, t }) => {
             if (!user?.id) return;
             logger.log('Fetching profile for user', user.id);
             const { data, error } = await supabase
-                .from('profiles')
+                .from(DB_TABLES.PROFILES)
                 .select('*')
                 .eq('id', user.id)
                 .single();
@@ -54,10 +55,10 @@ const ProfileView = ({ user, t }) => {
         let profile_photo_url = undefined;
         if (profileData.profilePhoto) {
             const { data: uploadData, error: uploadError } = await supabase.storage
-                .from('profile-photos')
+                .from(STORAGE_BUCKETS.PROFILE_PHOTOS)
                 .upload(`${user.id}/${profileData.profilePhoto.name}`, profileData.profilePhoto, { upsert: true });
             if (!uploadError && uploadData) {
-                const { data: publicUrl } = supabase.storage.from('profile-photos').getPublicUrl(uploadData.path);
+                const { data: publicUrl } = supabase.storage.from(STORAGE_BUCKETS.PROFILE_PHOTOS).getPublicUrl(uploadData.path);
                 profile_photo_url = publicUrl?.publicUrl;
                 logger.log('Profile photo uploaded', profile_photo_url);
             }
@@ -75,7 +76,7 @@ const ProfileView = ({ user, t }) => {
         // Remove profilePhoto (file) from update
         delete updateData.profilePhoto;
         const { error } = await supabase
-            .from('profiles')
+            .from(DB_TABLES.PROFILES)
             .upsert(updateData, { onConflict: ['id'] });
         if (!error) {
             logger.log('Profile saved successfully');

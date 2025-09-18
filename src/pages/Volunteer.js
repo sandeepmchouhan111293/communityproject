@@ -1,44 +1,20 @@
-import { useState } from 'react';
 
-const VolunteerView = ({ user, t }) => {
-    const [opportunities, setOpportunities] = useState([
-        {
-            id: 1,
-            role: 'Event Coordinator',
-            description: 'Help organize and coordinate community events, manage volunteers, and ensure smooth execution.',
-            requiredSkills: ['Event Planning', 'Communication', 'Organization'],
-            timeCommitment: '5-10 hours/month',
-            urgency: 'high',
-            contact: 'Sarah Johnson',
-            interested: false,
-            volunteers: 3,
-            needed: 2
-        },
-        {
-            id: 2,
-            role: 'Graphic Designer',
-            description: 'Create flyers, social media graphics, and promotional materials for community events.',
-            requiredSkills: ['Graphic Design', 'Adobe Creative Suite', 'Social Media'],
-            timeCommitment: '2-5 hours/week',
-            urgency: 'medium',
-            contact: 'Design Team',
-            interested: true,
-            volunteers: 1,
-            needed: 2
-        },
-        {
-            id: 3,
-            role: 'Youth Mentor',
-            description: 'Guide and support young community members in their personal and academic development.',
-            requiredSkills: ['Mentoring', 'Communication', 'Patience'],
-            timeCommitment: '3-4 hours/week',
-            urgency: 'ongoing',
-            contact: 'Youth Committee',
-            interested: false,
-            volunteers: 8,
-            needed: 5
-        }
-    ]);
+import { useEffect, useState } from 'react';
+import { DB_TABLES } from '../dbConfig';
+import { supabase } from '../supabaseClient';
+
+const VolunteerView = ({ user, t, onNavigate }) => {
+    const [opportunities, setOpportunities] = useState([]);
+
+    useEffect(() => {
+        const fetchOpportunities = async () => {
+            const { data, error } = await supabase
+                .from(DB_TABLES.VOLUNTEER)
+                .select('*');
+            if (data) setOpportunities(data);
+        };
+        fetchOpportunities();
+    }, []);
     const handleInterest = (opportunityId) => {
         setOpportunities(prev => prev.map(opp =>
             opp.id === opportunityId
@@ -57,6 +33,25 @@ const VolunteerView = ({ user, t }) => {
     return (
         <div className="view-container">
             <h1>{t ? t('volunteerOpportunities') : 'Volunteer Opportunities'}</h1>
+            <button
+                className="add-btn volunteer-add-btn"
+                style={{
+                    background: 'linear-gradient(90deg, #d4a574 0%, #f7e7ce 100%)',
+                    color: '#6d3d14',
+                    border: 'none',
+                    borderRadius: '24px',
+                    fontWeight: 600,
+                    fontSize: '1.1rem',
+                    padding: '10px 28px',
+                    margin: '16px 0 24px 0',
+                    boxShadow: '0 2px 8px #e6c9a0',
+                    cursor: 'pointer',
+                    transition: 'background 0.2s',
+                }}
+                onClick={() => onNavigate && onNavigate('addVolunteer')}
+            >
+                {t ? t('addOpportunity') : 'Add Opportunity'}
+            </button>
             <div className="volunteer-list">
                 {opportunities.length === 0 ? (
                     <p>{t ? t('noOpportunities') : 'No volunteer opportunities found.'}</p>

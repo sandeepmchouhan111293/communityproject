@@ -4,6 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
 import { useLanguage } from './LanguageContext';
 import LanguageToggle from './LanguageToggle';
+import AddDiscussion from './pages/AddDiscussion';
+import AddDocument from './pages/AddDocument';
+import AddEvent from './pages/AddEvent';
+import AddFamilyMember from './pages/AddFamilyMember';
+import AddVolunteer from './pages/AddVolunteer';
 import CommunityDirectoryView from './pages/Directory';
 import DiscussionsView from './pages/Discussions';
 import DocumentsView from './pages/Documents';
@@ -67,19 +72,28 @@ function Dashboard() {
         );
     }
 
+    const handleNavigation = (view) => {
+        setActiveView(view);
+    };
+
     const renderContent = () => {
         const ViewComponent = {
             'home': HomeView,
             'profile': ProfileView,
             'family': FamilyTreeView,
+            'addFamilyMember': AddFamilyMember,
             'events': EventsView,
+            'addEvent': AddEvent,
             'volunteer': VolunteerView,
+            'addVolunteer': AddVolunteer,
             'discussions': DiscussionsView,
+            'addDiscussion': AddDiscussion,
             'documents': DocumentsView,
+            'addDocument': AddDocument,
             'directory': CommunityDirectoryView,
             'settings': SettingsView,
         }[activeView] || HomeView;
-        return <ViewComponent user={user} t={t} />;
+        return <ViewComponent user={user} t={t} onNavigate={handleNavigation} />;
     };
 
     return (

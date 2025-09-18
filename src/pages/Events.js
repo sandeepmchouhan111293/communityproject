@@ -1,44 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { DB_TABLES } from '../dbConfig';
+import { supabase } from '../supabaseClient';
 
-const EventsView = ({ user, t }) => {
-    const [events, setEvents] = useState([
-        {
-            id: 1,
-            title: 'Community Annual Gathering',
-            dateTime: '2024-02-15T18:00:00',
-            location: 'Community Center, Main Hall',
-            description: 'Join us for our annual community gathering with dinner, presentations, and networking.',
-            organizer: 'Community Board',
-            rsvpLimit: 100,
-            currentRSVPs: 67,
-            rsvpStatus: null,
-            category: 'community'
-        },
-        {
-            id: 2,
-            title: 'Family Heritage Workshop',
-            dateTime: '2024-02-20T14:00:00',
-            location: 'Library Meeting Room',
-            description: 'Learn techniques for researching and documenting your family history.',
-            organizer: 'Sarah Johnson',
-            rsvpLimit: 25,
-            currentRSVPs: 18,
-            rsvpStatus: 'attending',
-            category: 'educational'
-        },
-        {
-            id: 3,
-            title: 'Youth Soccer Tournament',
-            dateTime: '2024-02-25T09:00:00',
-            location: 'Central Park Sports Field',
-            description: 'Annual soccer tournament for community youth. Volunteers needed for coordination.',
-            organizer: 'Sports Committee',
-            rsvpLimit: 200,
-            currentRSVPs: 89,
-            rsvpStatus: null,
-            category: 'sports'
-        }
-    ]);
+const EventsView = ({ user, t, onNavigate }) => {
+    const [events, setEvents] = useState([]);
+
+    useEffect(() => {
+        const fetchEvents = async () => {
+            const { data, error } = await supabase
+                .from(DB_TABLES.EVENTS)
+                .select('*')
+                .order('dateTime', { ascending: true });
+            if (data) setEvents(data);
+        };
+        fetchEvents();
+    }, []);
     const handleRSVP = (eventId, status) => {
         setEvents(prev => prev.map(event =>
             event.id === eventId
@@ -74,6 +50,25 @@ const EventsView = ({ user, t }) => {
     return (
         <div className="view-container">
             <h1>{t ? t('events') : 'Events'}</h1>
+            <button
+                className="add-btn event-add-btn"
+                style={{
+                    background: 'linear-gradient(90deg, #d4a574 0%, #f7e7ce 100%)',
+                    color: '#6d3d14',
+                    border: 'none',
+                    borderRadius: '24px',
+                    fontWeight: 600,
+                    fontSize: '1.1rem',
+                    padding: '10px 28px',
+                    margin: '16px 0 24px 0',
+                    boxShadow: '0 2px 8px #e6c9a0',
+                    cursor: 'pointer',
+                    transition: 'background 0.2s',
+                }}
+                onClick={() => onNavigate && onNavigate('addEvent')}
+            >
+                {t ? t('addEvent') : 'Add Event'}
+            </button>
             <div className="events-list">
                 {events.length === 0 ? (
                     <p>{t ? t('noEvents') : 'No events found.'}</p>

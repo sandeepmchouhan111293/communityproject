@@ -1,24 +1,31 @@
 import { useEffect, useState } from 'react';
+import { DB_TABLES } from '../dbConfig';
+import { supabase } from '../supabaseClient';
 
 const HomeView = ({ user, t }) => {
-    const [memberHighlight, setMemberHighlight] = useState(() => ({
-        name: 'Sarah Johnson',
-        title: t('volunteerChampion'),
-        contribution: t('organizedEvents'),
-        quote: t('familyStoryMatters'),
-        avatar: null,
-        achievementBadge: '🏆'
-    }));
+    const [memberHighlight, setMemberHighlight] = useState(null);
 
     useEffect(() => {
-        setMemberHighlight({
-            name: 'Sarah Johnson',
-            title: t('volunteerChampion'),
-            contribution: t('organizedEvents'),
-            quote: t('familyStoryMatters'),
-            avatar: null,
-            achievementBadge: '🏆'
-        });
+        const fetchHighlightedProfile = async () => {
+            const { data, error } = await supabase
+                .from(DB_TABLES.PROFILES)
+                .select('*')
+                .eq('is_highlighted', true)
+                .single();
+            if (data) {
+                setMemberHighlight({
+                    name: data.full_name,
+                    title: data.title || t('volunteerChampion'),
+                    contribution: data.contribution || t('organizedEvents'),
+                    quote: data.quote || t('familyStoryMatters'),
+                    avatar: data.profile_photo_url || null,
+                    achievementBadge: data.achievement_badge || '🏆',
+                });
+            } else {
+                setMemberHighlight(null);
+            }
+        };
+        fetchHighlightedProfile();
     }, [t]);
 
     const [newsFeed] = useState(() => [
@@ -79,23 +86,31 @@ const HomeView = ({ user, t }) => {
                     <button className="nominate-btn">{t('nominateSomeone')}</button>
                 </div>
                 <div className="member-highlight-card">
-                    <div className="highlight-avatar">
-                        {memberHighlight.avatar ? (
-                            <img src={memberHighlight.avatar} alt={memberHighlight.name} />
-                        ) : (
-                            <div className="avatar-placeholder-highlight">
-                                <span className="achievement-badge">{memberHighlight.achievementBadge}</span>
+                    {memberHighlight ? (
+                        <>
+                            <div className="highlight-avatar">
+                                {memberHighlight.avatar ? (
+                                    <img src={memberHighlight.avatar} alt={memberHighlight.name} />
+                                ) : (
+                                    <div className="avatar-placeholder-highlight">
+                                        <span className="achievement-badge">{memberHighlight.achievementBadge}</span>
+                                    </div>
+                                )}
                             </div>
-                        )}
-                    </div>
-                    <div className="highlight-content">
-                        <h3>{memberHighlight.name}</h3>
-                        <p className="highlight-title">{memberHighlight.title}</p>
-                        <p className="highlight-contribution">{memberHighlight.contribution}</p>
-                        <blockquote className="highlight-quote">
-                            "{memberHighlight.quote}"
-                        </blockquote>
-                    </div>
+                            <div className="highlight-content">
+                                <h3>{memberHighlight.name}</h3>
+                                <p className="highlight-title">{memberHighlight.title}</p>
+                                <p className="highlight-contribution">{memberHighlight.contribution}</p>
+                                <blockquote className="highlight-quote">
+                                    "{memberHighlight.quote}"
+                                </blockquote>
+                            </div>
+                        </>
+                    ) : (
+                        <div className="highlight-content">
+                            <p>{t('noMemberHighlight')}</p>
+                        </div>
+                    )}
                 </div>
             </div>
             <div className="home-dashboard-grid">

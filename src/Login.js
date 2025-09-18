@@ -1,15 +1,18 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from './LanguageContext';
+import LanguageToggle from './LanguageToggle';
 import './Login.css';
 import { supabase } from './supabaseClient';
-import { useLanguage } from './LanguageContext';
 import { useTranslation } from './translations';
-import LanguageToggle from './LanguageToggle';
 
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [resetEmail, setResetEmail] = useState('');
+    const [resetSent, setResetSent] = useState(false);
+    const [showReset, setShowReset] = useState(false);
     const navigate = useNavigate();
     const { language } = useLanguage();
     const { t } = useTranslation(language);
@@ -34,6 +37,25 @@ function Login() {
             setError('');
             console.log('Logged in user:', data);
             navigate('/dashboard');
+        }
+    };
+
+    // Password reset via email/OTP
+    const handlePasswordReset = async (e) => {
+        e.preventDefault();
+        if (!resetEmail) {
+            setError(t('pleaseEnterEmail'));
+            return;
+        }
+        const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
+            redirectTo: window.location.origin + '/reset-password',
+        });
+        if (error) {
+            setError(error.message);
+            setResetSent(false);
+        } else {
+            setError('');
+            setResetSent(true);
         }
     };
 
@@ -82,7 +104,36 @@ function Login() {
                     <span>{t('dontHaveAccount')} </span>
                     <a href="/signup">{t('signUp')}</a>
                 </div>
+
+                <div className="reset-link">
+                    <a href="#" onClick={e => { e.preventDefault(); setShowReset(true); }}>{t('Forgot Password') || 'Forgot password?'}</a>
+                </div>
             </form>
+            {/* Password Reset Modal */}
+            {showReset && (
+                <div className="reset-modal-overlay" onClick={() => setShowReset(false)}>
+                    <div className="reset-modal" onClick={e => e.stopPropagation()}>
+                        <button className="reset-modal-close" onClick={() => setShowReset(false)}>&times;</button>
+                        <form className="reset-form" onSubmit={handlePasswordReset}>
+                            <h3>{t('resetPassword') || 'Reset Password'}</h3>
+                            {resetSent ? (
+                                <div className="success">{t('resetEmailSent') || 'Password reset email sent! Check your inbox.'}</div>
+                            ) : (
+                                <>
+                                    <input
+                                        type="email"
+                                        value={resetEmail}
+                                        onChange={e => setResetEmail(e.target.value)}
+                                        placeholder={t('enterEmail')}
+                                        required
+                                    />
+                                    <button type="submit">{t('sendResetLink') || 'Send Reset Link'}</button>
+                                </>
+                            )}
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
