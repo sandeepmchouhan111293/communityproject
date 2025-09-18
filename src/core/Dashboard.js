@@ -28,7 +28,7 @@ function Dashboard() {
     const [activeView, setActiveView] = useState('home');
     const navigate = useNavigate();
     const { language } = useLanguage();
-    const { t } = useTranslation(language);
+    const { t, tLocation } = useTranslation(language);
 
     const navItems = useMemo(() => [
         { view: 'home', icon: '🏠', translationKey: 'home' },
@@ -96,7 +96,7 @@ function Dashboard() {
             'directory': CommunityDirectoryView,
             'settings': SettingsView,
         }[activeView] || HomeView;
-        return <ViewComponent user={user} t={t} onNavigate={handleNavigation} />;
+        return <ViewComponent user={user} t={t} tLocation={tLocation} onNavigate={handleNavigation} />;
     };
 
     return (

@@ -137,7 +137,6 @@ const ProfileView = ({ user, t }) => {
                         <div className="form-grid">
                             <div className="form-group">
                                 <label htmlFor="dateOfBirth">{t('dateOfBirth') || 'Date of Birth'}</label>
-                                <label htmlFor="date_of_birth">{t('dateOfBirth') || 'Date of Birth'}</label>
                                 <input
                                     type="date"
                                     id="date_of_birth"

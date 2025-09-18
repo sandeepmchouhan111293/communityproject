@@ -2,16 +2,21 @@ import { useEffect, useState } from 'react';
 import { DB_TABLES } from '../../config/dbConfig';
 import { supabase } from '../../config/supabaseClient';
 import logger from '../../utils/logger';
-import { madhyaPradeshDistricts, districtCitiesMap, cityVillagesMap } from '../../data';
+import { madhyaPradeshDistricts, districtCitiesMap, cityVillagesMap, allIndianStatesAndUTs, stateDistrictsMap, districtSubdistrictsMap } from '../../data';
 import './CommunityFamilies.css';
 
 
-const CommunityFamilies = ({ user, t, onNavigate }) => {
+const CommunityFamilies = ({ user, t, tLocation, onNavigate }) => {
+
     const [families, setFamilies] = useState([]);
     const [allFamilies, setAllFamilies] = useState([]); // Store all families for filtering
+    const [selectedState, setSelectedState] = useState('all');
     const [selectedDistrict, setSelectedDistrict] = useState('all');
+    const [selectedSubdistrict, setSelectedSubdistrict] = useState('all');
     const [selectedCity, setSelectedCity] = useState('all');
     const [selectedVillage, setSelectedVillage] = useState('all');
+    const [availableDistricts, setAvailableDistricts] = useState(madhyaPradeshDistricts); // Default to MP districts
+    const [availableSubdistricts, setAvailableSubdistricts] = useState([]);
     const [availableCities, setAvailableCities] = useState([]);
     const [availableVillages, setAvailableVillages] = useState([]);
     const [selectedFamily, setSelectedFamily] = useState(null);
@@ -31,29 +36,72 @@ const CommunityFamilies = ({ user, t, onNavigate }) => {
 
     useEffect(() => {
         fetchCommunityData();
-    }, [selectedDistrict, selectedCity, selectedVillage]);
+    }, [selectedState, selectedDistrict, selectedSubdistrict, selectedCity, selectedVillage]);
 
     // Apply advanced filters whenever filter criteria change
     useEffect(() => {
         applyAdvancedFilters();
     }, [allFamilies, searchTerm, filterGeneration, filterGender, filterMaritalStatus, filterOccupation]);
 
+    // Handle state selection change
+    const handleStateChange = (state) => {
+        setSelectedState(state);
+        setSelectedDistrict('all');
+        setSelectedSubdistrict('all');
+        setSelectedCity('all');
+        setSelectedVillage('all');
+
+        if (state === 'all') {
+            setAvailableDistricts(madhyaPradeshDistricts); // Default to MP districts
+            setAvailableSubdistricts([]);
+            setAvailableCities([]);
+            setAvailableVillages([]);
+        } else {
+            const districts = stateDistrictsMap[state] || [];
+            console.log('State selected:', state, 'Available districts:', districts.length, 'districts');
+            setAvailableDistricts(districts);
+            setAvailableSubdistricts([]);
+            setAvailableCities([]);
+            setAvailableVillages([]);
+        }
+    };
+
     // Handle district selection change
     const handleDistrictChange = (district) => {
         setSelectedDistrict(district);
+        setSelectedSubdistrict('all');
         setSelectedCity('all');
         setSelectedVillage('all');
 
         if (district === 'all') {
+            setAvailableSubdistricts([]);
             setAvailableCities([]);
             setAvailableVillages([]);
         } else {
+            const subdistricts = districtSubdistrictsMap[district] || [];
+            console.log('District selected:', district, 'Available subdistricts:', subdistricts.length, 'subdistricts');
+            setAvailableSubdistricts(subdistricts);
+
             const cities = districtCitiesMap[district] || [];
             // Add the district name itself as a city option (for data like "Bhopal", "Indore")
             const allCities = cities.includes(district) ? cities : [district, ...cities];
             console.log('District selected:', district, 'Available cities:', allCities);
             setAvailableCities(allCities);
             setAvailableVillages([]);
+        }
+    };
+
+    // Handle subdistrict selection change
+    const handleSubdistrictChange = (subdistrict) => {
+        setSelectedSubdistrict(subdistrict);
+        setSelectedCity('all');
+        setSelectedVillage('all');
+
+        if (subdistrict === 'all') {
+            // Keep existing city options when no specific subdistrict is selected
+        } else {
+            // For now, keep existing city behavior - can be enhanced later
+            console.log('Subdistrict selected:', subdistrict);
         }
     };
 
@@ -254,6 +302,15 @@ const CommunityFamilies = ({ user, t, onNavigate }) => {
                     return cityVariants.includes(family.city);
                 });
                 console.log('Families after city filter:', filteredFamilies.length);
+            } else if (selectedSubdistrict !== 'all') {
+                // Filter by subdistrict - for now, this will be similar to city filtering
+                // Can be enhanced when family data includes subdistrict information
+                console.log('Filtering by subdistrict:', selectedSubdistrict);
+                filteredFamilies = filteredFamilies.filter(family => {
+                    // For now, check if family city matches subdistrict name
+                    return family.city === selectedSubdistrict;
+                });
+                console.log('Families after subdistrict filter:', filteredFamilies.length);
             } else if (selectedDistrict !== 'all') {
                 // Filter by district - check if family city is in the selected district's cities
                 const districtCities = districtCitiesMap[selectedDistrict] || [];
@@ -271,6 +328,25 @@ const CommunityFamilies = ({ user, t, onNavigate }) => {
                            family.city === selectedDistrict;
                 });
                 console.log('Families after district filter:', filteredFamilies.length);
+            } else if (selectedState !== 'all') {
+                // Filter by state - check if family city is in any district of the selected state
+                const stateDistricts = stateDistrictsMap[selectedState] || [];
+                console.log('Filtering by state:', selectedState);
+                console.log('State districts:', stateDistricts);
+                filteredFamilies = filteredFamilies.filter(family => {
+                    // Check if family city matches any district in the state or is in district cities
+                    return stateDistricts.some(district => {
+                        const districtCities = districtCitiesMap[district] || [];
+                        const cityVariants = [
+                            family.city,
+                            family.city + ' City',
+                            family.city.replace(' City', '')
+                        ];
+                        return cityVariants.includes(district) ||
+                               districtCities.some(city => cityVariants.includes(city));
+                    });
+                });
+                console.log('Families after state filter:', filteredFamilies.length);
             }
 
             setAllFamilies(filteredFamilies);
@@ -449,16 +525,50 @@ const CommunityFamilies = ({ user, t, onNavigate }) => {
 
                 <div className="location-filters">
                     <div className="filter-group">
+                        <label>{t ? t('selectState') : 'State'}:</label>
+                        <select
+                            value={selectedState}
+                            onChange={(e) => handleStateChange(e.target.value)}
+                            className="location-select"
+                        >
+                            <option value="all">{t ? t('allStates') : 'All States'}</option>
+                            {allIndianStatesAndUTs.map(state => (
+                                <option key={state} value={state}>
+                                    {tLocation ? tLocation(state) : state}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="filter-group">
                         <label>{t ? t('selectDistrict') : 'District'}:</label>
                         <select
                             value={selectedDistrict}
                             onChange={(e) => handleDistrictChange(e.target.value)}
                             className="location-select"
+                            disabled={selectedState === 'all'}
                         >
                             <option value="all">{t ? t('allDistricts') : 'All Districts'}</option>
-                            {madhyaPradeshDistricts.map(district => (
+                            {availableDistricts.map(district => (
                                 <option key={district} value={district}>
-                                    {district}
+                                    {tLocation ? tLocation(district) : district}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="filter-group">
+                        <label>{t ? t('selectSubdistrict') : 'Subdistrict'}:</label>
+                        <select
+                            value={selectedSubdistrict}
+                            onChange={(e) => handleSubdistrictChange(e.target.value)}
+                            className="location-select"
+                            disabled={selectedDistrict === 'all'}
+                        >
+                            <option value="all">{t ? t('allSubdistricts') : 'All Subdistricts'}</option>
+                            {availableSubdistricts.map(subdistrict => (
+                                <option key={subdistrict} value={subdistrict}>
+                                    {tLocation ? tLocation(subdistrict) : subdistrict}
                                 </option>
                             ))}
                         </select>
@@ -475,7 +585,7 @@ const CommunityFamilies = ({ user, t, onNavigate }) => {
                             <option value="all">{t ? t('allCities') : 'All Cities'}</option>
                             {availableCities.map(city => (
                                 <option key={city} value={city}>
-                                    {city}
+                                    {tLocation ? tLocation(city) : city}
                                 </option>
                             ))}
                         </select>
@@ -492,7 +602,7 @@ const CommunityFamilies = ({ user, t, onNavigate }) => {
                             <option value="all">{t ? t('noVillage') : 'No Specific Village'}</option>
                             {availableVillages.map(village => (
                                 <option key={village} value={village}>
-                                    {village}
+                                    {tLocation ? tLocation(village) : village}
                                 </option>
                             ))}
                         </select>
@@ -609,19 +719,27 @@ const CommunityFamilies = ({ user, t, onNavigate }) => {
                 </div>
                 <div className="stat-card">
                     <span className="stat-number">
-                        {selectedDistrict === 'all'
-                            ? madhyaPradeshDistricts.length
-                            : selectedCity === 'all'
-                                ? availableCities.length
-                                : availableVillages.length
+                        {selectedState === 'all'
+                            ? allIndianStatesAndUTs.length
+                            : selectedDistrict === 'all'
+                                ? availableDistricts.length
+                                : selectedSubdistrict === 'all'
+                                    ? availableSubdistricts.length
+                                    : selectedCity === 'all'
+                                        ? availableCities.length
+                                        : availableVillages.length
                         }
                     </span>
                     <span className="stat-label">
-                        {selectedDistrict === 'all'
-                            ? (t ? t('districts') : 'Districts')
-                            : selectedCity === 'all'
-                                ? (t ? t('cities') : 'Cities')
-                                : (t ? t('villages') : 'Villages')
+                        {selectedState === 'all'
+                            ? (t ? t('states') : 'States')
+                            : selectedDistrict === 'all'
+                                ? (t ? t('districts') : 'Districts')
+                                : selectedSubdistrict === 'all'
+                                    ? (t ? t('subdistricts') : 'Subdistricts')
+                                    : selectedCity === 'all'
+                                        ? (t ? t('cities') : 'Cities')
+                                        : (t ? t('villages') : 'Villages')
                         }
                     </span>
                 </div>
@@ -691,9 +809,13 @@ const CommunityFamilies = ({ user, t, onNavigate }) => {
                             ? (t ? t('noFamiliesInLocation') : `No families found in ${selectedVillage}`)
                             : selectedCity !== 'all'
                                 ? (t ? t('noFamiliesInLocation') : `No families found in ${selectedCity}`)
-                                : selectedDistrict !== 'all'
-                                    ? (t ? t('noFamiliesInLocation') : `No families found in ${selectedDistrict}`)
-                                    : (t ? t('noFamiliesYet') : 'No families have been added to the community yet')
+                                : selectedSubdistrict !== 'all'
+                                    ? (t ? t('noFamiliesInLocation') : `No families found in ${selectedSubdistrict}`)
+                                    : selectedDistrict !== 'all'
+                                        ? (t ? t('noFamiliesInLocation') : `No families found in ${selectedDistrict}`)
+                                        : selectedState !== 'all'
+                                            ? (t ? t('noFamiliesInLocation') : `No families found in ${selectedState}`)
+                                            : (t ? t('noFamiliesYet') : 'No families have been added to the community yet')
                         }
                     </p>
                 </div>
