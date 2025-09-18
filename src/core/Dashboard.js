@@ -10,6 +10,7 @@ import AddEvent from '../pages/events/AddEvent';
 import AddFamilyMember from '../pages/family/AddFamilyMember';
 import AddVolunteer from '../pages/volunteer/AddVolunteer';
 import CommunityDirectoryView from '../pages/community/Directory';
+import CommunityFamilies from '../pages/community/CommunityFamilies';
 import DiscussionsView from '../pages/discussions/Discussions';
 import DocumentsView from '../pages/documents/Documents';
 import EventsView from '../pages/events/Events';
@@ -33,6 +34,7 @@ function Dashboard() {
         { view: 'home', icon: '🏠', translationKey: 'home' },
         { view: 'profile', icon: '👤', translationKey: 'myProfile' },
         { view: 'family', icon: '🌳', translationKey: 'familyTree' },
+        { view: 'communityFamilies', icon: '🏘️', translationKey: 'communityFamilies' },
         { view: 'events', icon: '📅', translationKey: 'events' },
         { view: 'volunteer', icon: '🤝', translationKey: 'volunteer' },
         { view: 'discussions', icon: '💬', translationKey: 'discussions' },
@@ -82,6 +84,7 @@ function Dashboard() {
             'profile': ProfileView,
             'family': FamilyTreeView,
             'addFamilyMember': AddFamilyMember,
+            'communityFamilies': CommunityFamilies,
             'events': EventsView,
             'addEvent': AddEvent,
             'volunteer': VolunteerView,
