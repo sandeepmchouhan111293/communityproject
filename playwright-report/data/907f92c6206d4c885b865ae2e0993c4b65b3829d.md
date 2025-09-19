@@ -1,0 +1,768 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - navigation [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - img "Sen Ji Maharaj" [ref=e7]
+          - heading "Sen Community Hub" [level=1] [ref=e8]
+          - paragraph [ref=e9]: Guided by wisdom, united in spirit
+        - button "EN 🌐 हिंदी" [ref=e11] [cursor=pointer]:
+          - generic [ref=e12] [cursor=pointer]:
+            - generic [ref=e13] [cursor=pointer]: EN
+            - generic [ref=e14] [cursor=pointer]: 🌐
+          - generic: हिंदी
+        - generic [ref=e15]:
+          - img "User Avatar" [ref=e17]
+          - generic [ref=e20]:
+            - paragraph [ref=e21]: Sandeep Chouhan
+            - paragraph [ref=e22]: chouhan.sandeep003@gmail.com
+      - list [ref=e23]:
+        - listitem [ref=e24]:
+          - button "Home" [ref=e25] [cursor=pointer]:
+            - generic [ref=e26] [cursor=pointer]: 🏠
+            - text: Home
+        - listitem [ref=e27]:
+          - button "My Profile" [ref=e28] [cursor=pointer]:
+            - generic [ref=e29] [cursor=pointer]: 👤
+            - text: My Profile
+        - listitem [ref=e30]:
+          - button "Family Tree" [ref=e31] [cursor=pointer]:
+            - generic [ref=e32] [cursor=pointer]: 🌳
+            - text: Family Tree
+        - listitem [ref=e33]:
+          - button "Community Families" [ref=e34] [cursor=pointer]:
+            - generic [ref=e35] [cursor=pointer]: 🏘️
+            - text: Community Families
+        - listitem [ref=e36]:
+          - button "Events" [ref=e37] [cursor=pointer]:
+            - generic [ref=e38] [cursor=pointer]: 📅
+            - text: Events
+        - listitem [ref=e39]:
+          - button "Volunteer" [ref=e40] [cursor=pointer]:
+            - generic [ref=e41] [cursor=pointer]: 🤝
+            - text: Volunteer
+        - listitem [ref=e42]:
+          - button "Discussions" [ref=e43] [cursor=pointer]:
+            - generic [ref=e44] [cursor=pointer]: 💬
+            - text: Discussions
+        - listitem [ref=e45]:
+          - button "Documents" [ref=e46] [cursor=pointer]:
+            - generic [ref=e47] [cursor=pointer]: 📁
+            - text: Documents
+        - listitem [ref=e48]:
+          - button "Directory" [ref=e49] [cursor=pointer]:
+            - generic [ref=e50] [cursor=pointer]: 📖
+            - text: Directory
+        - listitem [ref=e51]:
+          - button "Settings" [ref=e52] [cursor=pointer]:
+            - generic [ref=e53] [cursor=pointer]: ⚙️
+            - text: Settings
+      - button "Logout" [ref=e55] [cursor=pointer]:
+        - generic [ref=e56] [cursor=pointer]: 🚪
+        - text: Logout
+    - main [ref=e57]:
+      - generic [ref=e58]:
+        - generic [ref=e59]:
+          - heading "Community Families" [level=1] [ref=e60]
+          - generic [ref=e61]:
+            - button "👨‍👩‍👧‍👦 Family View" [ref=e62] [cursor=pointer]
+            - button "🗺️ Migration Map" [ref=e63] [cursor=pointer]
+          - generic [ref=e64]:
+            - generic [ref=e65]:
+              - generic [ref=e66]: "State:"
+              - combobox [ref=e67] [cursor=pointer]:
+                - option "All States" [selected]
+                - option "Andaman and Nicobar Islands"
+                - option "Andhra Pradesh"
+                - option "Arunachal Pradesh"
+                - option "Assam"
+                - option "Bihar"
+                - option "Chandigarh"
+                - option "Chhattisgarh"
+                - option "Dadra and Nagar Haveli and Daman and Diu"
+                - option "Delhi"
+                - option "Goa"
+                - option "Gujarat"
+                - option "Haryana"
+                - option "Himachal Pradesh"
+                - option "Jammu and Kashmir"
+                - option "Jharkhand"
+                - option "Karnataka"
+                - option "Kerala"
+                - option "Ladakh"
+                - option "Lakshadweep"
+                - option "Madhya Pradesh"
+                - option "Maharashtra"
+                - option "Manipur"
+                - option "Meghalaya"
+                - option "Mizoram"
+                - option "Nagaland"
+                - option "Odisha"
+                - option "Puducherry"
+                - option "Punjab"
+                - option "Rajasthan"
+                - option "Sikkim"
+                - option "Tamil Nadu"
+                - option "Telangana"
+                - option "Tripura"
+                - option "Uttar Pradesh"
+                - option "Uttarakhand"
+                - option "West Bengal"
+            - generic [ref=e68]:
+              - generic [ref=e69]: "District:"
+              - combobox [disabled] [ref=e70]:
+                - option "All Districts" [selected]
+                - option "Agar Malwa"
+                - option "Alirajpur"
+                - option "Anuppur"
+                - option "Ashoknagar"
+                - option "Balaghat"
+                - option "Barwani"
+                - option "Betul"
+                - option "Bhind"
+                - option "Bhopal"
+                - option "Burhanpur"
+                - option "Chachaura"
+                - option "Chhatarpur"
+                - option "Chhindwara"
+                - option "Damoh"
+                - option "Datia"
+                - option "Dewas"
+                - option "Dhar"
+                - option "Dindori"
+                - option "Guna"
+                - option "Gwalior"
+                - option "Harda"
+                - option "Hoshangabad"
+                - option "Indore"
+                - option "Jabalpur"
+                - option "Jhabua"
+                - option "Katni"
+                - option "Khandwa"
+                - option "Khargone"
+                - option "Maihar"
+                - option "Mandla"
+                - option "Mandsaur"
+                - option "Morena"
+                - option "Narmadapuram"
+                - option "Narsinghpur"
+                - option "Neemuch"
+                - option "Niwari"
+                - option "Panna"
+                - option "Raisen"
+                - option "Rajgarh"
+                - option "Ratlam"
+                - option "Rewa"
+                - option "Sagar"
+                - option "Satna"
+                - option "Sehore"
+                - option "Seoni"
+                - option "Shahdol"
+                - option "Shajapur"
+                - option "Sheopur"
+                - option "Shivpuri"
+                - option "Sidhi"
+                - option "Singrauli"
+                - option "Tikamgarh"
+                - option "Ujjain"
+                - option "Umaria"
+                - option "Vidisha"
+            - generic [ref=e71]:
+              - generic [ref=e72]: "Subdistrict:"
+              - combobox [disabled] [ref=e73]:
+                - option "All Subdistricts" [selected]
+            - generic [ref=e74]:
+              - generic [ref=e75]: "City:"
+              - combobox [disabled] [ref=e76]:
+                - option "All Cities" [selected]
+            - generic [ref=e77]:
+              - generic [ref=e78]: "Village:"
+              - combobox [disabled] [ref=e79]:
+                - option "No Specific Village" [selected]
+          - button "🔍 Advanced Filters ▼" [ref=e81] [cursor=pointer]:
+            - text: 🔍 Advanced Filters
+            - generic [ref=e82] [cursor=pointer]: ▼
+        - generic [ref=e83]:
+          - generic [ref=e84]:
+            - generic [ref=e85]: "11"
+            - generic [ref=e86]: Families
+          - generic [ref=e87]:
+            - generic [ref=e88]: "54"
+            - generic [ref=e89]: Members
+          - generic [ref=e90]:
+            - generic [ref=e91]: "36"
+            - generic [ref=e92]: States
+        - generic [ref=e94]:
+          - generic [ref=e95]:
+            - generic [ref=e96]:
+              - heading "Tiwari Family" [level=3] [ref=e97]
+              - generic [ref=e98]:
+                - generic [ref=e99]: 📍
+                - generic [ref=e100]: Bhopal
+            - generic [ref=e101]:
+              - generic [ref=e102]: 6 Members
+              - generic [ref=e103]:
+                - generic [ref=e104] [cursor=pointer]:
+                  - generic [ref=e105] [cursor=pointer]: 💑
+                  - generic [ref=e106] [cursor=pointer]:
+                    - heading "Ramesh Tiwari" [level=4] [ref=e107] [cursor=pointer]
+                    - paragraph [ref=e108] [cursor=pointer]: Father/Mother
+                    - paragraph [ref=e109] [cursor=pointer]: 52 years old
+                    - paragraph [ref=e110] [cursor=pointer]: IAS Officer
+                - generic [ref=e111] [cursor=pointer]:
+                  - generic [ref=e112] [cursor=pointer]: 💑
+                  - generic [ref=e113] [cursor=pointer]:
+                    - heading "Sunita Tiwari" [level=4] [ref=e114] [cursor=pointer]
+                    - paragraph [ref=e115] [cursor=pointer]: Father/Mother
+                    - paragraph [ref=e116] [cursor=pointer]: 49 years old
+                    - paragraph [ref=e117] [cursor=pointer]: College Principal
+                - generic [ref=e118] [cursor=pointer]:
+                  - generic [ref=e119] [cursor=pointer]: 👶
+                  - generic [ref=e120] [cursor=pointer]:
+                    - heading "Aaditya Tiwari" [level=4] [ref=e121] [cursor=pointer]
+                    - paragraph [ref=e122] [cursor=pointer]: Son/Daughter
+                    - paragraph [ref=e123] [cursor=pointer]: 24 years old
+                    - paragraph [ref=e124] [cursor=pointer]: Civil Services Aspirant
+                - generic [ref=e125] [cursor=pointer]:
+                  - generic [ref=e126] [cursor=pointer]: 👶
+                  - generic [ref=e127] [cursor=pointer]:
+                    - heading "Anushka Tiwari" [level=4] [ref=e128] [cursor=pointer]
+                    - paragraph [ref=e129] [cursor=pointer]: Son/Daughter
+                    - paragraph [ref=e130] [cursor=pointer]: 21 years old
+                    - paragraph [ref=e131] [cursor=pointer]: Law Student
+                - generic [ref=e132] [cursor=pointer]:
+                  - generic [ref=e133] [cursor=pointer]: 👨‍👩‍👧‍👦
+                  - generic [ref=e134] [cursor=pointer]:
+                    - heading "Vishwanath Tiwari" [level=4] [ref=e135] [cursor=pointer]
+                    - paragraph [ref=e136] [cursor=pointer]: Parent
+                    - paragraph [ref=e137] [cursor=pointer]: 78 years old
+                    - paragraph [ref=e138] [cursor=pointer]: Retired District Collector
+                - generic [ref=e139] [cursor=pointer]:
+                  - generic [ref=e140] [cursor=pointer]: 👨‍👩‍👧‍👦
+                  - generic [ref=e141] [cursor=pointer]:
+                    - heading "Kamala Tiwari" [level=4] [ref=e142] [cursor=pointer]
+                    - paragraph [ref=e143] [cursor=pointer]: Parent
+                    - paragraph [ref=e144] [cursor=pointer]: 75 years old
+                    - paragraph [ref=e145] [cursor=pointer]: Retired School Principal
+            - button "View Family Tree" [active] [ref=e147] [cursor=pointer]
+          - generic [ref=e148]:
+            - generic [ref=e149]:
+              - heading "Shukla Family" [level=3] [ref=e150]
+              - generic [ref=e151]:
+                - generic [ref=e152]: 📍
+                - generic [ref=e153]: Bhopal
+            - generic [ref=e154]:
+              - generic [ref=e155]: 5 Members
+              - generic [ref=e156]:
+                - generic [ref=e157] [cursor=pointer]:
+                  - generic [ref=e158] [cursor=pointer]: 💑
+                  - generic [ref=e159] [cursor=pointer]:
+                    - heading "Manoj Shukla" [level=4] [ref=e160] [cursor=pointer]
+                    - paragraph [ref=e161] [cursor=pointer]: Father/Mother
+                    - paragraph [ref=e162] [cursor=pointer]: 50 years old
+                    - paragraph [ref=e163] [cursor=pointer]: Railway Officer
+                - generic [ref=e164] [cursor=pointer]:
+                  - generic [ref=e165] [cursor=pointer]: 💑
+                  - generic [ref=e166] [cursor=pointer]:
+                    - heading "Kavita Shukla" [level=4] [ref=e167] [cursor=pointer]
+                    - paragraph [ref=e168] [cursor=pointer]: Father/Mother
+                    - paragraph [ref=e169] [cursor=pointer]: 47 years old
+                    - paragraph [ref=e170] [cursor=pointer]: Government Doctor
+                - generic [ref=e171] [cursor=pointer]:
+                  - generic [ref=e172] [cursor=pointer]: 👶
+                  - generic [ref=e173] [cursor=pointer]:
+                    - heading "Rohit Shukla" [level=4] [ref=e174] [cursor=pointer]
+                    - paragraph [ref=e175] [cursor=pointer]: Son/Daughter
+                    - paragraph [ref=e176] [cursor=pointer]: 22 years old
+                    - paragraph [ref=e177] [cursor=pointer]: Engineering Student
+                - generic [ref=e178] [cursor=pointer]:
+                  - generic [ref=e179] [cursor=pointer]: 👶
+                  - generic [ref=e180] [cursor=pointer]:
+                    - heading "Shreya Shukla" [level=4] [ref=e181] [cursor=pointer]
+                    - paragraph [ref=e182] [cursor=pointer]: Son/Daughter
+                    - paragraph [ref=e183] [cursor=pointer]: 19 years old
+                    - paragraph [ref=e184] [cursor=pointer]: Medical Student
+                - generic [ref=e185] [cursor=pointer]:
+                  - generic [ref=e186] [cursor=pointer]: 👨‍👩‍👧‍👦
+                  - generic [ref=e187] [cursor=pointer]:
+                    - heading "Gopal Shukla" [level=4] [ref=e188] [cursor=pointer]
+                    - paragraph [ref=e189] [cursor=pointer]: Parent
+                    - paragraph [ref=e190] [cursor=pointer]: 76 years old
+                    - paragraph [ref=e191] [cursor=pointer]: Retired Station Master
+            - button "View Family Tree" [ref=e193] [cursor=pointer]
+          - generic [ref=e194]:
+            - generic [ref=e195]:
+              - heading "Dubey Family" [level=3] [ref=e196]
+              - generic [ref=e197]:
+                - generic [ref=e198]: 📍
+                - generic [ref=e199]: Bhopal
+            - generic [ref=e200]:
+              - generic [ref=e201]: 4 Members
+              - generic [ref=e202]:
+                - generic [ref=e203] [cursor=pointer]:
+                  - generic [ref=e204] [cursor=pointer]: 💑
+                  - generic [ref=e205] [cursor=pointer]:
+                    - heading "Prakash Dubey" [level=4] [ref=e206] [cursor=pointer]
+                    - paragraph [ref=e207] [cursor=pointer]: Father/Mother
+                    - paragraph [ref=e208] [cursor=pointer]: 48 years old
+                    - paragraph [ref=e209] [cursor=pointer]: Sanskrit Professor
+                - generic [ref=e210] [cursor=pointer]:
+                  - generic [ref=e211] [cursor=pointer]: 💑
+                  - generic [ref=e212] [cursor=pointer]:
+                    - heading "Sarita Dubey" [level=4] [ref=e213] [cursor=pointer]
+                    - paragraph [ref=e214] [cursor=pointer]: Father/Mother
+                    - paragraph [ref=e215] [cursor=pointer]: 45 years old
+                    - paragraph [ref=e216] [cursor=pointer]: Classical Music Teacher
+                - generic [ref=e217] [cursor=pointer]:
+                  - generic [ref=e218] [cursor=pointer]: 👶
+                  - generic [ref=e219] [cursor=pointer]:
+                    - heading "Vaibhav Dubey" [level=4] [ref=e220] [cursor=pointer]
+                    - paragraph [ref=e221] [cursor=pointer]: Son/Daughter
+                    - paragraph [ref=e222] [cursor=pointer]: 21 years old
+                    - paragraph [ref=e223] [cursor=pointer]: Sanskrit Studies Student
+                - generic [ref=e224] [cursor=pointer]:
+                  - generic [ref=e225] [cursor=pointer]: 👶
+                  - generic [ref=e226] [cursor=pointer]:
+                    - heading "Riya Dubey" [level=4] [ref=e227] [cursor=pointer]
+                    - paragraph [ref=e228] [cursor=pointer]: Son/Daughter
+                    - paragraph [ref=e229] [cursor=pointer]: 18 years old
+                    - paragraph [ref=e230] [cursor=pointer]: Music Student
+            - button "View Family Tree" [ref=e232] [cursor=pointer]
+          - generic [ref=e233]:
+            - generic [ref=e234]:
+              - heading "Mishra Family" [level=3] [ref=e235]
+              - generic [ref=e236]:
+                - generic [ref=e237]: 📍
+                - generic [ref=e238]: Bhopal
+            - generic [ref=e239]:
+              - generic [ref=e240]: 6 Members
+              - generic [ref=e241]:
+                - generic [ref=e242] [cursor=pointer]:
+                  - generic [ref=e243] [cursor=pointer]: 💑
+                  - generic [ref=e244] [cursor=pointer]:
+                    - heading "Ajay Mishra" [level=4] [ref=e245] [cursor=pointer]
+                    - paragraph [ref=e246] [cursor=pointer]: Father/Mother
+                    - paragraph [ref=e247] [cursor=pointer]: 54 years old
+                    - paragraph [ref=e248] [cursor=pointer]: Forest Officer
+                - generic [ref=e249] [cursor=pointer]:
+                  - generic [ref=e250] [cursor=pointer]: 💑
+                  - generic [ref=e251] [cursor=pointer]:
+                    - heading "Meera Mishra" [level=4] [ref=e252] [cursor=pointer]
+                    - paragraph [ref=e253] [cursor=pointer]: Father/Mother
+                    - paragraph [ref=e254] [cursor=pointer]: 51 years old
+                    - paragraph [ref=e255] [cursor=pointer]: Botanical Researcher
+                - generic [ref=e256] [cursor=pointer]:
+                  - generic [ref=e257] [cursor=pointer]: 👶
+                  - generic [ref=e258] [cursor=pointer]:
+                    - heading "Arjun Mishra" [level=4] [ref=e259] [cursor=pointer]
+                    - paragraph [ref=e260] [cursor=pointer]: Son/Daughter
+                    - paragraph [ref=e261] [cursor=pointer]: 27 years old
+                    - paragraph [ref=e262] [cursor=pointer]: Environmental Engineer
+                - generic [ref=e263] [cursor=pointer]:
+                  - generic [ref=e264] [cursor=pointer]: 👶
+                  - generic [ref=e265] [cursor=pointer]:
+                    - heading "Priyanka Mishra" [level=4] [ref=e266] [cursor=pointer]
+                    - paragraph [ref=e267] [cursor=pointer]: Son/Daughter
+                    - paragraph [ref=e268] [cursor=pointer]: 24 years old
+                    - paragraph [ref=e269] [cursor=pointer]: Forest Ranger
+                - generic [ref=e270] [cursor=pointer]:
+                  - generic [ref=e271] [cursor=pointer]: 👨‍👩‍👧‍👦
+                  - generic [ref=e272] [cursor=pointer]:
+                    - heading "Harish Mishra" [level=4] [ref=e273] [cursor=pointer]
+                    - paragraph [ref=e274] [cursor=pointer]: Parent
+                    - paragraph [ref=e275] [cursor=pointer]: 81 years old
+                    - paragraph [ref=e276] [cursor=pointer]: Retired Forest Officer
+                - generic [ref=e277] [cursor=pointer]:
+                  - generic [ref=e278] [cursor=pointer]: 👨‍👩‍👧‍👦
+                  - generic [ref=e279] [cursor=pointer]:
+                    - heading "Rukmani Mishra" [level=4] [ref=e280] [cursor=pointer]
+                    - paragraph [ref=e281] [cursor=pointer]: Parent
+                    - paragraph [ref=e282] [cursor=pointer]: 78 years old
+                    - paragraph [ref=e283] [cursor=pointer]: Retired Ayurveda Practitioner
+            - button "View Family Tree" [ref=e285] [cursor=pointer]
+          - generic [ref=e286]:
+            - generic [ref=e287]:
+              - heading "Jain Family" [level=3] [ref=e288]
+              - generic [ref=e289]:
+                - generic [ref=e290]: 📍
+                - generic [ref=e291]: Bhopal
+            - generic [ref=e292]:
+              - generic [ref=e293]: 3 Members
+              - generic [ref=e294]:
+                - generic [ref=e295] [cursor=pointer]:
+                  - generic [ref=e296] [cursor=pointer]: 💑
+                  - generic [ref=e297] [cursor=pointer]:
+                    - heading "Vikash Jain" [level=4] [ref=e298] [cursor=pointer]
+                    - paragraph [ref=e299] [cursor=pointer]: Father/Mother
+                    - paragraph [ref=e300] [cursor=pointer]: 46 years old
+                    - paragraph [ref=e301] [cursor=pointer]: Textile Business
+                - generic [ref=e302] [cursor=pointer]:
+                  - generic [ref=e303] [cursor=pointer]: 💑
+                  - generic [ref=e304] [cursor=pointer]:
+                    - heading "Pooja Jain" [level=4] [ref=e305] [cursor=pointer]
+                    - paragraph [ref=e306] [cursor=pointer]: Father/Mother
+                    - paragraph [ref=e307] [cursor=pointer]: 43 years old
+                    - paragraph [ref=e308] [cursor=pointer]: Fashion Designer
+                - generic [ref=e309] [cursor=pointer]:
+                  - generic [ref=e310] [cursor=pointer]: 👶
+                  - generic [ref=e311] [cursor=pointer]:
+                    - heading "Aryan Jain" [level=4] [ref=e312] [cursor=pointer]
+                    - paragraph [ref=e313] [cursor=pointer]: Son/Daughter
+                    - paragraph [ref=e314] [cursor=pointer]: 18 years old
+                    - paragraph [ref=e315] [cursor=pointer]: Commerce Student
+            - button "View Family Tree" [ref=e317] [cursor=pointer]
+          - generic [ref=e318]:
+            - generic [ref=e319]:
+              - heading "Chouhan Family" [level=3] [ref=e320]
+              - generic [ref=e321]:
+                - generic [ref=e322]: 📍
+                - generic [ref=e323]: Indore
+            - generic [ref=e324]:
+              - generic [ref=e325]: 5 Members
+              - generic [ref=e326]:
+                - generic [ref=e327] [cursor=pointer]:
+                  - generic [ref=e328] [cursor=pointer]: 💑
+                  - generic [ref=e329] [cursor=pointer]:
+                    - heading "Shivraj Chouhan" [level=4] [ref=e330] [cursor=pointer]
+                    - paragraph [ref=e331] [cursor=pointer]: Father/Mother
+                    - paragraph [ref=e332] [cursor=pointer]: 49 years old
+                    - paragraph [ref=e333] [cursor=pointer]: Political Leader
+                - generic [ref=e334] [cursor=pointer]:
+                  - generic [ref=e335] [cursor=pointer]: 💑
+                  - generic [ref=e336] [cursor=pointer]:
+                    - heading "Sadhna Chouhan" [level=4] [ref=e337] [cursor=pointer]
+                    - paragraph [ref=e338] [cursor=pointer]: Father/Mother
+                    - paragraph [ref=e339] [cursor=pointer]: 46 years old
+                    - paragraph [ref=e340] [cursor=pointer]: Social Worker
+                - generic [ref=e341] [cursor=pointer]:
+                  - generic [ref=e342] [cursor=pointer]: 👶
+                  - generic [ref=e343] [cursor=pointer]:
+                    - heading "Kartik Chouhan" [level=4] [ref=e344] [cursor=pointer]
+                    - paragraph [ref=e345] [cursor=pointer]: Son/Daughter
+                    - paragraph [ref=e346] [cursor=pointer]: 23 years old
+                    - paragraph [ref=e347] [cursor=pointer]: Public Administration Student
+                - generic [ref=e348] [cursor=pointer]:
+                  - generic [ref=e349] [cursor=pointer]: 👶
+                  - generic [ref=e350] [cursor=pointer]:
+                    - heading "Khushi Chouhan" [level=4] [ref=e351] [cursor=pointer]
+                    - paragraph [ref=e352] [cursor=pointer]: Son/Daughter
+                    - paragraph [ref=e353] [cursor=pointer]: 20 years old
+                    - paragraph [ref=e354] [cursor=pointer]: Social Work Student
+                - generic [ref=e355] [cursor=pointer]:
+                  - generic [ref=e356] [cursor=pointer]: 👨‍👩‍👧‍👦
+                  - generic [ref=e357] [cursor=pointer]:
+                    - heading "Virendra Chouhan" [level=4] [ref=e358] [cursor=pointer]
+                    - paragraph [ref=e359] [cursor=pointer]: Parent
+                    - paragraph [ref=e360] [cursor=pointer]: 77 years old
+                    - paragraph [ref=e361] [cursor=pointer]: Retired Farmer Leader
+            - button "View Family Tree" [ref=e363] [cursor=pointer]
+          - generic [ref=e364]:
+            - generic [ref=e365]:
+              - heading "Agrawal Family" [level=3] [ref=e366]
+              - generic [ref=e367]:
+                - generic [ref=e368]: 📍
+                - generic [ref=e369]: Indore
+            - generic [ref=e370]:
+              - generic [ref=e371]: 4 Members
+              - generic [ref=e372]:
+                - generic [ref=e373] [cursor=pointer]:
+                  - generic [ref=e374] [cursor=pointer]: 💑
+                  - generic [ref=e375] [cursor=pointer]:
+                    - heading "Rajesh Agrawal" [level=4] [ref=e376] [cursor=pointer]
+                    - paragraph [ref=e377] [cursor=pointer]: Father/Mother
+                    - paragraph [ref=e378] [cursor=pointer]: 51 years old
+                    - paragraph [ref=e379] [cursor=pointer]: Pharmaceutical Business
+                - generic [ref=e380] [cursor=pointer]:
+                  - generic [ref=e381] [cursor=pointer]: 💑
+                  - generic [ref=e382] [cursor=pointer]:
+                    - heading "Sushma Agrawal" [level=4] [ref=e383] [cursor=pointer]
+                    - paragraph [ref=e384] [cursor=pointer]: Father/Mother
+                    - paragraph [ref=e385] [cursor=pointer]: 48 years old
+                    - paragraph [ref=e386] [cursor=pointer]: Pharmacist
+                - generic [ref=e387] [cursor=pointer]:
+                  - generic [ref=e388] [cursor=pointer]: 👶
+                  - generic [ref=e389] [cursor=pointer]:
+                    - heading "Nikhil Agrawal" [level=4] [ref=e390] [cursor=pointer]
+                    - paragraph [ref=e391] [cursor=pointer]: Son/Daughter
+                    - paragraph [ref=e392] [cursor=pointer]: 25 years old
+                    - paragraph [ref=e393] [cursor=pointer]: Pharmaceutical Engineer
+                - generic [ref=e394] [cursor=pointer]:
+                  - generic [ref=e395] [cursor=pointer]: 👶
+                  - generic [ref=e396] [cursor=pointer]:
+                    - heading "Nikita Agrawal" [level=4] [ref=e397] [cursor=pointer]
+                    - paragraph [ref=e398] [cursor=pointer]: Son/Daughter
+                    - paragraph [ref=e399] [cursor=pointer]: 22 years old
+                    - paragraph [ref=e400] [cursor=pointer]: Pharmacy Student
+            - button "View Family Tree" [ref=e402] [cursor=pointer]
+          - generic [ref=e403]:
+            - generic [ref=e404]:
+              - heading "Rajput Family" [level=3] [ref=e405]
+              - generic [ref=e406]:
+                - generic [ref=e407]: 📍
+                - generic [ref=e408]: Gwalior
+            - generic [ref=e409]:
+              - generic [ref=e410]: 5 Members
+              - generic [ref=e411]:
+                - generic [ref=e412] [cursor=pointer]:
+                  - generic [ref=e413] [cursor=pointer]: 💑
+                  - generic [ref=e414] [cursor=pointer]:
+                    - heading "Maharaj Singh Rajput" [level=4] [ref=e415] [cursor=pointer]
+                    - paragraph [ref=e416] [cursor=pointer]: Father/Mother
+                    - paragraph [ref=e417] [cursor=pointer]: 56 years old
+                    - paragraph [ref=e418] [cursor=pointer]: Heritage Tourism
+                - generic [ref=e419] [cursor=pointer]:
+                  - generic [ref=e420] [cursor=pointer]: 💑
+                  - generic [ref=e421] [cursor=pointer]:
+                    - heading "Rani Rajput" [level=4] [ref=e422] [cursor=pointer]
+                    - paragraph [ref=e423] [cursor=pointer]: Father/Mother
+                    - paragraph [ref=e424] [cursor=pointer]: 53 years old
+                    - paragraph [ref=e425] [cursor=pointer]: Classical Dance Teacher
+                - generic [ref=e426] [cursor=pointer]:
+                  - generic [ref=e427] [cursor=pointer]: 👶
+                  - generic [ref=e428] [cursor=pointer]:
+                    - heading "Yuvraj Rajput" [level=4] [ref=e429] [cursor=pointer]
+                    - paragraph [ref=e430] [cursor=pointer]: Son/Daughter
+                    - paragraph [ref=e431] [cursor=pointer]: 32 years old
+                    - paragraph [ref=e432] [cursor=pointer]: Tourism Manager
+                - generic [ref=e433] [cursor=pointer]:
+                  - generic [ref=e434] [cursor=pointer]: 👶
+                  - generic [ref=e435] [cursor=pointer]:
+                    - heading "Kumari Rajput" [level=4] [ref=e436] [cursor=pointer]
+                    - paragraph [ref=e437] [cursor=pointer]: Son/Daughter
+                    - paragraph [ref=e438] [cursor=pointer]: 29 years old
+                    - paragraph [ref=e439] [cursor=pointer]: Museum Curator
+                - generic [ref=e440] [cursor=pointer]:
+                  - generic [ref=e441] [cursor=pointer]: 👨‍👩‍👧‍👦
+                  - generic [ref=e442] [cursor=pointer]:
+                    - heading "Maharaja Rajput" [level=4] [ref=e443] [cursor=pointer]
+                    - paragraph [ref=e444] [cursor=pointer]: Parent
+                    - paragraph [ref=e445] [cursor=pointer]: 84 years old
+                    - paragraph [ref=e446] [cursor=pointer]: Former Royal Family
+            - button "View Family Tree" [ref=e448] [cursor=pointer]
+          - generic [ref=e449]:
+            - generic [ref=e450]:
+              - heading "Verma Family" [level=3] [ref=e451]
+              - generic [ref=e452]:
+                - generic [ref=e453]: 📍
+                - generic [ref=e454]: Jabalpur
+            - generic [ref=e455]:
+              - generic [ref=e456]: 5 Members
+              - generic [ref=e457]:
+                - generic [ref=e458] [cursor=pointer]:
+                  - generic [ref=e459] [cursor=pointer]: 💑
+                  - generic [ref=e460] [cursor=pointer]:
+                    - heading "Rajeev Verma" [level=4] [ref=e461] [cursor=pointer]
+                    - paragraph [ref=e462] [cursor=pointer]: Father/Mother
+                    - paragraph [ref=e463] [cursor=pointer]: 51 years old
+                    - paragraph [ref=e464] [cursor=pointer]: Geology Professor
+                - generic [ref=e465] [cursor=pointer]:
+                  - generic [ref=e466] [cursor=pointer]: 💑
+                  - generic [ref=e467] [cursor=pointer]:
+                    - heading "Seema Verma" [level=4] [ref=e468] [cursor=pointer]
+                    - paragraph [ref=e469] [cursor=pointer]: Father/Mother
+                    - paragraph [ref=e470] [cursor=pointer]: 48 years old
+                    - paragraph [ref=e471] [cursor=pointer]: Geography Teacher
+                - generic [ref=e472] [cursor=pointer]:
+                  - generic [ref=e473] [cursor=pointer]: 👶
+                  - generic [ref=e474] [cursor=pointer]:
+                    - heading "Aman Verma" [level=4] [ref=e475] [cursor=pointer]
+                    - paragraph [ref=e476] [cursor=pointer]: Son/Daughter
+                    - paragraph [ref=e477] [cursor=pointer]: 25 years old
+                    - paragraph [ref=e478] [cursor=pointer]: Mining Engineer
+                - generic [ref=e479] [cursor=pointer]:
+                  - generic [ref=e480] [cursor=pointer]: 👶
+                  - generic [ref=e481] [cursor=pointer]:
+                    - heading "Pooja Verma" [level=4] [ref=e482] [cursor=pointer]
+                    - paragraph [ref=e483] [cursor=pointer]: Son/Daughter
+                    - paragraph [ref=e484] [cursor=pointer]: 22 years old
+                    - paragraph [ref=e485] [cursor=pointer]: Environmental Science Student
+                - generic [ref=e486] [cursor=pointer]:
+                  - generic [ref=e487] [cursor=pointer]: 👨‍👩‍👧‍👦
+                  - generic [ref=e488] [cursor=pointer]:
+                    - heading "Jagdish Verma" [level=4] [ref=e489] [cursor=pointer]
+                    - paragraph [ref=e490] [cursor=pointer]: Parent
+                    - paragraph [ref=e491] [cursor=pointer]: 78 years old
+                    - paragraph [ref=e492] [cursor=pointer]: Retired Geologist
+            - button "View Family Tree" [ref=e494] [cursor=pointer]
+          - generic [ref=e495]:
+            - generic [ref=e496]:
+              - heading "Upadhyay Family" [level=3] [ref=e497]
+              - generic [ref=e498]:
+                - generic [ref=e499]: 📍
+                - generic [ref=e500]: Ujjain
+            - generic [ref=e501]:
+              - generic [ref=e502]: 5 Members
+              - generic [ref=e503]:
+                - generic [ref=e504] [cursor=pointer]:
+                  - generic [ref=e505] [cursor=pointer]: 💑
+                  - generic [ref=e506] [cursor=pointer]:
+                    - heading "Pandit Ram Upadhyay" [level=4] [ref=e507] [cursor=pointer]
+                    - paragraph [ref=e508] [cursor=pointer]: Father/Mother
+                    - paragraph [ref=e509] [cursor=pointer]: 58 years old
+                    - paragraph [ref=e510] [cursor=pointer]: Temple Priest
+                - generic [ref=e511] [cursor=pointer]:
+                  - generic [ref=e512] [cursor=pointer]: 💑
+                  - generic [ref=e513] [cursor=pointer]:
+                    - heading "Sita Upadhyay" [level=4] [ref=e514] [cursor=pointer]
+                    - paragraph [ref=e515] [cursor=pointer]: Father/Mother
+                    - paragraph [ref=e516] [cursor=pointer]: 55 years old
+                    - paragraph [ref=e517] [cursor=pointer]: Sanskrit Scholar
+                - generic [ref=e518] [cursor=pointer]:
+                  - generic [ref=e519] [cursor=pointer]: 👶
+                  - generic [ref=e520] [cursor=pointer]:
+                    - heading "Shyam Upadhyay" [level=4] [ref=e521] [cursor=pointer]
+                    - paragraph [ref=e522] [cursor=pointer]: Son/Daughter
+                    - paragraph [ref=e523] [cursor=pointer]: 34 years old
+                    - paragraph [ref=e524] [cursor=pointer]: Astrologer
+                - generic [ref=e525] [cursor=pointer]:
+                  - generic [ref=e526] [cursor=pointer]: 👶
+                  - generic [ref=e527] [cursor=pointer]:
+                    - heading "Radha Upadhyay" [level=4] [ref=e528] [cursor=pointer]
+                    - paragraph [ref=e529] [cursor=pointer]: Son/Daughter
+                    - paragraph [ref=e530] [cursor=pointer]: 31 years old
+                    - paragraph [ref=e531] [cursor=pointer]: Sanskrit Teacher
+                - generic [ref=e532] [cursor=pointer]:
+                  - generic [ref=e533] [cursor=pointer]: 👨‍👩‍👧‍👦
+                  - generic [ref=e534] [cursor=pointer]:
+                    - heading "Gopal Upadhyay" [level=4] [ref=e535] [cursor=pointer]
+                    - paragraph [ref=e536] [cursor=pointer]: Parent
+                    - paragraph [ref=e537] [cursor=pointer]: 85 years old
+                    - paragraph [ref=e538] [cursor=pointer]: Former Temple Head Priest
+            - button "View Family Tree" [ref=e540] [cursor=pointer]
+          - generic [ref=e541]:
+            - generic [ref=e542]:
+              - heading "Joshi Family" [level=3] [ref=e543]
+              - generic [ref=e544]:
+                - generic [ref=e545]: 📍
+                - generic [ref=e546]: Ujjain
+            - generic [ref=e547]:
+              - generic [ref=e548]: 6 Members
+              - generic [ref=e549]:
+                - generic [ref=e550] [cursor=pointer]:
+                  - generic [ref=e551] [cursor=pointer]: 💑
+                  - generic [ref=e552] [cursor=pointer]:
+                    - heading "Mohan Joshi" [level=4] [ref=e553] [cursor=pointer]
+                    - paragraph [ref=e554] [cursor=pointer]: Father/Mother
+                    - paragraph [ref=e555] [cursor=pointer]: 54 years old
+                    - paragraph [ref=e556] [cursor=pointer]: Astronomical Research
+                - generic [ref=e557] [cursor=pointer]:
+                  - generic [ref=e558] [cursor=pointer]: 💑
+                  - generic [ref=e559] [cursor=pointer]:
+                    - heading "Saroj Joshi" [level=4] [ref=e560] [cursor=pointer]
+                    - paragraph [ref=e561] [cursor=pointer]: Father/Mother
+                    - paragraph [ref=e562] [cursor=pointer]: 51 years old
+                    - paragraph [ref=e563] [cursor=pointer]: Mathematics Teacher
+                - generic [ref=e564] [cursor=pointer]:
+                  - generic [ref=e565] [cursor=pointer]: 👶
+                  - generic [ref=e566] [cursor=pointer]:
+                    - heading "Aditya Joshi" [level=4] [ref=e567] [cursor=pointer]
+                    - paragraph [ref=e568] [cursor=pointer]: Son/Daughter
+                    - paragraph [ref=e569] [cursor=pointer]: 29 years old
+                    - paragraph [ref=e570] [cursor=pointer]: Astrophysicist
+                - generic [ref=e571] [cursor=pointer]:
+                  - generic [ref=e572] [cursor=pointer]: 👶
+                  - generic [ref=e573] [cursor=pointer]:
+                    - heading "Deepika Joshi" [level=4] [ref=e574] [cursor=pointer]
+                    - paragraph [ref=e575] [cursor=pointer]: Son/Daughter
+                    - paragraph [ref=e576] [cursor=pointer]: 26 years old
+                    - paragraph [ref=e577] [cursor=pointer]: Mathematics Professor
+                - generic [ref=e578] [cursor=pointer]:
+                  - generic [ref=e579] [cursor=pointer]: 👨‍👩‍👧‍👦
+                  - generic [ref=e580] [cursor=pointer]:
+                    - heading "Shankar Joshi" [level=4] [ref=e581] [cursor=pointer]
+                    - paragraph [ref=e582] [cursor=pointer]: Parent
+                    - paragraph [ref=e583] [cursor=pointer]: 82 years old
+                    - paragraph [ref=e584] [cursor=pointer]: Former Observatory Keeper
+                - generic [ref=e585] [cursor=pointer]:
+                  - generic [ref=e586] [cursor=pointer]: 👨‍👩‍👧‍👦
+                  - generic [ref=e587] [cursor=pointer]:
+                    - heading "Ganga Joshi" [level=4] [ref=e588] [cursor=pointer]
+                    - paragraph [ref=e589] [cursor=pointer]: Parent
+                    - paragraph [ref=e590] [cursor=pointer]: 79 years old
+                    - paragraph [ref=e591] [cursor=pointer]: Retired Mathematics Teacher
+            - button "View Family Tree" [ref=e593] [cursor=pointer]
+        - generic [ref=e595]:
+          - generic [ref=e596]:
+            - heading "Family Hierarchy" [level=2] [ref=e597]
+            - button "✕" [ref=e598] [cursor=pointer]
+          - generic [ref=e599]:
+            - generic [ref=e600]:
+              - heading "Family Hierarchy - Tiwari Family" [level=3] [ref=e601]
+              - generic [ref=e602]:
+                - generic [ref=e603]:
+                  - generic [ref=e605]: Generation 2
+                  - generic [ref=e606]:
+                    - generic [ref=e607] [cursor=pointer]:
+                      - generic [ref=e608] [cursor=pointer]: 👨‍👩‍👧‍👦
+                      - generic [ref=e609] [cursor=pointer]:
+                        - heading "Vishwanath Tiwari" [level=4] [ref=e610] [cursor=pointer]
+                        - paragraph [ref=e611] [cursor=pointer]: Parent
+                        - paragraph [ref=e612] [cursor=pointer]: "Born: 1947"
+                        - paragraph [ref=e613] [cursor=pointer]: Retired District Collector
+                    - generic [ref=e614] [cursor=pointer]:
+                      - generic [ref=e615] [cursor=pointer]: 👨‍👩‍👧‍👦
+                      - generic [ref=e616] [cursor=pointer]:
+                        - heading "Kamala Tiwari" [level=4] [ref=e617] [cursor=pointer]
+                        - paragraph [ref=e618] [cursor=pointer]: Parent
+                        - paragraph [ref=e619] [cursor=pointer]: "Born: 1950"
+                        - paragraph [ref=e620] [cursor=pointer]: Retired School Principal
+                - generic [ref=e621]:
+                  - generic [ref=e623]: Generation 3
+                  - generic [ref=e624]:
+                    - generic [ref=e625] [cursor=pointer]:
+                      - generic [ref=e626] [cursor=pointer]: 💑
+                      - generic [ref=e627] [cursor=pointer]:
+                        - heading "Ramesh Tiwari" [level=4] [ref=e628] [cursor=pointer]
+                        - paragraph [ref=e629] [cursor=pointer]: Father/Mother
+                        - paragraph [ref=e630] [cursor=pointer]: "Born: 1973"
+                        - paragraph [ref=e631] [cursor=pointer]: IAS Officer
+                    - generic [ref=e632] [cursor=pointer]:
+                      - generic [ref=e633] [cursor=pointer]: 💑
+                      - generic [ref=e634] [cursor=pointer]:
+                        - heading "Sunita Tiwari" [level=4] [ref=e635] [cursor=pointer]
+                        - paragraph [ref=e636] [cursor=pointer]: Father/Mother
+                        - paragraph [ref=e637] [cursor=pointer]: "Born: 1976"
+                        - paragraph [ref=e638] [cursor=pointer]: College Principal
+                - generic [ref=e639]:
+                  - generic [ref=e641]: Generation 4
+                  - generic [ref=e642]:
+                    - generic [ref=e643] [cursor=pointer]:
+                      - generic [ref=e644] [cursor=pointer]: 👶
+                      - generic [ref=e645] [cursor=pointer]:
+                        - heading "Aaditya Tiwari" [level=4] [ref=e646] [cursor=pointer]
+                        - paragraph [ref=e647] [cursor=pointer]: Son/Daughter
+                        - paragraph [ref=e648] [cursor=pointer]: "Born: 2001"
+                        - paragraph [ref=e649] [cursor=pointer]: Civil Services Aspirant
+                    - generic [ref=e650] [cursor=pointer]:
+                      - generic [ref=e651] [cursor=pointer]: 👶
+                      - generic [ref=e652] [cursor=pointer]:
+                        - heading "Anushka Tiwari" [level=4] [ref=e653] [cursor=pointer]
+                        - paragraph [ref=e654] [cursor=pointer]: Son/Daughter
+                        - paragraph [ref=e655] [cursor=pointer]: "Born: 2004"
+                        - paragraph [ref=e656] [cursor=pointer]: Law Student
+            - generic [ref=e657]:
+              - heading "Member Details" [level=3] [ref=e658]
+              - generic [ref=e659]:
+                - generic [ref=e660]: 💑
+                - generic [ref=e661]:
+                  - heading "Ramesh Tiwari" [level=4] [ref=e662]
+                  - paragraph [ref=e663]:
+                    - strong [ref=e664]: "Role:"
+                    - text: Father/Mother
+                  - paragraph [ref=e665]:
+                    - strong [ref=e666]: "Generation:"
+                    - text: "3"
+                  - paragraph [ref=e667]:
+                    - strong [ref=e668]: "Birth Year:"
+                    - text: "1973"
+                  - paragraph [ref=e669]:
+                    - strong [ref=e670]: "Age:"
+                    - text: "52"
+                  - paragraph [ref=e671]:
+                    - strong [ref=e672]: "Occupation:"
+                    - text: IAS Officer
+  - button "⬇️ Download Logs" [ref=e673] [cursor=pointer]
+```

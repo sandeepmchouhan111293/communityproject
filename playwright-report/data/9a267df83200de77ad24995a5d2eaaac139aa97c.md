@@ -1,0 +1,98 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - navigation [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - img "Sen Ji Maharaj" [ref=e7]
+          - heading "Sen Community Hub" [level=1] [ref=e8]
+          - paragraph [ref=e9]: Guided by wisdom, united in spirit
+        - button "EN 🌐 हिंदी" [ref=e11] [cursor=pointer]:
+          - generic [ref=e12] [cursor=pointer]:
+            - generic [ref=e13] [cursor=pointer]: EN
+            - generic [ref=e14] [cursor=pointer]: 🌐
+          - generic: हिंदी
+        - generic [ref=e15]:
+          - img "User Avatar" [ref=e17]
+          - generic [ref=e20]:
+            - paragraph [ref=e21]: Sandeep Chouhan
+            - paragraph [ref=e22]: chouhan.sandeep003@gmail.com
+      - list [ref=e23]:
+        - listitem [ref=e24]:
+          - button "Home" [ref=e25] [cursor=pointer]:
+            - generic [ref=e26] [cursor=pointer]: 🏠
+            - text: Home
+        - listitem [ref=e27]:
+          - button "My Profile" [ref=e28] [cursor=pointer]:
+            - generic [ref=e29] [cursor=pointer]: 👤
+            - text: My Profile
+        - listitem [ref=e30]:
+          - button "Family Tree" [ref=e31] [cursor=pointer]:
+            - generic [ref=e32] [cursor=pointer]: 🌳
+            - text: Family Tree
+        - listitem [ref=e33]:
+          - button "Community Families" [ref=e34] [cursor=pointer]:
+            - generic [ref=e35] [cursor=pointer]: 🏘️
+            - text: Community Families
+        - listitem [ref=e36]:
+          - button "Events" [ref=e37] [cursor=pointer]:
+            - generic [ref=e38] [cursor=pointer]: 📅
+            - text: Events
+        - listitem [ref=e39]:
+          - button "Volunteer" [ref=e40] [cursor=pointer]:
+            - generic [ref=e41] [cursor=pointer]: 🤝
+            - text: Volunteer
+        - listitem [ref=e42]:
+          - button "Discussions" [ref=e43] [cursor=pointer]:
+            - generic [ref=e44] [cursor=pointer]: 💬
+            - text: Discussions
+        - listitem [ref=e45]:
+          - button "Documents" [ref=e46] [cursor=pointer]:
+            - generic [ref=e47] [cursor=pointer]: 📁
+            - text: Documents
+        - listitem [ref=e48]:
+          - button "Directory" [ref=e49] [cursor=pointer]:
+            - generic [ref=e50] [cursor=pointer]: 📖
+            - text: Directory
+        - listitem [ref=e51]:
+          - button "Settings" [active] [ref=e52] [cursor=pointer]:
+            - generic [ref=e53] [cursor=pointer]: ⚙️
+            - text: Settings
+      - button "Logout" [ref=e55] [cursor=pointer]:
+        - generic [ref=e56] [cursor=pointer]: 🚪
+        - text: Logout
+    - main [ref=e57]:
+      - generic [ref=e58]:
+        - heading "Settings" [level=1] [ref=e59]
+        - generic [ref=e60]:
+          - generic [ref=e61]:
+            - heading "Privacy Settings" [level=3] [ref=e62]
+            - generic [ref=e64] [cursor=pointer]:
+              - checkbox "Make my profile visible to community members" [checked] [ref=e65]
+              - text: Make my profile visible to community members
+            - generic [ref=e67] [cursor=pointer]:
+              - checkbox "Allow others to see my family tree" [ref=e68]
+              - text: Allow others to see my family tree
+            - generic [ref=e70] [cursor=pointer]:
+              - checkbox "Show me in community directory" [checked] [ref=e71]
+              - text: Show me in community directory
+          - generic [ref=e72]:
+            - heading "Notification Preferences" [level=3] [ref=e73]
+            - generic [ref=e75] [cursor=pointer]:
+              - checkbox "Email notifications for new family connections" [checked] [ref=e76]
+              - text: Email notifications for new family connections
+            - generic [ref=e78] [cursor=pointer]:
+              - checkbox "Event reminders" [checked] [ref=e79]
+              - text: Event reminders
+            - generic [ref=e81] [cursor=pointer]:
+              - checkbox "Weekly community updates" [ref=e82]
+              - text: Weekly community updates
+          - generic [ref=e83]:
+            - heading "Account Settings" [level=3] [ref=e84]
+            - button "Change Password" [ref=e85] [cursor=pointer]
+            - button "Download my data" [ref=e86] [cursor=pointer]
+            - button "Delete Account" [ref=e87] [cursor=pointer]
+  - button "⬇️ Download Logs" [ref=e88] [cursor=pointer]
+```

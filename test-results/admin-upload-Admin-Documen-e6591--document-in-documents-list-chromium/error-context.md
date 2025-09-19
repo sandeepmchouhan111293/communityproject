@@ -1,0 +1,113 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - navigation [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - img "Sen Ji Maharaj" [ref=e7]
+          - heading "Sen Community Hub" [level=1] [ref=e8]
+          - paragraph [ref=e9]: Guided by wisdom, united in spirit
+        - button "EN 🌐 हिंदी" [ref=e11] [cursor=pointer]:
+          - generic [ref=e12] [cursor=pointer]:
+            - generic [ref=e13] [cursor=pointer]: EN
+            - generic [ref=e14] [cursor=pointer]: 🌐
+          - generic: हिंदी
+        - generic [ref=e15]:
+          - img "User Avatar" [ref=e17]
+          - generic [ref=e20]:
+            - paragraph [ref=e21]: Sandeep Chouhan
+            - paragraph [ref=e22]: chouhan.sandeep003@gmail.com
+      - list [ref=e23]:
+        - listitem [ref=e24]:
+          - button "Home" [ref=e25] [cursor=pointer]:
+            - generic [ref=e26] [cursor=pointer]: 🏠
+            - text: Home
+        - listitem [ref=e27]:
+          - button "My Profile" [ref=e28] [cursor=pointer]:
+            - generic [ref=e29] [cursor=pointer]: 👤
+            - text: My Profile
+        - listitem [ref=e30]:
+          - button "Family Tree" [ref=e31] [cursor=pointer]:
+            - generic [ref=e32] [cursor=pointer]: 🌳
+            - text: Family Tree
+        - listitem [ref=e33]:
+          - button "Community Families" [ref=e34] [cursor=pointer]:
+            - generic [ref=e35] [cursor=pointer]: 🏘️
+            - text: Community Families
+        - listitem [ref=e36]:
+          - button "Events" [ref=e37] [cursor=pointer]:
+            - generic [ref=e38] [cursor=pointer]: 📅
+            - text: Events
+        - listitem [ref=e39]:
+          - button "Volunteer" [ref=e40] [cursor=pointer]:
+            - generic [ref=e41] [cursor=pointer]: 🤝
+            - text: Volunteer
+        - listitem [ref=e42]:
+          - button "Discussions" [ref=e43] [cursor=pointer]:
+            - generic [ref=e44] [cursor=pointer]: 💬
+            - text: Discussions
+        - listitem [ref=e45]:
+          - button "Documents" [ref=e46] [cursor=pointer]:
+            - generic [ref=e47] [cursor=pointer]: 📁
+            - text: Documents
+        - listitem [ref=e48]:
+          - button "Directory" [ref=e49] [cursor=pointer]:
+            - generic [ref=e50] [cursor=pointer]: 📖
+            - text: Directory
+        - listitem [ref=e51]:
+          - button "Settings" [ref=e52] [cursor=pointer]:
+            - generic [ref=e53] [cursor=pointer]: ⚙️
+            - text: Settings
+      - button "Logout" [ref=e55] [cursor=pointer]:
+        - generic [ref=e56] [cursor=pointer]: 🚪
+        - text: Logout
+    - main [ref=e57]:
+      - generic [ref=e58]:
+        - generic [ref=e59]:
+          - heading "Add Document" [level=1] [ref=e60]
+          - button "← Back" [ref=e61] [cursor=pointer]
+        - generic [ref=e62]:
+          - heading "Upload Document" [level=2] [ref=e63]
+          - generic [ref=e64]:
+            - generic [ref=e65]:
+              - generic [ref=e66]:
+                - generic [ref=e67]: Document Title
+                - textbox "Document Title" [ref=e68]: Automated Test Document
+              - generic [ref=e69]:
+                - generic [ref=e70]: File Type
+                - textbox "File Type" [ref=e71]: PDF
+            - generic [ref=e72]:
+              - generic [ref=e73]:
+                - generic [ref=e74]: Category
+                - combobox "Category" [ref=e75]:
+                  - option "Governance"
+                  - option "Resources" [selected]
+                  - option "Meeting Minutes"
+                  - option "Guidelines"
+                  - option "Forms"
+              - generic [ref=e76]:
+                - generic [ref=e77]: Access Level
+                - combobox "Access Level" [ref=e78]:
+                  - option "Public" [selected]
+                  - option "Member"
+                  - option "Committee"
+                  - option "Admin"
+            - generic [ref=e79]:
+              - generic [ref=e80]: File Size
+              - textbox "File Size" [ref=e81]
+            - generic [ref=e82]:
+              - generic [ref=e83]: Upload File
+              - generic [ref=e84] [cursor=pointer]:
+                - generic [ref=e85] [cursor=pointer]: 📎
+                - generic [ref=e86] [cursor=pointer]: Click to upload or drag and drop
+                - generic [ref=e87] [cursor=pointer]: Supports PDF, DOC, XLSX, and more
+            - generic [ref=e88]:
+              - generic [ref=e89]: Description
+              - textbox "Description" [ref=e90]: Document created by automated test
+            - generic [ref=e91]:
+              - button "Cancel" [ref=e92] [cursor=pointer]
+              - button "Upload Document" [ref=e93] [cursor=pointer]
+  - button "⬇️ Download Logs" [ref=e94] [cursor=pointer]
+```

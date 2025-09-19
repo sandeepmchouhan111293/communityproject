@@ -1,0 +1,147 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - navigation [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - img "Sen Ji Maharaj" [ref=e7]
+          - heading "Sen Community Hub" [level=1] [ref=e8]
+          - paragraph [ref=e9]: Guided by wisdom, united in spirit
+        - button "EN 🌐 हिंदी" [ref=e11] [cursor=pointer]:
+          - generic [ref=e12] [cursor=pointer]:
+            - generic [ref=e13] [cursor=pointer]: EN
+            - generic [ref=e14] [cursor=pointer]: 🌐
+          - generic: हिंदी
+        - generic [ref=e15]:
+          - img "User Avatar" [ref=e17]
+          - generic [ref=e20]:
+            - paragraph [ref=e21]: Sandeep Chouhan
+            - paragraph [ref=e22]: chouhan.sandeep003@gmail.com
+      - list [ref=e23]:
+        - listitem [ref=e24]:
+          - button "Home" [ref=e25] [cursor=pointer]:
+            - generic [ref=e26] [cursor=pointer]: 🏠
+            - text: Home
+        - listitem [ref=e27]:
+          - button "My Profile" [ref=e28] [cursor=pointer]:
+            - generic [ref=e29] [cursor=pointer]: 👤
+            - text: My Profile
+        - listitem [ref=e30]:
+          - button "Family Tree" [ref=e31] [cursor=pointer]:
+            - generic [ref=e32] [cursor=pointer]: 🌳
+            - text: Family Tree
+        - listitem [ref=e33]:
+          - button "Community Families" [ref=e34] [cursor=pointer]:
+            - generic [ref=e35] [cursor=pointer]: 🏘️
+            - text: Community Families
+        - listitem [ref=e36]:
+          - button "Events" [ref=e37] [cursor=pointer]:
+            - generic [ref=e38] [cursor=pointer]: 📅
+            - text: Events
+        - listitem [ref=e39]:
+          - button "Volunteer" [ref=e40] [cursor=pointer]:
+            - generic [ref=e41] [cursor=pointer]: 🤝
+            - text: Volunteer
+        - listitem [ref=e42]:
+          - button "Discussions" [ref=e43] [cursor=pointer]:
+            - generic [ref=e44] [cursor=pointer]: 💬
+            - text: Discussions
+        - listitem [ref=e45]:
+          - button "Documents" [ref=e46] [cursor=pointer]:
+            - generic [ref=e47] [cursor=pointer]: 📁
+            - text: Documents
+        - listitem [ref=e48]:
+          - button "Directory" [ref=e49] [cursor=pointer]:
+            - generic [ref=e50] [cursor=pointer]: 📖
+            - text: Directory
+        - listitem [ref=e51]:
+          - button "Settings" [ref=e52] [cursor=pointer]:
+            - generic [ref=e53] [cursor=pointer]: ⚙️
+            - text: Settings
+      - button "Logout" [active] [ref=e55] [cursor=pointer]:
+        - generic [ref=e56] [cursor=pointer]: 🚪
+        - text: Logout
+    - main [ref=e57]:
+      - generic [ref=e58]:
+        - generic [ref=e60]:
+          - img "Sen Ji Maharaj" [ref=e61]
+          - generic [ref=e62]:
+            - heading "Welcome Home, Sandeep" [level=1] [ref=e64]
+            - paragraph [ref=e65]: Stay connected with your spiritual community
+            - paragraph [ref=e66]: "\"In unity we find strength, in wisdom we find peace\""
+        - generic [ref=e67]:
+          - generic [ref=e68]:
+            - heading "🌟 Member Spotlight" [level=2] [ref=e69]
+            - button "Nominate Someone" [ref=e70] [cursor=pointer]
+          - paragraph [ref=e73]: No member is currently highlighted. Check back soon!
+        - generic [ref=e74]:
+          - generic [ref=e75]:
+            - generic [ref=e76]:
+              - heading "👨‍👩‍👧‍👦 Family Profile" [level=3] [ref=e77]
+              - generic [ref=e78]: Active
+            - generic [ref=e82]: 75% Complete
+            - paragraph [ref=e83]: Add 3 more family members to complete your family tree
+            - button "Add Members" [ref=e84] [cursor=pointer]
+          - generic [ref=e85]:
+            - generic [ref=e86]:
+              - heading "📰 Community Updates" [level=3] [ref=e87]
+              - button "View All" [ref=e88] [cursor=pointer]
+            - generic [ref=e89]:
+              - generic [ref=e90]:
+                - generic [ref=e91]:
+                  - generic [ref=e92]: 🚨
+                  - generic [ref=e93]:
+                    - heading "System Maintenance Tonight" [level=4] [ref=e94]
+                    - generic [ref=e95]: 2 hours ago
+                - paragraph [ref=e96]: The platform will be unavailable from 11 PM to 1 AM for scheduled maintenance.
+                - generic [ref=e97]: "by: System Admin"
+              - generic [ref=e98]:
+                - generic [ref=e99]:
+                  - generic [ref=e100]: 📢
+                  - generic [ref=e101]:
+                    - heading "Monthly Community Meeting Minutes Posted" [level=4] [ref=e102]
+                    - generic [ref=e103]: 1 days ago
+                - paragraph [ref=e104]: Review the decisions made in our December community meeting, including new family tree features.
+                - generic [ref=e105]: "by: Community Board"
+              - generic [ref=e106]:
+                - generic [ref=e107]:
+                  - generic [ref=e108]: 🎉
+                  - generic [ref=e109]:
+                    - heading "🎉 Welcome Baby Emma Thompson!" [level=4] [ref=e110]
+                    - generic [ref=e111]: 3 days ago
+                - paragraph [ref=e112]: The Thompson family welcomes their newest member. Congratulations to the proud parents!
+                - generic [ref=e113]: "by: Lisa Thompson"
+          - generic [ref=e114]:
+            - heading "🚀 Quick Actions" [level=3] [ref=e115]
+            - generic [ref=e116]:
+              - button "📅 View Events" [ref=e117] [cursor=pointer]:
+                - generic [ref=e118] [cursor=pointer]: 📅
+                - generic [ref=e119] [cursor=pointer]: View Events
+              - button "🤝 Volunteer" [ref=e120] [cursor=pointer]:
+                - generic [ref=e121] [cursor=pointer]: 🤝
+                - generic [ref=e122] [cursor=pointer]: Volunteer
+              - button "💬 Discussions" [ref=e123] [cursor=pointer]:
+                - generic [ref=e124] [cursor=pointer]: 💬
+                - generic [ref=e125] [cursor=pointer]: Discussions
+              - button "📁 Documents" [ref=e126] [cursor=pointer]:
+                - generic [ref=e127] [cursor=pointer]: 📁
+                - generic [ref=e128] [cursor=pointer]: Documents
+          - generic [ref=e129]:
+            - heading "📊 Community Pulse" [level=3] [ref=e130]
+            - generic [ref=e131]:
+              - generic [ref=e132]:
+                - generic [ref=e133]: "248"
+                - generic [ref=e134]: Active Members
+              - generic [ref=e135]:
+                - generic [ref=e136]: "12"
+                - generic [ref=e137]: Upcoming Events
+              - generic [ref=e138]:
+                - generic [ref=e139]: "89"
+                - generic [ref=e140]: Volunteer Hours
+              - generic [ref=e141]:
+                - generic [ref=e142]: "34"
+                - generic [ref=e143]: New Families
+  - button "⬇️ Download Logs" [ref=e144] [cursor=pointer]
+```

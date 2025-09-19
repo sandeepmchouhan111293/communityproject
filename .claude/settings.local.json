@@ -12,7 +12,8 @@
       "Bash(npx kill-port:*)",
       "Bash(cat:*)",
       "Bash(find:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(npx playwright test:*)"
     ],
     "deny": [],
     "ask": []
